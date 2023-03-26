@@ -11,7 +11,7 @@ import moment from 'moment';
 import * as Localization from 'expo-localization';
 import { KeyboardAccessoryView, KeyboardAccessoryNavigation  } from 'react-native-keyboard-accessory';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 
 // Actions
 

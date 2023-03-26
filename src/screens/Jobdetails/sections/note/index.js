@@ -21,7 +21,7 @@ import {
 import Modal from 'react-native-modal';
 import axios from 'axios';
 import XDate from 'xdate';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 
 import styles from '../../styles';
 

@@ -33,7 +33,7 @@ import XDate from 'xdate';
 import Modal from 'react-native-modal';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import axios from 'axios';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 
 // Actions
 

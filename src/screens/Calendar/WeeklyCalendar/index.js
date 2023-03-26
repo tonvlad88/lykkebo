@@ -18,7 +18,7 @@ import type Moment from 'moment';
 import XDate from 'xdate';
 import Modal from 'react-native-modal';
 import axios from 'axios';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 
 import {
   toTimestampWithSeconds,

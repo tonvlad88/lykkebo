@@ -31,7 +31,7 @@ import {
   Alert,
 } from 'react-native';
 
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 import axios from 'axios';
 
 import styles from './styles';

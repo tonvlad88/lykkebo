@@ -8,11 +8,11 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {
-  H1,
-  Thumbnail,
-  Toast,
-} from 'native-base';
+// import {
+//   H1,
+//   Thumbnail,
+//   Toast,
+// } from 'native-base';
 
 import axios from 'axios';
 import base64 from 'base-64';
@@ -128,13 +128,14 @@ class SignInScreen extends React.Component {
           flexDirection: 'column',
           justifyContent: 'space-between',
         }}>
-          <View style={{
+          <Text>hey</Text>
+          {/* <View style={{
             flex: 1, backgroundColor: '#2E3D43', alignItems: 'center', justifyContent: 'center',
           }}>
             <Thumbnail style={{width: 150, height: 150, borderRadius: 150 / 2}} source={cover} />
             <H1 style={{color: '#fff', fontWeight: 'bold'}}>Lykkebo App</H1>
-          </View>
-          <View style={{flex: 1, backgroundColor: '#2E3D43', padding: 15}}>
+          </View> */}
+          {/* <View style={{flex: 1, backgroundColor: '#2E3D43', padding: 15}}>
             <Fragment>
               <View style={form}>
                 <View style={section}>
@@ -183,7 +184,7 @@ class SignInScreen extends React.Component {
               </View>
 
             </Fragment>
-          </View>
+          </View> */}
         </View>
       </KeyboardAvoidingView>
 

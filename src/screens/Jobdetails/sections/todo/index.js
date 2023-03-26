@@ -11,7 +11,7 @@ import {
 import { View, AsyncStorage } from 'react-native';
 
 import axios from 'axios';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2';
 import Swiper from 'react-native-swiper';
 
 import styles from '../../styles';
