@@ -158,8 +158,8 @@ async function loadResourcesAsync() {
       // 'robotoslab-light': require('./assets/fonts/RobotoSlab-Light.ttf'),
       // 'robotoslab-regular': require('./assets/fonts/RobotoSlab-Regular.ttf'),
       // 'robotoslab-thin': require('./assets/fonts/RobotoSlab-Thin.ttf'),
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      // Roboto: require("native-base/Fonts/Roboto.ttf"),
+      // Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
     }),
   ]);
 }
