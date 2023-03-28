@@ -42,6 +42,7 @@
     "react-native-datepicker": "^1.7.2",
     "react-native-element-dropdown": "^2.9.0",
     "react-native-elements": "^3.4.3",
+    "react-native-flash-message": "^0.4.0",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-image-picker": "^0.28.1",
     "react-native-image-placeholder": "^1.0.14",
