@@ -15,7 +15,7 @@ import {
 
 import { StatusBar } from 'react-native';
 
-import { Dropdown } from 'react-native-material-dropdown-v2';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
 import WeeklySegment from './Segments/WeeklySegment';
 import MonthlySegment from './Segments/MonthlySegment';

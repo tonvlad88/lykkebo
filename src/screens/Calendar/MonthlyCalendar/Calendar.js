@@ -21,19 +21,19 @@ import {
 
 import {
   View,
-  AsyncStorage,
   StatusBar,
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Helpers
 import XDate from 'xdate';
 import Modal from 'react-native-modal';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import axios from 'axios';
-import { Dropdown } from 'react-native-material-dropdown-v2';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import { connect } from 'react-redux';
 import moment from 'moment';
 

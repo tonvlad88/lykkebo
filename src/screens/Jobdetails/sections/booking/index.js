@@ -7,7 +7,8 @@ import {
   Icon,
 } from 'native-base';
 
-import { View, AsyncStorage, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import XDate from 'xdate';
 import DatePicker from 'react-native-datepicker';

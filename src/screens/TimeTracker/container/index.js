@@ -1,11 +1,12 @@
 // Main Packages
 import React from 'react';
 import {
-  Text, View, AsyncStorage, StatusBar, ScrollView, TouchableOpacity, Alert,
+  Text, View, StatusBar, ScrollView, TouchableOpacity, Alert,
 } from 'react-native';
 import {
   Container, Button, Icon, Left, Right, Body, List, ListItem, Badge, Content, Grid, Col, Toast
 } from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Packages
 import XDate from 'xdate';

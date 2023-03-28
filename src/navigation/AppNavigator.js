@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  AsyncStorage,
   Button,
   StatusBar,
   StyleSheet,
@@ -10,6 +9,7 @@ import {
 import {
   createStackNavigator, createSwitchNavigator, createAppContainer, createDrawerNavigator,
 } from 'react-navigation';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SignInScreen from '../screens/Signin';
 import SignUpScreen from '../screens/Signin/containers/Signup';

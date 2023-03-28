@@ -14,14 +14,14 @@ import {
 import {
   View,
   Switch,
-  AsyncStorage,
   TextInput,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Modal from 'react-native-modal';
 import axios from 'axios';
 import XDate from 'xdate';
-import { Dropdown } from 'react-native-material-dropdown-v2';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
 import styles from '../../styles';
 

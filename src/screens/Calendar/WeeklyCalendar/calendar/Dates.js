@@ -3,12 +3,11 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  AsyncStorage,
 } from 'react-native';
 import type Moment from 'moment';
 import XDate from 'xdate';
 import Date from './Date';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   fetchTryHttp,
 } from '../../../../services/common';

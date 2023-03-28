@@ -15,9 +15,9 @@ import {
 
 import {
   View,
-  AsyncStorage,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Modal from 'react-native-modal';
 import { fetchTryHttp } from '../../../services/common';

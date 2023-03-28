@@ -1,8 +1,9 @@
 // Main Components
 import React, { Component } from 'react';
 import {
-  View, Switch, AsyncStorage, Alert, Platform,
+  View, Switch, Alert, Platform,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Content,
   Button,

@@ -1,8 +1,9 @@
 // Components
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, TouchableOpacity, TextInput, Platform, Keyboard, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Platform, Keyboard, ScrollView } from 'react-native';
 import { Icon, Col, Row, Grid } from 'native-base';
 import { Button } from 'react-native-elements';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Packages
 import XDate from 'xdate';
@@ -11,7 +12,7 @@ import moment from 'moment';
 import * as Localization from 'expo-localization';
 import { KeyboardAccessoryView, KeyboardAccessoryNavigation  } from 'react-native-keyboard-accessory';
 import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-import { Dropdown } from 'react-native-material-dropdown-v2';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
 // Actions
 

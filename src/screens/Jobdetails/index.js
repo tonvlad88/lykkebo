@@ -1,7 +1,8 @@
 // Components
 import React, { Component } from 'react';
-import { View, Text,  ActivityIndicator, StatusBar, AsyncStorage, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, ActivityIndicator, StatusBar, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Tab, Tabs, TabHeading, Grid, Col, Row, Card, CardItem } from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Helpers
 import XDate from 'xdate';

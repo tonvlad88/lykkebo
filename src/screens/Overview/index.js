@@ -19,9 +19,9 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
-  AsyncStorage,
   StatusBar,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { fetchTryHttp } from '../../services/common';
 import styles from './styles';

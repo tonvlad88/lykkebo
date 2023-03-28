@@ -17,11 +17,11 @@ import {
 import {
   View,
   TouchableOpacity,
-  AsyncStorage,
   ActivityIndicator,
   StatusBar,
   FlatList,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Helpers
 import * as Localization from 'expo-localization';

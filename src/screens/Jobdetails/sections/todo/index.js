@@ -8,10 +8,11 @@ import {
   Toast,
 } from 'native-base';
 
-import { View, AsyncStorage } from 'react-native';
+import { View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import axios from 'axios';
-import { Dropdown } from 'react-native-material-dropdown-v2';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import Swiper from 'react-native-swiper';
 
 import styles from '../../styles';
