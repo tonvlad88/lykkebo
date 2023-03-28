@@ -1,13 +1,13 @@
-import React from 'react';
-import { View } from 'react-native';
+import * as React from 'react';
 import FlashMessage from 'react-native-flash-message';
+import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './src/navigation/AppNavigator';
 
 export default function App() {
   return (
-    <View style={{flex: 1}}>
+    <NavigationContainer>
       <AppNavigator />
       <FlashMessage position="bottom" />
-    </View>
+    </NavigationContainer>
   );
 }
