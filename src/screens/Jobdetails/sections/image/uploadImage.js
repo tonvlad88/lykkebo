@@ -7,9 +7,9 @@ import {
     Platform,
     StyleSheet,
     StatusBar,
-    AsyncStorage,
     ActivityIndicator,
  } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Packages
 import * as ImagePicker from 'expo-image-picker';

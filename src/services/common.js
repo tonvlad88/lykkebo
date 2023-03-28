@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 
 export function fetchTryHttp(url, fetchOptions = {}) {

@@ -6,16 +6,12 @@ import {
   KeyboardAvoidingView,
   StatusBar,
   ActivityIndicator,
+  Image
 } from 'react-native';
-
-import {
-  H1,
-  Thumbnail,
-  Toast,
-} from 'native-base';
 
 import axios from 'axios';
 import base64 from 'base-64';
+import { showMessage } from 'react-native-flash-message';
 
 import {
   Input, Button,
@@ -101,10 +97,9 @@ class SignInScreen extends React.Component {
             navigation.navigate('App');
           })
           .catch((error) => {
-            Toast.show({
-              text: error.message,
-              position: 'top',
-              duration: 5000,
+            showMessage({
+              message: error.message,
+              type: 'danger',
             });
           });
       })
@@ -131,8 +126,8 @@ class SignInScreen extends React.Component {
           <View style={{
             flex: 1, backgroundColor: '#2E3D43', alignItems: 'center', justifyContent: 'center',
           }}>
-            <Thumbnail style={{width: 150, height: 150, borderRadius: 150 / 2}} source={cover} />
-            <H1 style={{color: '#fff', fontWeight: 'bold'}}>Lykkebo App</H1>
+            <Image style={{width: 150, height: 150, borderRadius: 150 / 2}} source={cover} />
+            <Text style={{color: '#fff', fontWeight: 'bold'}}>Lykkebo App</Text>
           </View>
           <View style={{flex: 1, backgroundColor: '#2E3D43', padding: 15}}>
             <Fragment>

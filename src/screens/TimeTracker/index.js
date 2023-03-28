@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  AsyncStorage,
   ActivityIndicator,
   StatusBar,
   ScrollView,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   Container,

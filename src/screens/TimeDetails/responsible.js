@@ -23,15 +23,15 @@ import {
 
 import {
   View,
-  AsyncStorage,
   ActivityIndicator,
   StatusBar,
   ScrollView,
   TextInput,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 import axios from 'axios';
 
 import styles from './styles';

@@ -1,7 +1,6 @@
 // Main Components
 import React, { Component } from 'react';
 import {
-  AsyncStorage,
   ActivityIndicator,
   Text,
   Image,
@@ -14,6 +13,7 @@ import {
   CardItem,
   Button,
 } from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Packages
 import * as ImagePicker from 'expo-image-picker';

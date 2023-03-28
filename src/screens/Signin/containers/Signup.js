@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,15 +6,16 @@ import {
   KeyboardAvoidingView,
   StatusBar,
   TextInput,
+  ActivityIndicator
 } from 'react-native';
 
-import {
-  H2,
-  Thumbnail,
-  Toast,
-  Textarea,
-  Icon,
-} from 'native-base';
+// import {
+//   H2,
+//   Thumbnail,
+//   Toast,
+//   Textarea,
+//   Icon,
+// } from 'native-base';
 
 import { Tooltip } from 'react-native-elements';
 
@@ -137,117 +138,122 @@ class SignUpScreen extends Component {
     } = styles;
 
     return (
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
-        <StatusBar hidden />
-        <View style={{
-          flex: 1,
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'stretch',
-          backgroundColor: '#2E3D43',
-          padding: 15,
-        }}>
-          <View style={{alignItems: 'center'}}>
-            <H2 style={{color: '#3BB966', fontWeight: 'bold', textAlign: 'center'}}>
-              SIGNUP FOR LYKKEBO APP
-            </H2>
-            <Text style={{
-              color: '#fff', fontSize: 12, padding: 10, textAlign: 'center', marginTop: 20, marginBottom: 20,
-            }}>
-              Udfyld nedenstående formular så får du adgang til lykkebo app  indenfor 48 timer
-            </Text>
+      <Text>Heyy</Text>
+    )
+    // return (
+    //   <KeyboardAvoidingView style={{flex: 1}} behavior="padding">
+    //     <StatusBar hidden />
+    //     <View style={{
+    //       flex: 1,
+    //       flexDirection: 'column',
+    //       justifyContent: 'center',
+    //       alignItems: 'stretch',
+    //       backgroundColor: '#2E3D43',
+    //       padding: 15,
+    //     }}>
+    //       <View style={{alignItems: 'center'}}>
+    //         <Text style={{color: '#3BB966', fontWeight: 'bold', textAlign: 'center'}}>
+    //           SIGNUP FOR LYKKEBO APP
+    //         </Text>
+    //         <Text style={{
+    //           color: '#fff', fontSize: 12, padding: 10, textAlign: 'center', marginTop: 20, marginBottom: 20,
+    //         }}>
+    //           Udfyld nedenstående formular så får du adgang til lykkebo app  indenfor 48 timer
+    //         </Text>
 
-            <View style={form}>
-              <View style={section}>
-                <TextInput
-                  style={styles.signUpInputStyle}
-                  placeholder="Dit navn"
-                  placeholderTextColor="#B9B9B9"
-                  value={name}
-                  onChangeText={name2 => this.setState({ name: name2 })} />
-                <Tooltip
-                  width={300}
-                  popover={<Text>Det navn vi skal oprette din bruger med</Text>}>
-                  <Icon style={styles.info} name="information-circle-outline" />
-                </Tooltip>
-              </View>
+    //         <View style={form}>
+    //           <View style={section}>
+    //             <TextInput
+    //               style={styles.signUpInputStyle}
+    //               placeholder="Dit navn"
+    //               placeholderTextColor="#B9B9B9"
+    //               value={name}
+    //               onChangeText={name2 => this.setState({ name: name2 })} />
+    //             <Tooltip
+    //               width={300}
+    //               popover={<Text>Det navn vi skal oprette din bruger med</Text>}>
+    //               {/* <Icon style={styles.info} name="information-circle-outline" /> */}
+    //             </Tooltip>
+    //           </View>
 
-              <View style={section}>
-                <TextInput
-                  style={styles.signUpInputStyle}
-                  placeholder="E-mail"
-                  placeholderTextColor="#B9B9B9"
-                  value={email}
-                  onChangeText={email2 => this.setState({ email: email2 })} />
-                <Tooltip
-                  width={300}
-                  popover={<Text>Dette skal vi bruge til at kontakte dig på</Text>}>
-                  <Icon style={styles.info} name="information-circle-outline" />
-                </Tooltip>
-              </View>
+    //           <View style={section}>
+    //             <TextInput
+    //               style={styles.signUpInputStyle}
+    //               placeholder="E-mail"
+    //               placeholderTextColor="#B9B9B9"
+    //               value={email}
+    //               onChangeText={email2 => this.setState({ email: email2 })} />
+    //             <Tooltip
+    //               width={300}
+    //               popover={<Text>Dette skal vi bruge til at kontakte dig på</Text>}>
+    //               {/* <Icon style={styles.info} name="information-circle-outline" /> */}
+    //             </Tooltip>
+    //           </View>
 
-              <View style={section}>
-                <TextInput
-                  style={styles.signUpInputStyle}
-                  placeholder="Telefonnummer (+45)"
-                  placeholderTextColor="#B9B9B9"
-                  value={phoneNo}
-                  onChangeText={phoneNo2 => this.setState({ phoneNo: phoneNo2 })} />
-                <Tooltip
-                  width={320}
-                  popover={<Text>Dette skal vi bruge til at kunne kontakte dig på</Text>}>
-                  <Icon style={styles.info} name="information-circle-outline" />
-                </Tooltip>
-              </View>
+    //           <View style={section}>
+    //             <TextInput
+    //               style={styles.signUpInputStyle}
+    //               placeholder="Telefonnummer (+45)"
+    //               placeholderTextColor="#B9B9B9"
+    //               value={phoneNo}
+    //               onChangeText={phoneNo2 => this.setState({ phoneNo: phoneNo2 })} />
+    //             <Tooltip
+    //               width={320}
+    //               popover={<Text>Dette skal vi bruge til at kunne kontakte dig på</Text>}>
+    //               {/* <Icon style={styles.info} name="information-circle-outline" /> */}
+    //             </Tooltip>
+    //           </View>
 
-              <Textarea
-                style={[section, {color: '#fff'}]}
-                rowSpan={5}
-                bordered
-                placeholder="Eventuelle bemærkninger"
-                placeholderTextColor="#B9B9B9"
-                onChangeText={comment2 => this.setState({ comment: comment2 })} />
+    //           <TextInput
+    //             multiline
+    //             numberOfLines={4}
+    //             style={[section, {color: '#fff'}]}
+    //             // rowSpan={5}
+    //             bordered
+    //             placeholder="Eventuelle bemærkninger"
+    //             placeholderTextColor="#B9B9B9"
+    //             onChangeText={comment2 => this.setState({ comment: comment2 })} />
 
 
-              <Text style={errorTextStyle}>
-                {error}
-              </Text>
+    //           <Text style={errorTextStyle}>
+    //             {error}
+    //           </Text>
 
-              <Text style={successTextStyle}>
-                {message}
-              </Text>
+    //           <Text style={successTextStyle}>
+    //             {message}
+    //           </Text>
 
-              {!loading
-                ? (
-                  <Button onPress={this.signupUser}>
-                  SIGNUP
-                  </Button>
-                ) : (
-                  <Loading size="large" />
-                )
-              }
-            </View>
-          </View>
-        </View>
+    //           {!loading
+    //             ? (
+    //               <Button onPress={this.signupUser}>
+    //               SIGNUP
+    //               </Button>
+    //             ) : (
+    //               <ActivityIndicator size="large" />
+    //             )
+    //           }
+    //         </View>
+    //       </View>
+    //     </View>
 
-        <View style={{
-          height: 50,
-          justifyContent: 'flex-end',
-          backgroundColor: '#2E3D43',
-          paddingBottom: 15,
-        }}>
-          <Text
-            style={{textDecorationLine: 'underline', color: '#B9B9B9', textAlign: 'center'}}
-            onPress={() => {
-              // Linking.openURL('https://malerfirmaet-lykkebo.dk/appsignup');
-              navigation.navigate('SignIn');
-            }}>
-              Log ind her
-          </Text>
-        </View>
-      </KeyboardAvoidingView>
+    //     <View style={{
+    //       height: 50,
+    //       justifyContent: 'flex-end',
+    //       backgroundColor: '#2E3D43',
+    //       paddingBottom: 15,
+    //     }}>
+    //       <Text
+    //         style={{textDecorationLine: 'underline', color: '#B9B9B9', textAlign: 'center'}}
+    //         onPress={() => {
+    //           // Linking.openURL('https://malerfirmaet-lykkebo.dk/appsignup');
+    //           navigation.navigate('SignIn');
+    //         }}>
+    //           Log ind her
+    //       </Text>
+    //     </View>
+    //   </KeyboardAvoidingView>
 
-    );
+    // );
   }
 }
 

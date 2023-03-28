@@ -2,9 +2,9 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-  AsyncStorage,
   ActivityIndicator,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   Button,
@@ -18,7 +18,7 @@ import type Moment from 'moment';
 import XDate from 'xdate';
 import Modal from 'react-native-modal';
 import axios from 'axios';
-import { Dropdown } from 'react-native-material-dropdown';
+import { Dropdown } from 'react-native-material-dropdown-v2-fixed';
 
 import {
   toTimestampWithSeconds,
