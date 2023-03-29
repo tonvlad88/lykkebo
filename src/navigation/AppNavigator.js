@@ -5,7 +5,7 @@ import React, {Component} from 'react';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import {
   ActivityIndicator,
@@ -25,7 +25,7 @@ import {
 import SignInScreen from '../screens/Signin';
 import SignUpScreen from '../screens/Signin/containers/Signup';
 
-// import CalendarScreen from '../screens/Calendar/MonthlyCalendar/Calendar';
+import CalendarScreen from '../screens/Calendar/MonthlyCalendar/Calendar';
 // import JobsScreen from '../screens/Jobs';
 // import JobdetailsScreen from '../screens/Jobdetails';
 // import TimeScreen from '../screens/Time';
@@ -49,14 +49,13 @@ import SignUpScreen from '../screens/Signin/containers/Signup';
 
 
 class AuthLoadingScreen extends Component {
-
   // Fetch the token from storage then navigate to our appropriate place
   async componentDidMount() {
     const { navigation } = this.props;
     const userToken = await AsyncStorage.getItem('token');
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-    navigation.navigate(!userToken ? 'DetailScreen' : 'SignUp');
+    navigation.navigate(!userToken ? 'SignInScreen' : 'AppStack');
   }
 
   // Render any loading content that you like here
@@ -142,7 +141,7 @@ function HomeScreen(props) {
   );
 }
 
-function DetailScreen(props) {
+function NotificationsScreen(props) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Detail Screen</Text>
@@ -150,6 +149,18 @@ function DetailScreen(props) {
         <Text>back</Text>
       </TouchableOpacity>
     </View>
+  );
+}
+
+
+const Drawer = createDrawerNavigator();
+
+function AppStack() {
+  return (
+    <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+    </Drawer.Navigator>
   );
 }
 
@@ -163,11 +174,11 @@ const MyStack = () => (
       // gestureDirection: 'horizontal',
       cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
     }}
-    initialRouteName="Intro">
-    <Stack.Screen name="HomeScreen" component={HomeScreen} />
-    <Stack.Screen name="DetailScreen" component={DetailScreen} />
-    <Stack.Screen name="SignUp" component={SignUpScreen} />
-    {/* <Stack.Screen name="AppStack" component={AppStack} /> */}
+    initialRouteName="AuthLoadingScreen">
+    <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen} />
+    <Stack.Screen name="SignInScreen" component={SignInScreen} />
+    <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+    <Stack.Screen name="AppStack" component={AppStack} />
   </Stack.Navigator>
 );
 

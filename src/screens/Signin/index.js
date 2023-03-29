@@ -94,7 +94,7 @@ class SignInScreen extends React.Component {
             deviceStorage.saveKey('user_nicename', response.data.user_nicename);
             deviceStorage.saveKey('user_display_name', response.data.user_display_name);
             deviceStorage.saveKey('user_relation', JSON.stringify(responseJson2.userRelation));
-            navigation.navigate('App');
+            navigation.navigate('AppStack');
           })
           .catch((error) => {
             showMessage({
@@ -171,7 +171,7 @@ class SignInScreen extends React.Component {
                   style={{textDecorationLine: 'underline', color: '#B9B9B9', textAlign: 'center'}}
                   onPress={() => {
                     // Linking.openURL('https://malerfirmaet-lykkebo.dk/appsignup');
-                    navigation.navigate('SignUp');
+                    navigation.navigate('SignUpScreen');
                   }}>
                   Tilmeld dig her
                 </Text>

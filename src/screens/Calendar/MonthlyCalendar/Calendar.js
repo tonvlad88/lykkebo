@@ -1,23 +1,23 @@
 // Components
 import React, { Component } from 'react';
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  CardItem,
-  Text,
-  Left,
-  Right,
-  Body,
-  H3,
-  DatePicker,
-  Tab,
-  Tabs,
-  Toast,
-} from 'native-base';
+// import {
+//   Container,
+//   Header,
+//   Title,
+//   Content,
+//   Button,
+//   Icon,
+//   CardItem,
+//   Text,
+//   Left,
+//   Right,
+//   Body,
+//   H3,
+//   DatePicker,
+//   Tab,
+//   Tabs,
+//   Toast,
+// } from 'native-base';
 
 import {
   View,
@@ -25,6 +25,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   ScrollView,
+  Text
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -44,6 +45,21 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 import { da, en } from '../../../services/translations';
 
+// Global imports
+import {
+  toTimestampWithSeconds,
+  toTimestamp,
+  setDayStatus,
+  jsUcfirst,
+} from '../../../services/common';
+import deviceStorage from '../../../services/deviceStorage';
+
+// Local imports
+import styles from './styles';
+import TabTwo from '../WeeklyCalendar/index';
+import CustomHeader from '../../../common/Header';
+import NewHeader from '../../../common/NewHeader';
+
 i18n.fallbacks = true;
 i18n.translations = { da, en };
 i18n.locale = Localization.locale;
@@ -57,19 +73,6 @@ LocaleConfig.locales['dynamic'] = {
   pmDesignator: 'PM',
 };
 LocaleConfig.defaultLocale = 'dynamic';
-
-// Global imports
-import {
-  toTimestampWithSeconds,
-  toTimestamp,
-  setDayStatus,
-  jsUcfirst,
-} from '../../../services/common';
-import deviceStorage from '../../../services/deviceStorage';
-
-// Local imports
-import styles from './styles';
-import TabTwo from '../WeeklyCalendar/index';
 
 const bookingStatusStyle0 = {key: 'booking0', color: '#FF9F00', selectedDotColor: 'blue'};
 const bookingStatusStyle1 = {key: 'booking1', color: '#FF9F00', selectedDotColor: 'blue'};
@@ -906,130 +909,138 @@ class CalendarScreen extends Component {
     } = this.state;
     const { navigation } = this.props;
 
-    if (loaded) {
-      return (
-        <Container style={styles.container}>
-          <StatusBar hidden />
-          <Header style={{ backgroundColor: '#2E3D43' }}>
-            <Left style={{ flex: 1 }}>
-              <Button transparent>
-                <Icon
-                  style={{color: '#ffffff'}}
-                  size={40}
-                  name="menu"
-                  onPress={() => navigation.openDrawer()} />
-              </Button>
-            </Left>
-            <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Title style={{color: '#ffffff'}}>{i18n.t('calendar')}</Title>
-            </Body>
-            <Right style={{ flex: 1 }} />
-          </Header>
-          <View style={{
-            width: '100%', height: 3, backgroundColor: '#323248', marginBottom: 1,
-          }} />
-          <Tabs tabBarUnderlineStyle={{backgroundColor: 'white'}}>
-            <Tab
-              heading="Måned"
-              tabStyle={{backgroundColor: '#314148'}}
-              textStyle={{color: '#fff'}}
-              activeTabStyle={{backgroundColor: '#314148'}}
-              activeTextStyle={{color: '#fff', fontWeight: 'bold'}}>
-              <Content
-                contentContainerStyle={{flex: 1, backgroundColor: '#A5A5A5'}}>
-                <Calendar
-                  style={{
-                    borderWidth: 1,
-                    borderColor: 'gray',
-                    height: 380,
-                  }}
-                  rowHasChanged={(r1, r2) => r1.booking_id !== r2.booking_id}
-                  pastScrollRange={40}
-                  futureScrollRange={50}
-                  theme={{
-                    calendarBackground: '#333248',
-                    textSectionTitleColor: 'white',
-                    dayTextColor: 'white',
-                    todayTextColor: 'red',
-                    selectedDayTextColor: 'white',
-                    monthTextColor: 'white',
-                    selectedDayBackgroundColor: '#333248',
-                    arrowColor: 'white',
-                    // textDisabledColor: 'red',
-                    textMonthFontSize: 26,
-                    'stylesheet.calendar.header': {
-                      week: {
-                        marginTop: 5,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        borderBottomWidth: 2,
-                        borderColor: '#D4D4D4',
-                      },
-                    },
-                  }}
-                  onDayPress={this.onDayPress}
-                  monthFormat="MMMM yyyy"
-                  onMonthChange={this.onMonthChange}
-                  hideArrows={false}
-                  hideExtraDays
-                  disableMonthChange={false}
-                  firstDay={1}
-                  hideDayNames={false}
-                  showWeekNumbers={false}
-                  onPressArrowLeft={substractMonth => substractMonth()}
-                  onPressArrowRight={addMonth => addMonth()}
-                  markedDates={markedDates}
-                  markingType="multi-dot" />
-                <View style={{width: '100%', height: 3, backgroundColor: '#6C6C6C'}} />
-                { this.renderSelectedDateDetails() }
+    return (
+      <View style={styles.container}>   
+        <NewHeader navigation={navigation} />
+        <StatusBar hidden />
+        <Text>Calendar</Text>
+      </View>
+    ) 
 
-                <Modal
-                  isVisible={visibleModal === 1}
-                  backdropColor="#ccc"
-                  backdropOpacity={0.9}
-                  animationIn="zoomInDown"
-                  animationOut="zoomOutUp"
-                  animationInTiming={1000}
-                  animationOutTiming={1000}
-                  backdropTransitionInTiming={1000}
-                  backdropTransitionOutTiming={1000}>
-                  {this.renderModalContent()}
-                </Modal>
+    // if (loaded) {
+    //   return (
+    //     <Container style={styles.container}>
+    //       <StatusBar hidden />
+    //       <Header style={{ backgroundColor: '#2E3D43' }}>
+    //         <Left style={{ flex: 1 }}>
+    //           <Button transparent>
+    //             <Icon
+    //               style={{color: '#ffffff'}}
+    //               size={40}
+    //               name="menu"
+    //               onPress={() => navigation.openDrawer()} />
+    //           </Button>
+    //         </Left>
+    //         <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //           <Title style={{color: '#ffffff'}}>{i18n.t('calendar')}</Title>
+    //         </Body>
+    //         <Right style={{ flex: 1 }} />
+    //       </Header>
+    //       <View style={{
+    //         width: '100%', height: 3, backgroundColor: '#323248', marginBottom: 1,
+    //       }} />
+    //       <Tabs tabBarUnderlineStyle={{backgroundColor: 'white'}}>
+    //         <Tab
+    //           heading="Måned"
+    //           tabStyle={{backgroundColor: '#314148'}}
+    //           textStyle={{color: '#fff'}}
+    //           activeTabStyle={{backgroundColor: '#314148'}}
+    //           activeTextStyle={{color: '#fff', fontWeight: 'bold'}}>
+    //           <Content
+    //             contentContainerStyle={{flex: 1, backgroundColor: '#A5A5A5'}}>
+    //             <Calendar
+    //               style={{
+    //                 borderWidth: 1,
+    //                 borderColor: 'gray',
+    //                 height: 380,
+    //               }}
+    //               rowHasChanged={(r1, r2) => r1.booking_id !== r2.booking_id}
+    //               pastScrollRange={40}
+    //               futureScrollRange={50}
+    //               theme={{
+    //                 calendarBackground: '#333248',
+    //                 textSectionTitleColor: 'white',
+    //                 dayTextColor: 'white',
+    //                 todayTextColor: 'red',
+    //                 selectedDayTextColor: 'white',
+    //                 monthTextColor: 'white',
+    //                 selectedDayBackgroundColor: '#333248',
+    //                 arrowColor: 'white',
+    //                 // textDisabledColor: 'red',
+    //                 textMonthFontSize: 26,
+    //                 'stylesheet.calendar.header': {
+    //                   week: {
+    //                     marginTop: 5,
+    //                     flexDirection: 'row',
+    //                     justifyContent: 'space-between',
+    //                     borderBottomWidth: 2,
+    //                     borderColor: '#D4D4D4',
+    //                   },
+    //                 },
+    //               }}
+    //               onDayPress={this.onDayPress}
+    //               monthFormat="MMMM yyyy"
+    //               onMonthChange={this.onMonthChange}
+    //               hideArrows={false}
+    //               hideExtraDays
+    //               disableMonthChange={false}
+    //               firstDay={1}
+    //               hideDayNames={false}
+    //               showWeekNumbers={false}
+    //               onPressArrowLeft={substractMonth => substractMonth()}
+    //               onPressArrowRight={addMonth => addMonth()}
+    //               markedDates={markedDates}
+    //               markingType="multi-dot" />
+    //             <View style={{width: '100%', height: 3, backgroundColor: '#6C6C6C'}} />
+    //             { this.renderSelectedDateDetails() }
 
-              </Content>
-            </Tab>
-            <Tab heading="Uge" tabStyle={{backgroundColor: '#314148'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#314148'}} activeTextStyle={{color: '#fff', fontWeight: 'bold'}}>
-              <TabTwo key={refresh} navigation={navigation} />
-            </Tab>
-          </Tabs>
-        </Container>
-      );
-    } else {
-      return (
-        <Container style={styles.container}>
-          <StatusBar hidden />
-          <Header style={{ backgroundColor: '#2E3D43' }}>
-            <Left style={{ flex: 1 }}>
-              <Button transparent>
-                <Icon
-                  style={{color: '#ffffff'}}
-                  size={40}
-                  name="menu"
-                  onPress={() => navigation.openDrawer()} />
-              </Button>
-            </Left>
-            <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Title style={{color: '#ffffff'}}>Kalender</Title>
-            </Body>
-            <Right style={{ flex: 1 }} />
-          </Header>
-          <View style={{
-            width: '100%', height: 3, backgroundColor: '#323248', marginBottom: 1,
-          }} />
-          <ActivityIndicator size="large" color="#2E3D43" style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}} />
-        </Container>
-      );
-    }
+    //             <Modal
+    //               isVisible={visibleModal === 1}
+    //               backdropColor="#ccc"
+    //               backdropOpacity={0.9}
+    //               animationIn="zoomInDown"
+    //               animationOut="zoomOutUp"
+    //               animationInTiming={1000}
+    //               animationOutTiming={1000}
+    //               backdropTransitionInTiming={1000}
+    //               backdropTransitionOutTiming={1000}>
+    //               {this.renderModalContent()}
+    //             </Modal>
+
+    //           </Content>
+    //         </Tab>
+    //         <Tab heading="Uge" tabStyle={{backgroundColor: '#314148'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#314148'}} activeTextStyle={{color: '#fff', fontWeight: 'bold'}}>
+    //           <TabTwo key={refresh} navigation={navigation} />
+    //         </Tab>
+    //       </Tabs>
+    //     </Container>
+    //   );
+    // } else {
+    //   return (
+    //     <Container style={styles.container}>
+    //       <StatusBar hidden />
+    //       <Header style={{ backgroundColor: '#2E3D43' }}>
+    //         <Left style={{ flex: 1 }}>
+    //           <Button transparent>
+    //             <Icon
+    //               style={{color: '#ffffff'}}
+    //               size={40}
+    //               name="menu"
+    //               onPress={() => navigation.openDrawer()} />
+    //           </Button>
+    //         </Left>
+    //         <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //           <Title style={{color: '#ffffff'}}>Kalender</Title>
+    //         </Body>
+    //         <Right style={{ flex: 1 }} />
+    //       </Header>
+    //       <View style={{
+    //         width: '100%', height: 3, backgroundColor: '#323248', marginBottom: 1,
+    //       }} />
+    //       <ActivityIndicator size="large" color="#2E3D43" style={{flex: 1, flexDirection: 'column', justifyContent: 'center'}} />
+    //     </Container>
+    //   );
+    // }
   }
 }
 
