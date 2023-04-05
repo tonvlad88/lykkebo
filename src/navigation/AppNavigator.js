@@ -14,7 +14,7 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image
+  Image,
 } from 'react-native';
 
 // import {
@@ -26,6 +26,8 @@ import SignInScreen from '../screens/Signin';
 import SignUpScreen from '../screens/Signin/containers/Signup';
 
 import CalendarScreen from '../screens/Calendar/MonthlyCalendar/Calendar';
+import NewSideBar from '../screens/sidebar/NewSideBar';
+import { appStrings } from '../utils/constants';
 // import JobsScreen from '../screens/Jobs';
 // import JobdetailsScreen from '../screens/Jobdetails';
 // import TimeScreen from '../screens/Time';
@@ -157,31 +159,36 @@ const Drawer = createDrawerNavigator();
 
 function AppStack() {
   return (
-    <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="CalendarScreen" component={CalendarScreen} />
-      <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+    <Drawer.Navigator
+      initialRouteName={appStrings.appStack.calendar}
+      screenOptions={{
+        headerShown: false,
+      }}
+      drawerContent={props => <NewSideBar {...props} />}>
+      <Drawer.Screen name={appStrings.appStack.da.calendar} component={CalendarScreen} />
     </Drawer.Navigator>
   );
 }
 
 const Stack = createSharedElementStackNavigator();
 
-const MyStack = () => (
+const MainStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
       gestureEnabled: true,
       // gestureDirection: 'horizontal',
       cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+      headerMode: false,
     }}
-    initialRouteName="AuthLoadingScreen">
-    <Stack.Screen name="AuthLoadingScreen" component={AuthLoadingScreen} />
-    <Stack.Screen name="SignInScreen" component={SignInScreen} />
-    <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-    <Stack.Screen name="AppStack" component={AppStack} />
+    initialRouteName={appStrings.mainStack.authLoadingScreen}>
+    <Stack.Screen name={appStrings.mainStack.authLoadingScreen} component={AuthLoadingScreen} />
+    <Stack.Screen name={appStrings.mainStack.signInScreen} component={SignInScreen} />
+    <Stack.Screen name={appStrings.mainStack.signUpScreen} component={SignUpScreen} />
+    <Stack.Screen name={appStrings.mainStack.appStack} component={AppStack} />
   </Stack.Navigator>
 );
 
-const App = () => <MyStack />;
+const App = () => <MainStack />;
 
 export default App;

@@ -31,6 +31,6 @@ export default {
   },
   container: {
     flex: 1,
-    backgroundColor: 'gray'
+    // backgroundColor: 'gray'
   }
 };
