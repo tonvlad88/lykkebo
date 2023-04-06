@@ -1,11 +1,14 @@
 // Main Packages
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
 // Packages
-import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import {
   ActivityIndicator,
@@ -15,19 +18,18 @@ import {
   Text,
   TouchableOpacity,
   Image,
-} from 'react-native';
+} from "react-native";
 
 // import {
 //   createStackNavigator, createSwitchNavigator, createAppContainer, createDrawerNavigator,
 // } from 'react-navigation';
 
+import SignInScreen from "../screens/Signin";
+import SignUpScreen from "../screens/Signin/containers/Signup";
 
-import SignInScreen from '../screens/Signin';
-import SignUpScreen from '../screens/Signin/containers/Signup';
-
-import CalendarScreen from '../screens/Calendar/MonthlyCalendar/Calendar';
-import NewSideBar from '../screens/sidebar/NewSideBar';
-import { appStrings } from '../utils/constants';
+import CalendarScreen from "../screens/Calendar/MonthlyCalendar/Calendar";
+import NewSideBar from "../screens/sidebar/NewSideBar";
+import { appStrings } from "../utils/constants";
 // import JobsScreen from '../screens/Jobs';
 // import JobdetailsScreen from '../screens/Jobdetails';
 // import TimeScreen from '../screens/Time';
@@ -49,15 +51,14 @@ import { appStrings } from '../utils/constants';
 // // SPECIFY
 // import SpecifyScreen from '../screens/Specify/containers/index';
 
-
 class AuthLoadingScreen extends Component {
   // Fetch the token from storage then navigate to our appropriate place
   async componentDidMount() {
     const { navigation } = this.props;
-    const userToken = await AsyncStorage.getItem('token');
+    const userToken = await AsyncStorage.getItem("token");
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
-    navigation.navigate(!userToken ? 'SignInScreen' : 'AppStack');
+    navigation.navigate(!userToken ? "SignInScreen" : "AppStack");
   }
 
   // Render any loading content that you like here
@@ -131,21 +132,21 @@ const styles = StyleSheet.create({
 //   }
 // ));
 
-function HomeScreen(props) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <TouchableOpacity onPress={() => props.navigation.navigate('DetailScreen')}>
-        <Text>goooo</Text>
-      </TouchableOpacity>
-      <Image source={require('../../assets/images/loader2.gif')} style={{width: 50, height: 50}} />
-    </View>
-  );
-}
+// function HomeScreen(props) {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+//       <Text>Home Screen</Text>
+//       <TouchableOpacity onPress={() => props.navigation.navigate('DetailScreen')}>
+//         <Text>goooo</Text>
+//       </TouchableOpacity>
+//       <Image source={require('../../assets/images/loader2.gif')} style={{width: 50, height: 50}} />
+//     </View>
+//   );
+// }
 
 function NotificationsScreen(props) {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Detail Screen</Text>
       <TouchableOpacity onPress={() => props.navigation.goBack()}>
         <Text>back</Text>
@@ -153,7 +154,6 @@ function NotificationsScreen(props) {
     </View>
   );
 }
-
 
 const Drawer = createDrawerNavigator();
 
@@ -164,8 +164,12 @@ function AppStack() {
       screenOptions={{
         headerShown: false,
       }}
-      drawerContent={props => <NewSideBar {...props} />}>
-      <Drawer.Screen name={appStrings.appStack.da.calendar} component={CalendarScreen} />
+      drawerContent={(props) => <NewSideBar {...props} />}
+    >
+      <Drawer.Screen
+        name={appStrings.appStack.da.calendar}
+        component={CalendarScreen}
+      />
     </Drawer.Navigator>
   );
 }
@@ -181,10 +185,20 @@ const MainStack = () => (
       cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
       headerMode: false,
     }}
-    initialRouteName={appStrings.mainStack.authLoadingScreen}>
-    <Stack.Screen name={appStrings.mainStack.authLoadingScreen} component={AuthLoadingScreen} />
-    <Stack.Screen name={appStrings.mainStack.signInScreen} component={SignInScreen} />
-    <Stack.Screen name={appStrings.mainStack.signUpScreen} component={SignUpScreen} />
+    initialRouteName={appStrings.mainStack.authLoadingScreen}
+  >
+    <Stack.Screen
+      name={appStrings.mainStack.authLoadingScreen}
+      component={AuthLoadingScreen}
+    />
+    <Stack.Screen
+      name={appStrings.mainStack.signInScreen}
+      component={SignInScreen}
+    />
+    <Stack.Screen
+      name={appStrings.mainStack.signUpScreen}
+      component={SignUpScreen}
+    />
     <Stack.Screen name={appStrings.mainStack.appStack} component={AppStack} />
   </Stack.Navigator>
 );
