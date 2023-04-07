@@ -1,39 +1,64 @@
 // Components
-import React, { Component } from 'react';
-import { View, Text,  ActivityIndicator, StatusBar, FlatList } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Tab, Tabs, Grid, Col, Row, Card, CardItem } from 'native-base';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { Component } from "react";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  StatusBar,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Tab,
+  Tabs,
+  Grid,
+  Col,
+  Row,
+  Card,
+  CardItem,
+} from "native-base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Helpers
-import XDate from 'xdate';
-import { connect } from 'react-redux';
-import * as SecureStore from 'expo-secure-store'
-import * as Localization from 'expo-localization';
-import Modal from 'react-native-modal';
-import moment from 'moment';
+import XDate from "xdate";
+import { connect } from "react-redux";
+import * as SecureStore from "expo-secure-store";
+import * as Localization from "expo-localization";
+import Modal from "react-native-modal";
+import moment from "moment";
 
 // Actions
 
 // Localization
-import i18n from 'i18n-js';
-import { da, en } from '../../../services/translations';
+import i18n from "i18n-js";
+import { da, en } from "../../../services/translations";
 i18n.fallbacks = true;
 i18n.translations = { da, en };
 i18n.locale = Localization.locale;
 
 // Global imports
-import CustomHeader from '../../../common/Header';
-import CustomLoading from '../../../common/Loading';
-import { Input } from '../../../common/Input';
+import CustomHeader from "../../../common/Header";
+import CustomLoading from "../../../common/Loading";
+import { Input } from "../../../common/Input";
 
 // Local imports
-import DateView from '../components/DateView';
-import TodoRowItem from '../components/TodoRowItem';
-import SpecifyDatePicker from '../components/SpecifyDatePicker';
-import styles from './styles';
+import DateView from "../components/DateView";
+import TodoRowItem from "../components/TodoRowItem";
+import SpecifyDatePicker from "../components/SpecifyDatePicker";
+import styles from "./styles";
 
 class SpecifyScreen extends Component {
-
   render() {
     const { specify, navigation } = this.props;
     const { isLoading, bookingData } = specify;
@@ -41,36 +66,46 @@ class SpecifyScreen extends Component {
     if (!isLoading) {
       return (
         <View>
-          <CustomHeader
-            title="Specify"
-          />
+          <CustomHeader title="Specify" />
           <CustomLoading showmodal={true} />
         </View>
-      )
+      );
     }
 
     return (
-      <Container>
+      <View>
         <StatusBar hidden />
         <CustomHeader
           leftIconName="menu"
           onPressLeftIcon={() => navigation.openDrawer()}
           title="Specify"
         />
-        <View style={styles.container} >
+        <View style={styles.container}>
           <View style={styles.header}>
-            <View style={{flex: 1, justifyContent: 'center', flexDirection: 'row', backgroundColor: '#506273', padding: 5}}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                flexDirection: "row",
+                backgroundColor: "#506273",
+                padding: 5,
+              }}
+            >
               <SpecifyDatePicker />
-              <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{color: 'white'}}> - </Text>
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Text style={{ color: "white" }}> - </Text>
               </View>
               <SpecifyDatePicker />
             </View>
-            <Button full primary style={{backgroundColor: '#2D3640', width: 60}}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>GO</Text>
-            </Button>
+            <TouchableOpacity
+              full
+              primary
+              style={{ backgroundColor: "#2D3640", width: 60 }}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>GO</Text>
+            </TouchableOpacity>
           </View>
-          <FlatList
+          {/* <FlatList
             data={bookingData}
             keyExtractor={todo => todo.uid}
             enableEmptySections={true}
@@ -82,25 +117,23 @@ class SpecifyScreen extends Component {
                 time={moment().startOf('hour').fromNow()}
               />
             )}
-           />
+           /> */}
         </View>
-      </Container>
-    )
-
-
+      </View>
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   // bcInfo: state.bookingConfirmation.bcInfo,
   specify: state.specify,
   // showUploading: state.bookingConfirmation.showUploading,
-})
+});
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   // getQuestions: () => dispatch(getQuestions()),
   // fetchBookingConfirmation: () => dispatch(fetchBookingConfirmation()),
   // uploadSignatureToServer: (formData) => dispatch(uploadSignatureToServer(formData)),
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(SpecifyScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SpecifyScreen);

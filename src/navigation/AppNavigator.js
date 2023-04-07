@@ -30,9 +30,9 @@ import SignUpScreen from "../screens/Signin/containers/Signup";
 import CalendarScreen from "../screens/Calendar/MonthlyCalendar/Calendar";
 import NewSideBar from "../screens/sidebar/NewSideBar";
 import { appStrings } from "../utils/constants";
-// import JobsScreen from '../screens/Jobs';
-// import JobdetailsScreen from '../screens/Jobdetails';
-// import TimeScreen from '../screens/Time';
+import JobsScreen from "../screens/Jobs";
+// import JobdetailsScreen from "../screens/Jobdetails";
+import TimeScreen from "../screens/Time";
 // import TimeDetailsScreen from '../screens/TimeDetails';
 // import TimeDetailsResponsibleScreen from '../screens/TimeDetails/responsible';
 // // import TimeNewScreen from '../screens/TimeTracker/index';
@@ -49,7 +49,7 @@ import { appStrings } from "../utils/constants";
 // import TrackerDetails from '../screens/TimeTracker/container/TrackerDetails';
 
 // // SPECIFY
-// import SpecifyScreen from '../screens/Specify/containers/index';
+import SpecifyScreen from "../screens/Specify/containers/index";
 
 class AuthLoadingScreen extends Component {
   // Fetch the token from storage then navigate to our appropriate place
@@ -169,6 +169,14 @@ function AppStack() {
       <Drawer.Screen
         name={appStrings.appStack.da.calendar}
         component={CalendarScreen}
+      />
+      <Drawer.Screen
+        name={appStrings.appStack.da.jobs}
+        component={JobsScreen}
+      />
+      <Drawer.Screen
+        name={appStrings.appStack.da.time}
+        component={TimeScreen}
       />
     </Drawer.Navigator>
   );

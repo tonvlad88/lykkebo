@@ -26,6 +26,7 @@ export const appStrings = {
     en: {
       calendar: "Calendar",
       jobs: "Jobs",
+      specify: "Specify",
       time: "Time",
       timeTracker: "TimeTracker",
       account: "Account",
@@ -34,6 +35,7 @@ export const appStrings = {
     da: {
       calendar: "Kalender",
       jobs: "Jobs",
+      specify: "Specify",
       time: "Tid(Lærling)",
       timeTracker: "Tid Rec",
       account: "Konto",
