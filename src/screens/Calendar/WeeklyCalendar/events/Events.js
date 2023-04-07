@@ -1,39 +1,20 @@
-import React, { Component } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React, { Component } from "react";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  CardItem,
-  Text,
-  Left,
-  Right,
-  Body,
-  Picker,
-  H3,
-  DatePicker,
-  Tab,
-  Tabs,
-} from 'native-base';
-
-import Event from './Event';
-import EventBooking from './EventBooking';
-import type { EventType } from '../index';
+import { Ionicons } from "@expo/vector-icons";
+import Event from "./Event";
+import EventBooking from "./EventBooking";
+import type { EventType } from "../index";
+import commonStyles from "../../../../utils/commonStyles";
+import { appColors, appNumbers } from "../../../../utils/constants";
+import { NormalButton } from "../../../../common/NewButtons/NormalButton";
 
 export default class Events extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visibleModal: null,
-    }
+    };
   }
 
   props: {
@@ -42,46 +23,57 @@ export default class Events extends Component {
 
   render() {
     const { events, onModalPress, navigation } = this.props;
-    // console.log('events', events);
+
     if (events === undefined || events.length === 0) {
       return (
         <View
-          key={Math.floor(Date.now()) + Math.floor((Math.random() * 10000) + 1)}
+          key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
           style={{
             flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'stretch',
-          }}>
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "stretch",
+          }}
+        >
           <View style={styles.container}>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <View style={{
-                flex: 1, justifyContent: 'center', alignItems: 'center',
-              }}>
-                <CardItem
-                  header
-                  style={{
-                    width: '100%', borderBottomColor: 'rgba(255, 255, 255, 0.1)', borderBottomWidth: StyleSheet.hairlineWidth, backgroundColor: '#A5A5A5',
-                  }}>
-                  <Body>
-                    <Text style={{color: 'white'}}>Ingen begivenhed fundet</Text>
-                  </Body>
-                </CardItem>
-                <CardItem style={{flex: 1, backgroundColor: '#A5A5A5'}}>
-                  <Body>
-                    <Button
-                      full
-                      light
-                      style={styles.mt15}
-                      onPress={() => onModalPress()}>
-                      <Icon
-                        active
-                        name="ios-add-circle"
-                        style={{ color: '#DD5044' }} />
-                      <Text> Tilføj Begivenhed </Text>
-                    </Button>
-                  </Body>
-                </CardItem>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View style={commonStyles.deadCenter}>
+                  <Text style={{ color: appColors.solidWhite }}>
+                    Ingen begivenhed fundet
+                  </Text>
+
+                  <NormalButton
+                    onPress={() => onModalPress()}
+                    containerStyle={[
+                      commonStyles.deadCenterButton,
+                      commonStyles.shadow,
+                      styles.addButtonContainer,
+                    ]}
+                    iconRight={
+                      <Ionicons
+                        name="add-circle"
+                        size={22}
+                        color={appColors.granite}
+                      />
+                    }
+                  >
+                    <Text
+                      style={{
+                        color: appColors.solidWhite,
+                        marginHorizontal: 10,
+                      }}
+                    >
+                      Tilføj Begivenhed
+                    </Text>
+                  </NormalButton>
+                </View>
               </View>
             </View>
           </View>
@@ -89,26 +81,35 @@ export default class Events extends Component {
       );
     } else {
       let temp = [];
-      if (events[0].type === 'Booking') {
+      if (events[0].type === "Booking") {
         temp = events;
       } else {
-        temp = [{
-          id: events[0].id,
-          type: events[0].type,
-          date: events[0].date,
-          details: [events[0].details],
-        }];
+        temp = [
+          {
+            id: events[0].id,
+            type: events[0].type,
+            date: events[0].date,
+            details: [events[0].details],
+          },
+        ];
       }
       return (
         <View style={styles.container}>
           <ScrollView>
-            {events && temp[0].details.map((event) => {
-              if (event.type === 'Booking') {
-                return (<EventBooking event={event} key={event.id} navigation={navigation} />);
-              } else {
-                return (<Event event={event} key={event.id} />);
-              }
-            })}
+            {events &&
+              temp[0].details.map((event) => {
+                if (event.type === "Booking") {
+                  return (
+                    <EventBooking
+                      event={event}
+                      key={event.id}
+                      navigation={navigation}
+                    />
+                  );
+                } else {
+                  return <Event event={event} key={event.id} />;
+                }
+              })}
           </ScrollView>
         </View>
       );
@@ -119,8 +120,15 @@ export default class Events extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#A5A5A5',
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: "#A5A5A5",
+    borderTopColor: "rgba(255, 255, 255, 0.1)",
     borderTopWidth: StyleSheet.hairlineWidth,
+  },
+  addButtonContainer: {
+    paddingVertical: appNumbers.number_5,
+    paddingHorizontal: appNumbers.number_10,
+    borderRadius: appNumbers.number_10,
+    backgroundColor: appColors.primary,
+    marginVertical: appNumbers.number_10,
   },
 });

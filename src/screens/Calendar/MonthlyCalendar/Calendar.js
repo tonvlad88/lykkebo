@@ -18,7 +18,7 @@ import { Dropdown } from "react-native-material-dropdown-v2-fixed";
 import { connect } from "react-redux";
 import moment from "moment";
 import { showMessage } from "react-native-flash-message";
-import { TabView, SceneMap } from "react-native-tab-view";
+import { TabView, TabBar, SceneMap } from "react-native-tab-view";
 
 // Actions
 
@@ -41,12 +41,71 @@ import styles from "./styles";
 import TabTwo from "../WeeklyCalendar/index";
 import CustomHeader from "../../../common/Header";
 import NewHeader from "../../../common/NewHeader";
-import { appSideBar, appStrings } from "../../../utils/constants";
+import {
+  appColors,
+  appDateFormats,
+  appDirection,
+  appNumbers,
+  appSideBar,
+  appStrings,
+} from "../../../utils/constants";
 import NewLoader from "../../../common/NewLoader";
 
 i18n.fallbacks = true;
 i18n.translations = { da, en };
 i18n.locale = Localization.locale;
+
+LocaleConfig.locales["dynamic"] = {
+  monthNames: [
+    i18n.t("january"),
+    i18n.t("february"),
+    i18n.t("march"),
+    i18n.t("april"),
+    i18n.t("may"),
+    i18n.t("june"),
+    i18n.t("july"),
+    "August",
+    "September",
+    i18n.t("october"),
+    "November",
+    "December",
+  ],
+  monthNamesShort: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    i18n.t("shortmay"),
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    i18n.t("shortokt"),
+    "Nov",
+    "Dec",
+  ],
+  dayNames: [
+    i18n.t("sunday"),
+    i18n.t("monday"),
+    i18n.t("tuesday"),
+    i18n.t("wednesday"),
+    i18n.t("thursday"),
+    i18n.t("friday"),
+    i18n.t("saturday"),
+  ],
+  dayNamesShort: [
+    i18n.t("sun"),
+    i18n.t("mon"),
+    i18n.t("tue"),
+    i18n.t("wed"),
+    i18n.t("thu"),
+    i18n.t("fri"),
+    i18n.t("sat"),
+  ],
+  amDesignator: "AM",
+  pmDesignator: "PM",
+};
+LocaleConfig.defaultLocale = "dynamic";
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -57,9 +116,13 @@ class CalendarScreen extends Component {
       loaded: false,
       index: 0,
       routes: [
-        { key: "first", title: "First" },
-        { key: "second", title: "Second" },
+        { key: "first", title: "Måned" },
+        { key: "second", title: "Uge" },
       ],
+      markedDates: {},
+      selectedMarkedDateData: {},
+      selectedDate: XDate(true).toString(appDateFormats.yyyyMMdd),
+      refresh: 0,
     };
   }
 
@@ -220,16 +283,90 @@ class CalendarScreen extends Component {
       });
   };
 
-  firstRoute = () => (
-    <View style={[styles.scene, { backgroundColor: "#ff4081" }]} />
-  );
+  onMonthChange = (month) => {
+    const { selectedDate } = this.state;
+    this.getCalendarData(
+      toTimestampWithSeconds(month.dateString),
+      selectedDate
+    );
+  };
 
-  secondRoute = () => (
-    <View style={[styles.scene, { backgroundColor: "#673ab7" }]} />
-  );
+  firstRoute = () => {
+    const { markedDates } = this.state;
+    return (
+      <View
+        style={[styles.scene, { backgroundColor: appColors.doveGrey, flex: 1 }]}
+      >
+        <Calendar
+          style={{
+            borderWidth: 1,
+            borderColor: appColors.granite,
+            height: 380,
+          }}
+          rowHasChanged={(r1, r2) => r1.booking_id !== r2.booking_id}
+          pastScrollRange={40}
+          futureScrollRange={50}
+          theme={{
+            calendarBackground: appColors.tuna,
+            textSectionTitleColor: appColors.solidWhite,
+            dayTextColor: appColors.solidWhite,
+            todayTextColor: appColors.lavaRed,
+            selectedDayTextColor: appColors.solidWhite,
+            monthTextColor: appColors.solidWhite,
+            selectedDayBackgroundColor: appColors.tuna,
+            arrowColor: appColors.solidWhite,
+            // textDisabledColor: appColors.lavaRed,
+            textMonthFontSize: 26,
+            "stylesheet.calendar.header": {
+              week: {
+                marginTop: 5,
+                flexDirection: appDirection.row,
+                justifyContent: "space-between",
+                borderBottomWidth: 2,
+                borderColor: "#D4D4D4",
+              },
+            },
+          }}
+          onDayPress={this.onDayPress}
+          monthFormat="MMMM yyyy"
+          onMonthChange={this.onMonthChange}
+          hideArrows={false}
+          hideExtraDays
+          disableMonthChange={false}
+          firstDay={1}
+          hideDayNames={false}
+          showWeekNumbers={false}
+          onPressArrowLeft={(substractMonth) => substractMonth()}
+          onPressArrowRight={(addMonth) => addMonth()}
+          markedDates={markedDates}
+          markingType="multi-dot"
+        />
+      </View>
+    );
+  };
+
+  secondRoute = () => {
+    const { refresh } = this.state;
+    const { navigation } = this.props;
+
+    return <TabTwo key={refresh} navigation={navigation} />;
+  };
 
   setIndex = (idx) => {
     this.setState({ index: idx });
+  };
+
+  renderTabBar = (props) => {
+    return (
+      <TabBar
+        {...props}
+        indicatorStyle={{
+          backgroundColor: appColors.solidWhite,
+          height: appNumbers.number_5,
+        }}
+        style={{ backgroundColor: appColors.primary }}
+      />
+    );
   };
 
   render() {
@@ -259,6 +396,7 @@ class CalendarScreen extends Component {
             width: Dimensions.get(appStrings.common.window).width,
           }}
           style={styles.container}
+          renderTabBar={this.renderTabBar}
         />
       </View>
     );

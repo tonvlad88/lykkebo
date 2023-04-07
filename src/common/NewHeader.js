@@ -16,21 +16,24 @@ import {
 } from "../utils/constants";
 
 const NewHeader = ({ navigation, title = "" }) => (
-  <View style={styles.container}>
-    <StatusBar hidden />
-    <View style={styles.hamburgerContainer}>
-      <TouchableOpacity onPress={() => navigation.openDrawer()}>
-        <Feather
-          name={appStrings.common.menu}
-          size={appNumbers.number_24}
-          color={appColors.solidWhite}
-        />
-      </TouchableOpacity>
-    </View>
+  <View>
+    <View style={styles.container}>
+      <StatusBar hidden />
+      <View style={styles.hamburgerContainer}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Feather
+            name={appStrings.common.menu}
+            size={appNumbers.number_24}
+            color={appColors.solidWhite}
+          />
+        </TouchableOpacity>
+      </View>
 
-    <View style={styles.headerTitleContainer}>
-      <Text style={styles.headerTitleText}>{title}</Text>
+      <View style={styles.headerTitleContainer}>
+        <Text style={styles.headerTitleText}>{title}</Text>
+      </View>
     </View>
+    <View style={styles.headerBottomBorder} />
   </View>
 );
 
@@ -53,6 +56,11 @@ const styles = StyleSheet.create({
   },
   hamburgerContainer: {
     marginLeft: appNumbers.number_5,
+  },
+  headerBottomBorder: {
+    height: appNumbers.number_3,
+    backgroundColor: appColors.romance,
+    marginBottom: appNumbers.number_1,
   },
 });
 

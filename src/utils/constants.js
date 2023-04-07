@@ -3,7 +3,16 @@ export const appColors = {
   primary: "#2E3D43",
   solidWhite: "#FFFFFF",
   solidBlack: "#000000",
+  lavaRed: "#DF1111",
   bluishCyan: "#64696C",
+  romance: "#323248",
+  doveGrey: "#6C6C6C",
+  tuna: "#333248",
+  granite: "#808080",
+};
+
+export const appDateFormats = {
+  yyyyMMdd: "yyyy-MM-dd",
 };
 
 export const appStrings = {
