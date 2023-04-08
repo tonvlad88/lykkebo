@@ -7,6 +7,7 @@ export const appColors = {
   bluishCyan: "#64696C",
   romance: "#323248",
   doveGrey: "#6C6C6C",
+  boulder: "#777777",
   tuna: "#333248",
   granite: "#808080",
 };
@@ -43,10 +44,11 @@ export const appStrings = {
     },
   },
   common: {
-    menu: "menu",
     danger: "danger",
-    width: "width",
     height: "height",
+    logout: "logout",
+    menu: "menu",
+    width: "width",
     window: "window",
   },
   api: {
