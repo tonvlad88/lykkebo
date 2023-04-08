@@ -18,8 +18,9 @@ import { Dropdown } from "react-native-material-dropdown-v2-fixed";
 import { connect } from "react-redux";
 import moment from "moment";
 import { showMessage } from "react-native-flash-message";
-import { TabView, TabBar, SceneMap } from "react-native-tab-view";
-
+import { TabBar, SceneMap } from "react-native-tab-view";
+import { Ionicons } from "@expo/vector-icons";
+import { Tab, TabView } from "react-native-elements";
 // Actions
 
 // Localization
@@ -107,6 +108,82 @@ LocaleConfig.locales["dynamic"] = {
 };
 LocaleConfig.defaultLocale = "dynamic";
 
+const bookingStatusStyle0 = {
+  key: "booking0",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle1 = {
+  key: "booking1",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle2 = {
+  key: "booking2",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle3 = {
+  key: "booking3",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle4 = {
+  key: "booking4",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle5 = {
+  key: "booking5",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle6 = {
+  key: "booking6",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle7 = {
+  key: "booking7",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle8 = {
+  key: "booking8",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle9 = {
+  key: "booking9",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const bookingStatusStyle10 = {
+  key: "booking10",
+  color: "#FF9F00",
+  selectedDotColor: "blue",
+};
+const vacationStatusStyle = {
+  key: "vacation",
+  color: "#0000FF",
+  selectedDotColor: "blue",
+};
+const sickStatusStyle = {
+  key: "sick",
+  color: "#FF0000",
+  selectedDotColor: "blue",
+};
+const schoolStatusStyle = {
+  key: "school",
+  color: "#20FF20",
+  selectedDotColor: "blue",
+};
+const otherStatusStyle = {
+  key: "others",
+  color: "#808000",
+  selectedDotColor: "blue",
+};
+
 const today = new Date().toISOString().slice(0, 10);
 
 class CalendarScreen extends Component {
@@ -119,6 +196,7 @@ class CalendarScreen extends Component {
         { key: "first", title: "Måned" },
         { key: "second", title: "Uge" },
       ],
+      baseData: {},
       markedDates: {},
       selectedMarkedDateData: {},
       selectedDate: XDate(true).toString(appDateFormats.yyyyMMdd),
@@ -146,133 +224,133 @@ class CalendarScreen extends Component {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log("data", data);
-        // if ("code" in data && data.code === "jwt_auth_invalid_token") {
-        //   AsyncStorage.removeItem("token").then(
-        //     AsyncStorage.clear().then(() => {
-        //       navigation.navigate("Auth");
-        //     })
-        //   );
-        // }
-        // deviceStorage.saveKey("user_relation", data.user_relation);
-        // let i;
-        // const markedDatesTemp = data.days.reduce((acc, crr, idx) => {
-        //   switch (crr.type) {
-        //     case "Booking":
-        //       let temp1 = [];
-        //       for (i = 0; i < crr.details.length; i += 1) {
-        //         switch (i) {
-        //           case 0:
-        //             temp1.push(bookingStatusStyle0);
-        //             break;
-        //           case 1:
-        //             temp1.push(bookingStatusStyle1);
-        //             break;
-        //           case 2:
-        //             temp1.push(bookingStatusStyle2);
-        //             break;
-        //           case 3:
-        //             temp1.push(bookingStatusStyle3);
-        //             break;
-        //           case 4:
-        //             temp1.push(bookingStatusStyle4);
-        //             break;
-        //           case 5:
-        //             temp1.push(bookingStatusStyle5);
-        //             break;
-        //           case 6:
-        //             temp1.push(bookingStatusStyle6);
-        //             break;
-        //           case 7:
-        //             temp1.push(bookingStatusStyle7);
-        //             break;
-        //           case 8:
-        //             temp1.push(bookingStatusStyle8);
-        //             break;
-        //           case 9:
-        //             temp1.push(bookingStatusStyle9);
-        //             break;
-        //           case 10:
-        //             temp1.push(bookingStatusStyle10);
-        //             break;
-        //           default:
-        //             temp1.push(bookingStatusStyle0);
-        //         }
-        //       }
-        //       acc[crr.date] =
-        //         dateSelected === crr.date
-        //           ? {
-        //               selected: true,
-        //               selectedColor: "#00ADF5",
-        //               type: "booking",
-        //               dots: temp1,
-        //             }
-        //           : { type: "booking", dots: temp1 };
-        //       break;
-        //     case "Ferie":
-        //       acc[crr.date] =
-        //         dateSelected === crr.date
-        //           ? {
-        //               selected: true,
-        //               selectedColor: "#00ADF5",
-        //               type: "vacation",
-        //               dots: [vacationStatusStyle],
-        //             }
-        //           : { type: "vacation", dots: [vacationStatusStyle] };
-        //       break;
-        //     case "Sygdom":
-        //       acc[crr.date] =
-        //         dateSelected === crr.date
-        //           ? {
-        //               selected: true,
-        //               selectedColor: "#00ADF5",
-        //               type: "sick",
-        //               dots: [sickStatusStyle],
-        //             }
-        //           : { type: "sick", dots: [sickStatusStyle] };
-        //       break;
-        //     case "Skole":
-        //       acc[crr.date] =
-        //         dateSelected === crr.date
-        //           ? {
-        //               selected: true,
-        //               selectedColor: "#00ADF5",
-        //               type: "school",
-        //               dots: [schoolStatusStyle],
-        //             }
-        //           : { type: "school", dots: [schoolStatusStyle] };
-        //       break;
-        //     case "Andet":
-        //       acc[crr.date] =
-        //         dateSelected === crr.date
-        //           ? {
-        //               selected: true,
-        //               selectedColor: "#00ADF5",
-        //               type: "other",
-        //               dots: [otherStatusStyle],
-        //             }
-        //           : { type: "other", dots: [otherStatusStyle] };
-        //       break;
-        //     default:
-        //       acc[crr.date] = { type: "booking", dots: [bookingStatusStyle0] };
-        //   }
-        //   if (idx === 0) {
-        //     const tempSelected = data.days.filter(
-        //       (data2) => data2.date === dateSelected
-        //     );
-        //     if (tempSelected.length === 0) {
-        //       acc[dateSelected] = { selected: true, selectedColor: "#00ADF5" };
-        //     }
-        //   }
-        //   return acc;
-        // }, {});
+        // console.log("data", data);
+        if ("code" in data && data.code === "jwt_auth_invalid_token") {
+          AsyncStorage.removeItem("token").then(
+            AsyncStorage.clear().then(() => {
+              navigation.navigate("Auth");
+            })
+          );
+        }
+        deviceStorage.saveKey("user_relation", data.user_relation);
+        let i;
+        const markedDatesTemp = data.days.reduce((acc, crr, idx) => {
+          switch (crr.type) {
+            case "Booking":
+              let temp1 = [];
+              for (i = 0; i < crr.details.length; i += 1) {
+                switch (i) {
+                  case 0:
+                    temp1.push(bookingStatusStyle0);
+                    break;
+                  case 1:
+                    temp1.push(bookingStatusStyle1);
+                    break;
+                  case 2:
+                    temp1.push(bookingStatusStyle2);
+                    break;
+                  case 3:
+                    temp1.push(bookingStatusStyle3);
+                    break;
+                  case 4:
+                    temp1.push(bookingStatusStyle4);
+                    break;
+                  case 5:
+                    temp1.push(bookingStatusStyle5);
+                    break;
+                  case 6:
+                    temp1.push(bookingStatusStyle6);
+                    break;
+                  case 7:
+                    temp1.push(bookingStatusStyle7);
+                    break;
+                  case 8:
+                    temp1.push(bookingStatusStyle8);
+                    break;
+                  case 9:
+                    temp1.push(bookingStatusStyle9);
+                    break;
+                  case 10:
+                    temp1.push(bookingStatusStyle10);
+                    break;
+                  default:
+                    temp1.push(bookingStatusStyle0);
+                }
+              }
+              acc[crr.date] =
+                dateSelected === crr.date
+                  ? {
+                      selected: true,
+                      selectedColor: "#00ADF5",
+                      type: "booking",
+                      dots: temp1,
+                    }
+                  : { type: "booking", dots: temp1 };
+              break;
+            case "Ferie":
+              acc[crr.date] =
+                dateSelected === crr.date
+                  ? {
+                      selected: true,
+                      selectedColor: "#00ADF5",
+                      type: "vacation",
+                      dots: [vacationStatusStyle],
+                    }
+                  : { type: "vacation", dots: [vacationStatusStyle] };
+              break;
+            case "Sygdom":
+              acc[crr.date] =
+                dateSelected === crr.date
+                  ? {
+                      selected: true,
+                      selectedColor: "#00ADF5",
+                      type: "sick",
+                      dots: [sickStatusStyle],
+                    }
+                  : { type: "sick", dots: [sickStatusStyle] };
+              break;
+            case "Skole":
+              acc[crr.date] =
+                dateSelected === crr.date
+                  ? {
+                      selected: true,
+                      selectedColor: "#00ADF5",
+                      type: "school",
+                      dots: [schoolStatusStyle],
+                    }
+                  : { type: "school", dots: [schoolStatusStyle] };
+              break;
+            case "Andet":
+              acc[crr.date] =
+                dateSelected === crr.date
+                  ? {
+                      selected: true,
+                      selectedColor: "#00ADF5",
+                      type: "other",
+                      dots: [otherStatusStyle],
+                    }
+                  : { type: "other", dots: [otherStatusStyle] };
+              break;
+            default:
+              acc[crr.date] = { type: "booking", dots: [bookingStatusStyle0] };
+          }
+          if (idx === 0) {
+            const tempSelected = data.days.filter(
+              (data2) => data2.date === dateSelected
+            );
+            if (tempSelected.length === 0) {
+              acc[dateSelected] = { selected: true, selectedColor: "#00ADF5" };
+            }
+          }
+          return acc;
+        }, {});
         this.setState({
-          // baseData: data.days,
-          // markedDates: markedDatesTemp,
+          baseData: data.days,
+          markedDates: markedDatesTemp,
           loaded: true,
-          // selectedMarkedDateData: data.days.filter(
-          //   (data2) => data2.date === dateSelected
-          // ),
+          selectedMarkedDateData: data.days.filter(
+            (data2) => data2.date === dateSelected
+          ),
         });
       })
       .catch((error) => {
@@ -289,6 +367,485 @@ class CalendarScreen extends Component {
       toTimestampWithSeconds(month.dateString),
       selectedDate
     );
+  };
+
+  renderSelectedDateDetails() {
+    const { selectedDate, selectedMarkedDateData, isFutureDate } = this.state;
+    console.log("selectedMarkedDateData", selectedMarkedDateData);
+    if (
+      selectedMarkedDateData === undefined ||
+      selectedMarkedDateData.length === 0
+    ) {
+      return (
+        <View
+          key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "stretch",
+          }}
+        >
+          <View style={{ flex: 1, padding: 10 }}>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View
+                style={{
+                  flex: 1,
+                  borderRightWidth: 2,
+                  borderColor: "#fff",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 80,
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {XDate(selectedDate).toString("d")}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 2,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingLeft: 10,
+                }}
+              >
+                <View
+                  style={{
+                    width: "100%",
+                    borderBottomWidth: 2,
+                    borderColor: "#6C6C6C",
+                  }}
+                >
+                  <Text>Ingen begivenhed fundet</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <TouchableOpacity
+                    style={[styles.mt15, { alignItems: "center" }]}
+                    onPress={() => this.setState({ visibleModal: 1 })}
+                  >
+                    <Ionicons
+                      active
+                      name="add-circle"
+                      style={{ color: "#DD5044" }}
+                    />
+                    <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      );
+    } else if (selectedMarkedDateData[0].type === "Booking") {
+      return (
+        <View
+          key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "stretch",
+          }}
+        >
+          <View style={{ flex: 1, padding: 10 }}>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View
+                style={{
+                  flex: 1,
+                  borderRightWidth: 2,
+                  borderColor: "#fff",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 80,
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {XDate(selectedDate).toString("d")}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 2,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingLeft: 10,
+                }}
+              >
+                <View
+                  style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+                >
+                  <View
+                    style={{
+                      width: "100%",
+                      borderBottomWidth: 2,
+                      borderColor: "#6C6C6C",
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold" }}>
+                      {jsUcfirst(selectedMarkedDateData[0].type)}
+                    </Text>
+                  </View>
+                  <ScrollView style={{ flex: 1 }}>
+                    <TouchableOpacity
+                      style={[styles.mt15, { alignItems: "center" }]}
+                      onPress={() => this.setState({ visibleModal: 1 })}
+                    >
+                      <Ionicons
+                        active
+                        name="add-circle"
+                        style={{ color: "#DD5044" }}
+                      />
+                      <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
+                    </TouchableOpacity>
+                    {selectedMarkedDateData.map((booking) => {
+                      if (booking.type !== "Booking") {
+                        return (
+                          <TouchableOpacity
+                            style={{ flex: 1 }}
+                            onPress={() => {
+                              this.openBooking(booking);
+                              // onPress={() => navigation.navigate('Jobdetails')}
+                            }}
+                            key={
+                              Math.floor(Date.now()) +
+                              Math.floor(Math.random() * 10000 + 1)
+                            }
+                          >
+                            <View>
+                              <View>
+                                <Ionicons
+                                  name="build-outline"
+                                  size={24}
+                                  color="#DD5044"
+                                />
+                                <Text numberOfLines={1}>
+                                  {booking.details[0].title}
+                                </Text>
+                              </View>
+                              <View>
+                                <Ionicons
+                                  name="arrow-forward"
+                                  size={24}
+                                  color="black"
+                                />
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      } else {
+                        return (
+                          <View
+                            key={
+                              Math.floor(Date.now()) +
+                              Math.floor(Math.random() * 10000 + 1)
+                            }
+                          >
+                            {booking.details.map((data) => (
+                              <TouchableOpacity
+                                style={{ flex: 1 }}
+                                onPress={() => {
+                                  this.openBooking(data);
+                                  // onPress={() => navigation.navigate('Jobdetails')}
+                                }}
+                                key={
+                                  Math.floor(Date.now()) +
+                                  Math.floor(Math.random() * 10000 + 1)
+                                }
+                              >
+                                <View>
+                                  <View>
+                                    <Ionicons
+                                      name="build-outline"
+                                      size={24}
+                                      color="#DD5044"
+                                    />
+                                    <Text numberOfLines={1}>{data.title}</Text>
+                                  </View>
+                                  <View>
+                                    <Ionicons
+                                      name="arrow-forward"
+                                      size={24}
+                                      color="black"
+                                    />
+                                  </View>
+                                </View>
+                              </TouchableOpacity>
+                            ))}
+                          </View>
+                        );
+                      }
+                    })}
+                  </ScrollView>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      );
+    } else {
+      return (
+        <View
+          key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "stretch",
+          }}
+        >
+          <View style={{ flex: 1, padding: 10 }}>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View
+                style={{
+                  flex: 1,
+                  borderRightWidth: 2,
+                  borderColor: "#fff",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 80,
+                    color: "#fff",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {XDate(selectedDate).toString("d")}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flex: 2,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingLeft: 10,
+                }}
+              >
+                <View
+                  style={{ flex: 1, width: "100%", backgroundColor: "white" }}
+                >
+                  <CardItem
+                    header
+                    style={{
+                      width: "100%",
+                      borderBottomWidth: 2,
+                      borderColor: "#6C6C6C",
+                    }}
+                  >
+                    <Left>
+                      <Text style={{ fontWeight: "bold" }}>
+                        {jsUcfirst(selectedMarkedDateData[0].type)}
+                      </Text>
+                    </Left>
+                    <Right>
+                      <TouchableOpacity style={{ marginTop: -4 }}>
+                        <Icon
+                          style={{ color: "#2e3d43" }}
+                          active
+                          onPress={() =>
+                            this.setState({ visibleModal: 1, isUpdate: true })
+                          }
+                          name="md-open"
+                        />
+                      </TouchableOpacity>
+                    </Right>
+                  </CardItem>
+                  <ScrollView style={{ flex: 1 }}>
+                    <Button
+                      full
+                      light
+                      style={[styles.mt15, { alignItems: "center" }]}
+                      onPress={() => this.setState({ visibleModal: 1 })}
+                    >
+                      <Icon
+                        active
+                        name="ios-add-circle"
+                        style={{ color: "#DD5044" }}
+                      />
+                      <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
+                    </Button>
+                    <View
+                      key={
+                        Math.floor(Date.now()) +
+                        Math.floor(Math.random() * 10000 + 1)
+                      }
+                      style={{ flex: 1 }}
+                    >
+                      <CardItem
+                        style={{ width: "100%", justifyContent: "flex-start" }}
+                      >
+                        <Left>
+                          <Icon
+                            active
+                            name="calendar"
+                            style={{ color: "#DD5044" }}
+                          />
+                          <Text>
+                            {`Fra: ${selectedMarkedDateData[0].details[0].formatted_from}`}
+                          </Text>
+                        </Left>
+                      </CardItem>
+                      <CardItem
+                        style={{ width: "100%", justifyContent: "flex-start" }}
+                      >
+                        <Left>
+                          <Icon
+                            active
+                            name="calendar"
+                            style={{ color: "#DD5044" }}
+                          />
+                          <Text>
+                            {`Til: ${selectedMarkedDateData[0].details[0].formatted_to}`}
+                          </Text>
+                        </Left>
+                      </CardItem>
+                    </View>
+                  </ScrollView>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      );
+    }
+  }
+
+  onDayPress = (day) => {
+    this.createMarkedDates(day);
+  };
+
+  createMarkedDates = (day) => {
+    const { baseData } = this.state;
+    let i;
+    const markedDatesTemp = baseData.reduce((acc, crr, idx) => {
+      switch (crr.type) {
+        case "Booking":
+          let temp1 = [];
+          for (i = 0; i < crr.details.length; i += 1) {
+            switch (i) {
+              case 0:
+                temp1.push(bookingStatusStyle0);
+                break;
+              case 1:
+                temp1.push(bookingStatusStyle1);
+                break;
+              case 2:
+                temp1.push(bookingStatusStyle2);
+                break;
+              case 3:
+                temp1.push(bookingStatusStyle3);
+                break;
+              case 4:
+                temp1.push(bookingStatusStyle4);
+                break;
+              case 5:
+                temp1.push(bookingStatusStyle5);
+                break;
+              case 6:
+                temp1.push(bookingStatusStyle6);
+                break;
+              case 7:
+                temp1.push(bookingStatusStyle7);
+                break;
+              case 8:
+                temp1.push(bookingStatusStyle8);
+                break;
+              case 9:
+                temp1.push(bookingStatusStyle9);
+                break;
+              case 10:
+                temp1.push(bookingStatusStyle10);
+                break;
+              default:
+                temp1.push(bookingStatusStyle0);
+            }
+          }
+          acc[crr.date] =
+            day.dateString === crr.date
+              ? {
+                  selected: true,
+                  selectedColor: "#00ADF5",
+                  type: "booking",
+                  dots: temp1,
+                }
+              : { type: "booking", dots: temp1 };
+          break;
+        case "Ferie":
+          acc[crr.date] =
+            day.dateString === crr.date
+              ? {
+                  selected: true,
+                  selectedColor: "#00ADF5",
+                  type: "vacation",
+                  dots: [vacationStatusStyle],
+                }
+              : { type: "vacation", dots: [vacationStatusStyle] };
+          break;
+        case "Sygdom":
+          acc[crr.date] =
+            day.dateString === crr.date
+              ? {
+                  selected: true,
+                  selectedColor: "#00ADF5",
+                  type: "sick",
+                  dots: [sickStatusStyle],
+                }
+              : { type: "sick", dots: [sickStatusStyle] };
+          break;
+        case "Skole":
+          acc[crr.date] =
+            day.dateString === crr.date
+              ? {
+                  selected: true,
+                  selectedColor: "#00ADF5",
+                  type: "school",
+                  dots: [schoolStatusStyle],
+                }
+              : { type: "school", dots: [schoolStatusStyle] };
+          break;
+        case "Andet":
+          acc[crr.date] =
+            day.dateString === crr.date
+              ? {
+                  selected: true,
+                  selectedColor: "#00ADF5",
+                  type: "other",
+                  dots: [otherStatusStyle],
+                }
+              : { type: "other", dots: [otherStatusStyle] };
+          break;
+        default:
+          acc[crr.date] = { type: "booking", dots: [bookingStatusStyle0] };
+      }
+      if (idx === 0) {
+        const tempSelected = baseData.filter(
+          (data2) => data2.date === day.dateString
+        );
+        if (tempSelected.length === 0) {
+          acc[day.dateString] = { selected: true, selectedColor: "#00ADF5" };
+        }
+      }
+      return acc;
+    }, {});
+    this.setState({
+      markedDates: markedDatesTemp,
+      selectedDate: day.dateString,
+      selectedMarkedDateData: baseData.filter(
+        (data2) => data2.date === day.dateString
+      ),
+    });
   };
 
   firstRoute = () => {
@@ -341,6 +898,11 @@ class CalendarScreen extends Component {
           markedDates={markedDates}
           markingType="multi-dot"
         />
+
+        <View
+          style={{ width: "100%", height: 3, backgroundColor: "#6C6C6C" }}
+        />
+        {this.renderSelectedDateDetails()}
       </View>
     );
   };
@@ -371,7 +933,7 @@ class CalendarScreen extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { loaded } = this.state;
+    const { loaded, index } = this.state;
 
     if (!loaded) {
       return (
@@ -385,19 +947,20 @@ class CalendarScreen extends Component {
     return (
       <View style={styles.container}>
         <NewHeader title={appSideBar[0].name} navigation={navigation} />
-        <TabView
-          navigationState={this.state}
-          renderScene={SceneMap({
-            first: this.firstRoute,
-            second: this.secondRoute,
-          })}
-          onIndexChange={this.setIndex}
-          initialLayout={{
-            width: Dimensions.get(appStrings.common.window).width,
-          }}
-          style={styles.container}
-          renderTabBar={this.renderTabBar}
-        />
+
+        <Tab value={index} onChange={this.setIndex}>
+          <Tab.Item title="Måned" />
+          <Tab.Item title="Uge" />
+        </Tab>
+
+        <TabView value={index} onChange={this.setIndex}>
+          <TabView.Item style={{ backgroundColor: "red", width: "100%" }}>
+            {this.firstRoute()}
+          </TabView.Item>
+          <TabView.Item style={{ backgroundColor: "blue", width: "100%" }}>
+            <Text h1>Favorite</Text>
+          </TabView.Item>
+        </TabView>
       </View>
     );
   }

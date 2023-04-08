@@ -42,7 +42,7 @@ export default {
     marginTop: -appNumbers.number_10,
     padding: appNumbers.number_5,
   },
-  logoutContainer: { marginHorizontal: appNumbers.number_10 },
+  logoutContainer: { marginHorizontal: appNumbers.number_5 },
   logoutButton: { padding: appNumbers.number_10 },
   logoutText: { color: appColors.boulder, fontWeight: appNumbers.number_500 },
   userNameText: {

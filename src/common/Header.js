@@ -13,7 +13,7 @@ export default class CustomHeader extends React.Component {
       <View style={HeaderStyle.HeaderHolder}>
         <StatusBar hidden />
         <View style={HeaderStyle.f1}>
-          {this.props.leftIconName && this.props.onPressLeftIcon ? (
+          {/* {this.props.leftIconName && this.props.onPressLeftIcon ? (
             <TouchableOpacity
               style={HeaderStyle.prpl10}
               transparent
@@ -25,7 +25,7 @@ export default class CustomHeader extends React.Component {
                 name={this.props.leftIconName}
               />
             </TouchableOpacity>
-          ) : null}
+          ) : null} */}
         </View>
         <View style={HeaderStyle.f1}>
           <Text style={HeaderStyle.HeaderTitle}>{this.props.title}</Text>
@@ -34,14 +34,14 @@ export default class CustomHeader extends React.Component {
           ) : null}
         </View>
         <View style={HeaderStyle.f1}>
-          {this.props.rightIconName && this.props.onPressRightIcon ? (
+          {/* {this.props.rightIconName && this.props.onPressRightIcon ? (
             <Icon
               onPress={this.props.onPressRightIcon}
               style={HeaderStyle.cWhite}
               active
               name={this.props.rightIconName}
             />
-          ) : null}
+          ) : null} */}
         </View>
       </View>
     );

@@ -38,11 +38,11 @@ import TimeScreen from "../screens/Time";
 // // import TimeNewScreen from '../screens/TimeTracker/index';
 // import OverviewScreen from '../screens/Overview';
 // import OverviewDetailsScreen from '../screens/OverviewDetails';
-// import AccountScreen from '../screens/Account';
+import AccountScreen from "../screens/Account";
 // import SideBarScreen from '../screens/sidebar';
 // import UploadImageScreen from '../screens/Jobdetails/sections/image/uploadImage';
 // import UploadProofScreen from '../screens/Jobdetails/sections/uploadProof';
-// import TimeTrackerScreen from '../screens/TimeTracker/container/index';
+import TimeTrackerScreen from "../screens/TimeTracker/container/index";
 // import TimeTrackerDetailScreen from '../screens/TimeTracker/details';
 // import TimeTrackerResponsibleDetailScreen from '../screens/TimeTracker/responsibleDetail';
 
@@ -144,17 +144,6 @@ const styles = StyleSheet.create({
 //   );
 // }
 
-function NotificationsScreen(props) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Detail Screen</Text>
-      <TouchableOpacity onPress={() => props.navigation.goBack()}>
-        <Text>back</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
 const Drawer = createDrawerNavigator();
 
 function AppStack() {
@@ -177,6 +166,14 @@ function AppStack() {
       <Drawer.Screen
         name={appStrings.appStack.da.time}
         component={TimeScreen}
+      />
+      <Drawer.Screen
+        name={appStrings.appStack.da.timeTracker}
+        component={TimeTrackerScreen}
+      />
+      <Drawer.Screen
+        name={appStrings.appStack.da.account}
+        component={AccountScreen}
       />
     </Drawer.Navigator>
   );
