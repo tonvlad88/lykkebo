@@ -948,16 +948,27 @@ class CalendarScreen extends Component {
       <View style={styles.container}>
         <NewHeader title={appSideBar[0].name} navigation={navigation} />
 
-        <Tab value={index} onChange={this.setIndex}>
+        <Tab
+          value={index}
+          onChange={this.setIndex}
+          indicatorStyle={{
+            backgroundColor: appColors.tuna,
+            height: 5,
+          }}
+        >
           <Tab.Item title="Måned" />
           <Tab.Item title="Uge" />
         </Tab>
 
         <TabView value={index} onChange={this.setIndex}>
-          <TabView.Item style={{ backgroundColor: "red", width: "100%" }}>
+          <TabView.Item
+            style={{ backgroundColor: appColors.tuna, width: "100%" }}
+          >
             {this.firstRoute()}
           </TabView.Item>
-          <TabView.Item style={{ backgroundColor: "blue", width: "100%" }}>
+          <TabView.Item
+            style={{ backgroundColor: appColors.tuna, width: "100%" }}
+          >
             <Text h1>Favorite</Text>
           </TabView.Item>
         </TabView>
