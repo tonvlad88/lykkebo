@@ -20,7 +20,9 @@ import moment from "moment";
 import { showMessage } from "react-native-flash-message";
 import { TabBar, SceneMap } from "react-native-tab-view";
 import { Ionicons } from "@expo/vector-icons";
-import { Tab, TabView } from "react-native-elements";
+import { Tab, TabView } from "@rneui/themed";
+import DatePicker from "react-native-datepicker";
+
 // Actions
 
 // Localization
@@ -183,6 +185,13 @@ const otherStatusStyle = {
   color: "#808000",
   selectedDotColor: "blue",
 };
+
+const entryStatus = [
+  { value: "Ferie", label: "Ferie" },
+  { value: "Sygdom", label: "Sygdom" },
+  { value: "Skole", label: "Skole" },
+  { value: "Andet", label: "Andet" },
+];
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -416,26 +425,39 @@ class CalendarScreen extends Component {
                 }}
               >
                 <View
-                  style={{
-                    width: "100%",
-                    borderBottomWidth: 2,
-                    borderColor: "#6C6C6C",
-                  }}
+                  style={{ flex: 1, width: "100%", backgroundColor: "white" }}
                 >
-                  <Text>Ingen begivenhed fundet</Text>
-                </View>
-                <View style={{ flex: 1 }}>
-                  <TouchableOpacity
-                    style={[styles.mt15, { alignItems: "center" }]}
-                    onPress={() => this.setState({ visibleModal: 1 })}
+                  <View
+                    style={{
+                      width: "100%",
+                      borderBottomWidth: 2,
+                      borderColor: "#6C6C6C",
+                      padding: appNumbers.number_14,
+                    }}
                   >
-                    <Ionicons
-                      active
-                      name="add-circle"
-                      style={{ color: "#DD5044" }}
-                    />
-                    <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
-                  </TouchableOpacity>
+                    <Text style={{ fontWeight: "bold" }}>
+                      Ingen begivenhed fundet
+                    </Text>
+                  </View>
+                  <View style={{ flex: 1, flexDirection: "row" }}>
+                    <TouchableOpacity
+                      style={[
+                        styles.mt15,
+                        { padding: appNumbers.number_10, flexDirection: "row" },
+                      ]}
+                      onPress={() => this.setState({ visibleModal: 1 })}
+                    >
+                      <Ionicons
+                        active
+                        name="add-circle"
+                        style={{ color: "#DD5044" }}
+                        size={20}
+                      />
+                      <Text style={{ marginHorizontal: appNumbers.number_5 }}>
+                        Tilføj Begivenhed
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
@@ -448,7 +470,7 @@ class CalendarScreen extends Component {
           key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
           style={{
             flex: 1,
-            flexDirection: "column",
+            flexDirection: "row",
             justifyContent: "center",
             alignItems: "stretch",
           }}
@@ -490,21 +512,37 @@ class CalendarScreen extends Component {
                       width: "100%",
                       borderBottomWidth: 2,
                       borderColor: "#6C6C6C",
+                      padding: appNumbers.number_14,
                     }}
                   >
-                    <Text style={{ fontWeight: "bold" }}>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: appNumbers.number_16,
+                      }}
+                    >
                       {jsUcfirst(selectedMarkedDateData[0].type)}
                     </Text>
                   </View>
                   <ScrollView style={{ flex: 1 }}>
                     <TouchableOpacity
-                      style={[styles.mt15, { alignItems: "center" }]}
+                      style={[
+                        styles.mt15,
+                        {
+                          alignItems: "center",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          backgroundColor: "#FEFEFE",
+                          padding: appNumbers.number_10,
+                        },
+                      ]}
                       onPress={() => this.setState({ visibleModal: 1 })}
                     >
                       <Ionicons
                         active
                         name="add-circle"
                         style={{ color: "#DD5044" }}
+                        size={20}
                       />
                       <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
                     </TouchableOpacity>
@@ -553,7 +591,11 @@ class CalendarScreen extends Component {
                           >
                             {booking.details.map((data) => (
                               <TouchableOpacity
-                                style={{ flex: 1 }}
+                                style={{
+                                  flex: 1,
+                                  flexDirection: "row",
+                                  padding: appNumbers.number_10,
+                                }}
                                 onPress={() => {
                                   this.openBooking(data);
                                   // onPress={() => navigation.navigate('Jobdetails')}
@@ -563,20 +605,21 @@ class CalendarScreen extends Component {
                                   Math.floor(Math.random() * 10000 + 1)
                                 }
                               >
-                                <View>
-                                  <View>
-                                    <Ionicons
-                                      name="build-outline"
-                                      size={24}
-                                      color="#DD5044"
-                                    />
+                                <View style={{ flexDirection: "row", flex: 1 }}>
+                                  <Ionicons
+                                    name="build"
+                                    size={appNumbers.number_24}
+                                    color="#DD5044"
+                                  />
+                                  <View style={{ flex: 1 }}>
                                     <Text numberOfLines={1}>{data.title}</Text>
                                   </View>
+
                                   <View>
                                     <Ionicons
-                                      name="arrow-forward"
+                                      name="chevron-forward"
                                       size={24}
-                                      color="black"
+                                      color="#ccc"
                                     />
                                   </View>
                                 </View>
@@ -636,22 +679,21 @@ class CalendarScreen extends Component {
                 <View
                   style={{ flex: 1, width: "100%", backgroundColor: "white" }}
                 >
-                  <CardItem
-                    header
+                  <View
                     style={{
                       width: "100%",
                       borderBottomWidth: 2,
                       borderColor: "#6C6C6C",
                     }}
                   >
-                    <Left>
+                    <View>
                       <Text style={{ fontWeight: "bold" }}>
                         {jsUcfirst(selectedMarkedDateData[0].type)}
                       </Text>
-                    </Left>
-                    <Right>
+                    </View>
+                    <View>
                       <TouchableOpacity style={{ marginTop: -4 }}>
-                        <Icon
+                        <Ionicons
                           style={{ color: "#2e3d43" }}
                           active
                           onPress={() =>
@@ -660,22 +702,20 @@ class CalendarScreen extends Component {
                           name="md-open"
                         />
                       </TouchableOpacity>
-                    </Right>
-                  </CardItem>
+                    </View>
+                  </View>
                   <ScrollView style={{ flex: 1 }}>
-                    <Button
-                      full
-                      light
+                    <TouchableOpacity
                       style={[styles.mt15, { alignItems: "center" }]}
                       onPress={() => this.setState({ visibleModal: 1 })}
                     >
-                      <Icon
+                      <Ionicons
                         active
                         name="ios-add-circle"
                         style={{ color: "#DD5044" }}
                       />
                       <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
-                    </Button>
+                    </TouchableOpacity>
                     <View
                       key={
                         Math.floor(Date.now()) +
@@ -683,10 +723,10 @@ class CalendarScreen extends Component {
                       }
                       style={{ flex: 1 }}
                     >
-                      <CardItem
+                      <View
                         style={{ width: "100%", justifyContent: "flex-start" }}
                       >
-                        <Left>
+                        <View>
                           <Icon
                             active
                             name="calendar"
@@ -695,13 +735,13 @@ class CalendarScreen extends Component {
                           <Text>
                             {`Fra: ${selectedMarkedDateData[0].details[0].formatted_from}`}
                           </Text>
-                        </Left>
-                      </CardItem>
-                      <CardItem
+                        </View>
+                      </View>
+                      <View
                         style={{ width: "100%", justifyContent: "flex-start" }}
                       >
-                        <Left>
-                          <Icon
+                        <View>
+                          <Ionicons
                             active
                             name="calendar"
                             style={{ color: "#DD5044" }}
@@ -709,8 +749,8 @@ class CalendarScreen extends Component {
                           <Text>
                             {`Til: ${selectedMarkedDateData[0].details[0].formatted_to}`}
                           </Text>
-                        </Left>
-                      </CardItem>
+                        </View>
+                      </View>
                     </View>
                   </ScrollView>
                 </View>
@@ -931,9 +971,211 @@ class CalendarScreen extends Component {
     );
   };
 
+  renderModalContent = () => {
+    const { selectedDate, isFutureDate } = this.state;
+
+    return (
+      <View
+        style={{
+          flexDirection: "column",
+          backgroundColor: "white",
+          padding: 22,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 4,
+          borderColor: "rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        {/* {isFutureDate ? (
+          <View />
+        ) : (
+          <View style={{height: 50, width: '100%', marginTop: 10}}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{
+                flex: 1, height: 50, paddingRight: 5, borderWidth: 0.5, borderColor: '#E2B838', backgroundColor: '#FFFCBF', justifyContent: 'center',
+              }}>
+                <Text style={{textAlign: 'center'}}>Du kan ikke melde fravær tilbage i tiden.</Text>
+              </View>
+            </View>
+          </View>
+        )} */}
+        <View
+          style={{
+            height: 50,
+            width: "100%",
+            borderBottomWidth: 1,
+            borderColor: "#ccc",
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                width: 90,
+                height: 50,
+                paddingTop: 10,
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[styles.mb10, { color: "#ccc" }]}>Grund</Text>
+            </View>
+            <View style={{ flex: 1, height: 50 }}>
+              <Dropdown
+                label=""
+                labelHeight={0}
+                fontSize={20}
+                containerStyle={{ paddingLeft: 10 }}
+                inputContainerStyle={{ borderBottomColor: "transparent" }}
+                value="Ferie"
+                data={entryStatus}
+                onChangeText={this.onValueChange}
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            height: 50,
+            width: "100%",
+            borderBottomWidth: 1,
+            borderColor: "#ccc",
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                width: 90,
+                height: 50,
+                paddingTop: 10,
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[styles.mb10, { color: "#ccc" }]}>Fra</Text>
+            </View>
+            <View style={{ flex: 1, height: 50 }}>
+              <DatePicker
+                defaultDate={new Date(selectedDate)}
+                // minimumDate={new Date(2018, 1, 1)}
+                // maximumDate={new Date(2018, 12, 31)}
+                locale="en"
+                timeZoneOffsetInMinutes={undefined}
+                modalTransparent={false}
+                animationType="fade"
+                androidMode="default"
+                // placeHolderText="Select start date"
+                textStyle={{ color: "#000" }}
+                placeHolderTextStyle={{ color: "#ccc" }}
+                onDateChange={this.startDatePickedHandler}
+              />
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            height: 50,
+            width: "100%",
+            borderBottomWidth: 1,
+            borderColor: "#ccc",
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                width: 90,
+                height: 50,
+                paddingTop: 10,
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[styles.mb10, { color: "#ccc" }]}>Til</Text>
+            </View>
+            <View style={{ flex: 1, height: 50 }}>
+              <DatePicker
+                defaultDate={new Date(selectedDate)}
+                // minimumDate={new Date(2018, 1, 1)}
+                // maximumDate={new Date(2018, 12, 31)}
+                locale="en"
+                timeZoneOffsetInMinutes={undefined}
+                modalTransparent={false}
+                animationType="fade"
+                androidMode="default"
+                // placeHolderText="Select end date"
+                textStyle={{ color: "#000" }}
+                placeHolderTextStyle={{ color: "#ccc" }}
+                onDateChange={this.endDatePickedHandler}
+              />
+            </View>
+          </View>
+        </View>
+        <View style={{ height: 50, width: "100%", marginTop: 10 }}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            {/* {!isFutureDate ? (
+              <View />
+            ) : (
+              <View style={{flex: 1, height: 50, paddingRight: 5}}>
+                <Button
+                  primary
+                  full
+                  style={styles.mt15}
+                  onPress={() => this.saveDayInfoHandler()}>
+                  <Text>Save</Text>
+                </Button>
+              </View>
+            )}
+
+            {!isFutureDate ? (
+              <View />
+            ) : (
+              <View style={{flex: 1, height: 50}}>
+                <Button
+                  danger
+                  full
+                  style={styles.mt15}
+                  onPress={() => this.removeDayInfoHandler()}>
+                  <Text>Remove</Text>
+                </Button>
+              </View>
+            )} */}
+
+            <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
+              <TouchableOpacity
+                primary
+                full
+                style={styles.mt15}
+                onPress={() => this.saveDayInfoHandler()}
+              >
+                <Text>{i18n.t("save")}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ flex: 1, height: 50 }}>
+              <TouchableOpacity
+                danger
+                full
+                style={styles.mt15}
+                onPress={() => this.removeDayInfoHandler()}
+              >
+                <Text>{i18n.t("delete")}</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
+              <TouchableOpacity
+                style={styles.mt15}
+                onPress={() => this.setState({ visibleModal: null })}
+              >
+                <Text>{i18n.t("cancel")}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        {/* {this.renderButton('Close', () => this.setState({ visibleModal: null }))} */}
+      </View>
+    );
+  };
+
   render() {
     const { navigation } = this.props;
-    const { loaded, index } = this.state;
+    const { loaded, index, visibleModal } = this.state;
 
     if (!loaded) {
       return (
@@ -952,9 +1194,11 @@ class CalendarScreen extends Component {
           value={index}
           onChange={this.setIndex}
           indicatorStyle={{
-            backgroundColor: appColors.tuna,
+            backgroundColor: appColors.solidWhite,
             height: 5,
           }}
+          containerStyle={{ backgroundColor: appColors.primary }}
+          titleStyle={{ color: appColors.solidWhite }}
         >
           <Tab.Item title="Måned" />
           <Tab.Item title="Uge" />
@@ -972,6 +1216,20 @@ class CalendarScreen extends Component {
             <Text h1>Favorite</Text>
           </TabView.Item>
         </TabView>
+
+        <Modal
+          isVisible={visibleModal === 1}
+          backdropColor="#ccc"
+          backdropOpacity={0.9}
+          animationIn="zoomInDown"
+          animationOut="zoomOutUp"
+          animationInTiming={1000}
+          animationOutTiming={1000}
+          backdropTransitionInTiming={1000}
+          backdropTransitionOutTiming={1000}
+        >
+          {this.renderModalContent()}
+        </Modal>
       </View>
     );
   }
