@@ -27,8 +27,15 @@
     },
     "android": {
       "package": "com.lykkebo.lykebbo",
-      "permissions": [ "CAMERA" ],
+      "permissions": [
+        "CAMERA"
+      ],
       "versionCode": 16
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f3bd8bd0-4742-11e9-ac7d-576e812347e6"
+      }
     }
   }
 }
