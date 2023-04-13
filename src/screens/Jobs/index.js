@@ -1,18 +1,6 @@
 // Components
 import React, { Component } from "react";
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Button,
-  Icon,
-  ListItem,
-  Left,
-  Right,
-  Body,
-  Toast,
-} from "native-base";
+
 import {
   View,
   TouchableOpacity,
@@ -22,6 +10,7 @@ import {
   Text,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
 
 // Helpers
 import * as Localization from "expo-localization";
@@ -42,7 +31,12 @@ import { fetchTryHttp } from "../../services/common";
 // Local imports
 import styles from "./styles";
 import NewHeader from "../../common/NewHeader";
-import { appSideBar } from "../../utils/constants";
+import {
+  appColors,
+  appNumbers,
+  appSideBar,
+  appStrings,
+} from "../../utils/constants";
 import NewLoader from "../../common/NewLoader";
 import { ScrollView } from "react-native";
 
@@ -101,7 +95,7 @@ class JobsScreen extends Component {
     const { navigation } = this.props;
     AsyncStorage.setItem("selectedJobId", JSON.stringify(booking.id)).then(
       () => {
-        navigation.navigate("Jobdetails");
+        navigation.navigate(appStrings.mainStack.jobDetailsScreen);
       }
     );
   }
@@ -137,14 +131,18 @@ class JobsScreen extends Component {
             keyExtractor={(item, index) => index.toString()}
             data={datas}
             renderItem={({ item }) => (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => this.openBooking(item)}>
                 <View
-                  style={{ marginLeft: 0, borderWidth: 1 }}
-                  onPress={() => {
-                    this.openBooking(item);
+                  style={{
+                    marginLeft: 0,
+                    borderBottomWidth: 1,
+                    borderColor: "#ccc",
+                    paddingVertical: appNumbers.number_10,
+                    paddingHorizontal: appNumbers.number_10,
+                    flexDirection: "row",
                   }}
                 >
-                  <View>
+                  <View style={{ flex: 1 }}>
                     <Text numberOfLines={1}>
                       #{`${item.id} ${item.kunde.name}`}
                     </Text>
@@ -153,10 +151,7 @@ class JobsScreen extends Component {
                     </Text>
                   </View>
                   <View>
-                    {/* <Icon
-                        name="arrow-forward"
-                        onPress={() => this.openBooking(item)}
-                      /> */}
+                    <Ionicons name="chevron-forward" size={24} color="#ccc" />
                   </View>
                 </View>
               </TouchableOpacity>

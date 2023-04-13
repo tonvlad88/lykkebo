@@ -98,191 +98,192 @@ class JobdetailsScreen extends Component {
     const { navigation, updateWorkingDay } = this.props;
     const { isLoading, datas, isLoadingToggle } = this.props.jobDetails;
 
-    if (isLoading) {
-      return (
-        <View>
-          <CustomHeader />
-          <CustomLoading showmodal />
-        </View>
-      );
-    }
+    // if (isLoading) {
+    //   return (
+    //     <View>
+    //       <CustomHeader />
+    //       <CustomLoading showmodal />
+    //     </View>
+    //   );
+    // }
 
     // console.log('datas.booking', datas.booking)
 
-    return (
-      <Container style={styles.container}>
-        <StatusBar hidden />
-        <Header style={{ backgroundColor: "#2E3D43" }}>
-          <Left>
-            {Number(isFromTimeRec) === 1 ? (
-              <Button transparent>
-                <Icon
-                  style={{ color: "#ffffff" }}
-                  size={40}
-                  name="arrow-back"
-                  onPress={() => {
-                    AsyncStorage.setItem("isFromTimeRec", "0").then(() => {
-                      navigation.navigate("TimeTrackerDetail");
-                    });
-                  }}
-                />
-              </Button>
-            ) : (
-              <Button transparent>
-                <Icon
-                  style={{ color: "#ffffff" }}
-                  size={40}
-                  name="arrow-back"
-                  onPress={() => navigation.navigate("Jobs")}
-                />
-              </Button>
-            )}
-          </Left>
-          <Body style={{ flex: 1 }}>
-            <Title
-              numberOfLines={1}
-              style={{ textAlign: "center", color: "white" }}
-            >
-              {datas.booking.title}
-            </Title>
-          </Body>
-          <Right>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("UploadImage");
-              }}
-            >
-              <Icon name="camera" style={{ color: "white" }} />
-            </TouchableOpacity>
-          </Right>
-        </Header>
-        <View
-          style={{
-            width: "100%",
-            height: 3,
-            backgroundColor: "#323248",
-            marginBottom: 1,
-          }}
-        />
+    return <Text>details</Text>;
+    // return (
+    //   <Container style={styles.container}>
+    //     <StatusBar hidden />
+    //     <Header style={{ backgroundColor: "#2E3D43" }}>
+    //       <Left>
+    //         {Number(isFromTimeRec) === 1 ? (
+    //           <Button transparent>
+    //             <Icon
+    //               style={{ color: "#ffffff" }}
+    //               size={40}
+    //               name="arrow-back"
+    //               onPress={() => {
+    //                 AsyncStorage.setItem("isFromTimeRec", "0").then(() => {
+    //                   navigation.navigate("TimeTrackerDetail");
+    //                 });
+    //               }}
+    //             />
+    //           </Button>
+    //         ) : (
+    //           <Button transparent>
+    //             <Icon
+    //               style={{ color: "#ffffff" }}
+    //               size={40}
+    //               name="arrow-back"
+    //               onPress={() => navigation.navigate("Jobs")}
+    //             />
+    //           </Button>
+    //         )}
+    //       </Left>
+    //       <Body style={{ flex: 1 }}>
+    //         <Title
+    //           numberOfLines={1}
+    //           style={{ textAlign: "center", color: "white" }}
+    //         >
+    //           {datas.booking.title}
+    //         </Title>
+    //       </Body>
+    //       <Right>
+    //         <TouchableOpacity
+    //           onPress={() => {
+    //             navigation.navigate("UploadImage");
+    //           }}
+    //         >
+    //           <Icon name="camera" style={{ color: "white" }} />
+    //         </TouchableOpacity>
+    //       </Right>
+    //     </Header>
+    //     <View
+    //       style={{
+    //         width: "100%",
+    //         height: 3,
+    //         backgroundColor: "#323248",
+    //         marginBottom: 1,
+    //       }}
+    //     />
 
-        <Content>
-          <View style={styles.sectionSeparator} />
-          <CustomerSection info={datas.booking} />
+    //     <Content>
+    //       <View style={styles.sectionSeparator} />
+    //       <CustomerSection info={datas.booking} />
 
-          <View style={styles.sectionSeparator} />
-          <BookingSection
-            info={datas.booking}
-            user={userRelation}
-            showSpecifyModal={(isShow) => {
-              this.setState({ showSpecifyModal: isShow });
-            }}
-          />
+    //       <View style={styles.sectionSeparator} />
+    //       <BookingSection
+    //         info={datas.booking}
+    //         user={userRelation}
+    //         showSpecifyModal={(isShow) => {
+    //           this.setState({ showSpecifyModal: isShow });
+    //         }}
+    //       />
 
-          <View style={styles.sectionSeparator} />
-          <ApprenticeSection info={datas.booking} user={userRelation} />
+    //       <View style={styles.sectionSeparator} />
+    //       <ApprenticeSection info={datas.booking} user={userRelation} />
 
-          <View style={styles.sectionSeparator} />
-          <TimelineSection
-            info={datas.booking}
-            user={userRelation}
-            navigation={navigation}
-          />
+    //       <View style={styles.sectionSeparator} />
+    //       <TimelineSection
+    //         info={datas.booking}
+    //         user={userRelation}
+    //         navigation={navigation}
+    //       />
 
-          <View style={styles.sectionSeparator} />
-          <TodoSection info={datas.booking} user={userRelation} />
+    //       <View style={styles.sectionSeparator} />
+    //       <TodoSection info={datas.booking} user={userRelation} />
 
-          <View style={styles.sectionSeparator} />
-          <NoteSection info={datas.booking} />
+    //       <View style={styles.sectionSeparator} />
+    //       <NoteSection info={datas.booking} />
 
-          <View style={styles.sectionSeparator} />
-          <ImageSection
-            showCameraIcon
-            title={i18n.t("pictures")}
-            info={datas.booking.booking_info.images}
-            isAttachment={false}
-            navigation={navigation}
-          />
+    //       <View style={styles.sectionSeparator} />
+    //       <ImageSection
+    //         showCameraIcon
+    //         title={i18n.t("pictures")}
+    //         info={datas.booking.booking_info.images}
+    //         isAttachment={false}
+    //         navigation={navigation}
+    //       />
 
-          <View style={styles.sectionSeparator} />
-          <ImageSection
-            showCameraIcon={false}
-            title={`${i18n.t("ongoingjob")} ${i18n.t("pictures")}`}
-            info={datas.booking.booking_info.before_photos}
-            isAttachment
-            navigation={navigation}
-          />
+    //       <View style={styles.sectionSeparator} />
+    //       <ImageSection
+    //         showCameraIcon={false}
+    //         title={`${i18n.t("ongoingjob")} ${i18n.t("pictures")}`}
+    //         info={datas.booking.booking_info.before_photos}
+    //         isAttachment
+    //         navigation={navigation}
+    //       />
 
-          <View style={styles.sectionSeparator} />
-          <ImageSection
-            showCameraIcon={false}
-            title={`${i18n.t("done")} ${i18n.t("pictures")}`}
-            isAttachment
-            info={datas.booking.booking_info.after_photos}
-            navigation={navigation}
-          />
+    //       <View style={styles.sectionSeparator} />
+    //       <ImageSection
+    //         showCameraIcon={false}
+    //         title={`${i18n.t("done")} ${i18n.t("pictures")}`}
+    //         isAttachment
+    //         info={datas.booking.booking_info.after_photos}
+    //         navigation={navigation}
+    //       />
 
-          <View style={styles.sectionSeparator} />
+    //       <View style={styles.sectionSeparator} />
 
-          <Modal isVisible={showSpecifyModal}>
-            <View
-              style={{ borderRadius: 5, flex: 1, backgroundColor: "#E8E8E8" }}
-            >
-              <Header noShadow noRight style={{ backgroundColor: "#F0F0F0" }}>
-                <Left style={{ flex: 1 }}>
-                  <Button
-                    transparent
-                    onPress={() => {
-                      this.setState({ showSpecifyModal: false });
-                    }}
-                  >
-                    <Icon name="arrow-back" style={{ color: "black" }} />
-                  </Button>
-                </Left>
-                <Body style={{ flex: 3 }}>
-                  <Text
-                    style={{
-                      textAlign: "center",
-                      width: "100%",
-                      fontWeight: "bold",
-                      fontSize: 25,
-                    }}
-                  >
-                    Arbejdsdage
-                  </Text>
-                </Body>
-                <Right />
-              </Header>
-              <View style={styles.sectionSeparator} />
-              {isLoadingToggle ? (
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <ActivityIndicator size="small" />
-                  <Text>Processing...</Text>
-                </View>
-              ) : (
-                <SpecifySection
-                  workingDays={datas.booking.workingDays}
-                  toggleWorkingDay={(val, datestamp) => {
-                    const data = {
-                      user_id: userId,
-                      job_id: datas.booking.job_id,
-                      date: datestamp,
-                      toggle: val,
-                    };
-                    updateWorkingDay(data);
-                  }}
-                />
-              )}
-            </View>
-          </Modal>
-        </Content>
-      </Container>
-    );
+    //       <Modal isVisible={showSpecifyModal}>
+    //         <View
+    //           style={{ borderRadius: 5, flex: 1, backgroundColor: "#E8E8E8" }}
+    //         >
+    //           <Header noShadow noRight style={{ backgroundColor: "#F0F0F0" }}>
+    //             <Left style={{ flex: 1 }}>
+    //               <Button
+    //                 transparent
+    //                 onPress={() => {
+    //                   this.setState({ showSpecifyModal: false });
+    //                 }}
+    //               >
+    //                 <Icon name="arrow-back" style={{ color: "black" }} />
+    //               </Button>
+    //             </Left>
+    //             <Body style={{ flex: 3 }}>
+    //               <Text
+    //                 style={{
+    //                   textAlign: "center",
+    //                   width: "100%",
+    //                   fontWeight: "bold",
+    //                   fontSize: 25,
+    //                 }}
+    //               >
+    //                 Arbejdsdage
+    //               </Text>
+    //             </Body>
+    //             <Right />
+    //           </Header>
+    //           <View style={styles.sectionSeparator} />
+    //           {isLoadingToggle ? (
+    //             <View
+    //               style={{
+    //                 flex: 1,
+    //                 justifyContent: "center",
+    //                 alignItems: "center",
+    //               }}
+    //             >
+    //               <ActivityIndicator size="small" />
+    //               <Text>Processing...</Text>
+    //             </View>
+    //           ) : (
+    //             <SpecifySection
+    //               workingDays={datas.booking.workingDays}
+    //               toggleWorkingDay={(val, datestamp) => {
+    //                 const data = {
+    //                   user_id: userId,
+    //                   job_id: datas.booking.job_id,
+    //                   date: datestamp,
+    //                   toggle: val,
+    //                 };
+    //                 updateWorkingDay(data);
+    //               }}
+    //             />
+    //           )}
+    //         </View>
+    //       </Modal>
+    //     </Content>
+    //   </Container>
+    // );
   }
 }
 

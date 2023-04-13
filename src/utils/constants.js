@@ -22,6 +22,7 @@ export const appStrings = {
     signInScreen: "SignInScreen",
     signUpScreen: "SignUpScreen",
     appStack: "AppStack",
+    jobDetailsScreen: "JobDetailsScreen",
   },
   appStack: {
     en: {

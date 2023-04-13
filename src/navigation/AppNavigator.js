@@ -31,7 +31,7 @@ import CalendarScreen from "../screens/Calendar/MonthlyCalendar/Calendar";
 import NewSideBar from "../screens/sidebar/NewSideBar";
 import { appStrings } from "../utils/constants";
 import JobsScreen from "../screens/Jobs";
-// import JobdetailsScreen from "../screens/Jobdetails";
+import JobdetailsScreen from "../screens/Jobdetails";
 import TimeScreen from "../screens/Time";
 // import TimeDetailsScreen from '../screens/TimeDetails';
 // import TimeDetailsResponsibleScreen from '../screens/TimeDetails/responsible';
@@ -203,6 +203,10 @@ const MainStack = () => (
     <Stack.Screen
       name={appStrings.mainStack.signUpScreen}
       component={SignUpScreen}
+    />
+    <Stack.Screen
+      name={appStrings.mainStack.jobDetailsScreen}
+      component={JobdetailsScreen}
     />
     <Stack.Screen name={appStrings.mainStack.appStack} component={AppStack} />
   </Stack.Navigator>
