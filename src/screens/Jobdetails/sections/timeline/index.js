@@ -1,14 +1,11 @@
 // Main Components
-import React, { Component } from 'react';
-import {
-  View, Switch, Alert, Platform,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { Component } from "react";
+import { View, Switch, Alert, Platform, Text } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Content,
   Button,
   ListItem,
-  Text,
   Left,
   Right,
   Body,
@@ -19,51 +16,57 @@ import {
   TabHeading,
   Icon,
   Title,
-} from 'native-base';
+} from "native-base";
 
 // Packages
-import StepIndicator from 'react-native-step-indicator';
-import axios from 'axios';
-import Modal from 'react-native-modal';
-import { AirbnbRating } from 'react-native-ratings';
-import { connect } from 'react-redux';
+import StepIndicator from "react-native-step-indicator";
+import axios from "axios";
+import Modal from "react-native-modal";
+import { AirbnbRating } from "react-native-ratings";
+import { connect } from "react-redux";
 
 // Actions
-import { getJobDetails, getJobDetailsNoLoading } from '../../../../redux/actions/jobDetails';
+import {
+  getJobDetails,
+  getJobDetailsNoLoading,
+} from "../../../../redux/actions/jobDetails";
 
 // Localization
 
 // Global imports
-import { getBookingStatus } from '../../../../services/common';
+import { getBookingStatus } from "../../../../services/common";
 
 // Local imports
-import UploadProofScreen from '../uploadProof';
-import styles from '../../styles';
+import UploadProofScreen from "../uploadProof";
+import styles from "../../styles";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Ionicons } from "@expo/vector-icons";
+import { appColors, appStrings } from "../../../../utils/constants";
 
 // Local constants
-const labels = ['Ikke startet', 'Kunde kontaktet', 'Igangværende', 'Færdig'];
+const labels = ["Ikke startet", "Kunde kontaktet", "Igangværende", "Færdig"];
 const customStyles = {
   stepIndicatorSize: 35,
   currentStepIndicatorSize: 40,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: '#fe7013',
+  stepStrokeCurrentColor: "#fe7013",
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: '#fe7013',
-  stepStrokeUnFinishedColor: '#aaaaaa',
-  separatorFinishedColor: '#fe7013',
-  separatorUnFinishedColor: '#aaaaaa',
-  stepIndicatorFinishedColor: '#fe7013',
-  stepIndicatorUnFinishedColor: '#ffffff',
-  stepIndicatorCurrentColor: '#ffffff',
+  stepStrokeFinishedColor: "#fe7013",
+  stepStrokeUnFinishedColor: "#aaaaaa",
+  separatorFinishedColor: "#fe7013",
+  separatorUnFinishedColor: "#aaaaaa",
+  stepIndicatorFinishedColor: "#fe7013",
+  stepIndicatorUnFinishedColor: "#ffffff",
+  stepIndicatorCurrentColor: "#ffffff",
   stepIndicatorLabelFontSize: 13,
   currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: '#fe7013',
-  stepIndicatorLabelFinishedColor: '#ffffff',
-  stepIndicatorLabelUnFinishedColor: '#aaaaaa',
-  labelColor: '#999999',
+  stepIndicatorLabelCurrentColor: "#fe7013",
+  stepIndicatorLabelFinishedColor: "#ffffff",
+  stepIndicatorLabelUnFinishedColor: "#aaaaaa",
+  labelColor: "#999999",
   labelSize: 13,
-  currentStepLabelColor: '#fe7013',
+  currentStepLabelColor: "#fe7013",
 };
 
 class TimelineSection extends Component {
@@ -91,7 +94,8 @@ class TimelineSection extends Component {
     // this.updateJobStatusForward = this.updateJobStatusForward.bind(this);
     // this.updateJobStatusBackward = this.updateJobStatusBackward.bind(this);
     // this.customerContactedHandler = this.customerContactedHandler.bind(this);
-    this.customerDoneContactedHandler = this.customerDoneContactedHandler.bind(this);
+    this.customerDoneContactedHandler =
+      this.customerDoneContactedHandler.bind(this);
   }
 
   // updateJobStatusBackward() {
@@ -214,7 +218,10 @@ class TimelineSection extends Component {
   // }
 
   customerDoneContactedHandler(val) {
-    this.setState({isCustomerContactedForDoneStatus: val, currentPosition: 3});
+    this.setState({
+      isCustomerContactedForDoneStatus: val,
+      currentPosition: 3,
+    });
   }
 
   renderConfirmModalContent = () => {
@@ -222,43 +229,43 @@ class TimelineSection extends Component {
     const { getJobDetailsNoLoading } = this.props;
 
     return (
-      <View style={{height: 270, backgroundColor: '#fff'}}>
-        <ListItem itemDivider>
-          <Text style={{color: '#787878'}}>Job er færdig</Text>
-        </ListItem>
-        <ListItem style={styles.noMarginLeft}>
-          <Body>
+      <View style={{ height: 270, backgroundColor: "#fff" }}>
+        <View itemDivider>
+          <Text style={{ color: "#787878" }}>Job er færdig</Text>
+        </View>
+        <View style={styles.noMarginLeft}>
+          <View>
             <Text>Er jobbet godkendt af kunden?</Text>
-          </Body>
-          <Right>
+          </View>
+          <View>
             <Switch
               value={isCustomerContactedForDoneStatus}
-              onValueChange={this.customerDoneContactedHandler} />
-          </Right>
-        </ListItem>
+              onValueChange={this.customerDoneContactedHandler}
+            />
+          </View>
+        </View>
 
         {/* <AirbnbRating defaultRating={5} /> */}
 
         <AirbnbRating
           count={5}
-          reviews={['Terrible', 'Bad', 'Okay', 'Good', 'Fantastisk!']}
-          defaultRating={5} />
+          reviews={["Terrible", "Bad", "Okay", "Good", "Fantastisk!"]}
+          defaultRating={5}
+        />
 
-        <View style={{height: 50, width: '100%', marginTop: 10}}>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View style={{flex: 1, height: 50, paddingRight: 5}}>
-              <Button
+        <View style={{ height: 50, width: "100%", marginTop: 10 }}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
+              <TouchableOpacity
                 disabled={!isCustomerContactedForDoneStatus}
-                full
-                success
                 style={styles.mt15}
                 onPress={() => {
                   if (!isCustomerContactedForDoneStatus) return;
 
-                  AsyncStorage.getItem('user_id').then((userId) => {
-                    AsyncStorage.getItem('token').then((token) => {
-                      AsyncStorage.getItem('baseUrl').then((baseUrl) => {
-                        AsyncStorage.getItem('selectedJobId').then((jobId) => {
+                  AsyncStorage.getItem("user_id").then((userId) => {
+                    AsyncStorage.getItem("token").then((token) => {
+                      AsyncStorage.getItem("baseUrl").then((baseUrl) => {
+                        AsyncStorage.getItem("selectedJobId").then((jobId) => {
                           const postData = {
                             user_id: `${userId}`,
                             job_id: jobId,
@@ -273,35 +280,50 @@ class TimelineSection extends Component {
                             },
                           };
 
-                          axios.post(`${baseUrl}/lykkebo/v1/jobdetails/updateJobStatus`, postData, axiosConfig)
+                          axios
+                            .post(
+                              `${baseUrl}/lykkebo/v1/jobdetails/updateJobStatus`,
+                              postData,
+                              axiosConfig
+                            )
                             .then(() => {
-                              this.setState({currentPosition: 3, visibleConfirmModal: null});
+                              this.setState({
+                                currentPosition: 3,
+                                visibleConfirmModal: null,
+                              });
                               getJobDetailsNoLoading(userId, jobId);
                             })
                             .catch(() => {
-                              this.setState({currentPosition: 3, visibleConfirmModal: null});
+                              this.setState({
+                                currentPosition: 3,
+                                visibleConfirmModal: null,
+                              });
                             });
                         });
                       });
                     });
                   });
-                }}>
+                }}
+              >
                 <Text>Proceed</Text>
-              </Button>
+              </TouchableOpacity>
             </View>
-            <View style={{flex: 1, height: 50, paddingLeft: 5}}>
-              <Button
+            <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
+              <TouchableOpacity
                 full
                 light
                 style={styles.mt15}
-                onPress={() => this.setState({
-                  visibleConfirmModal: null,
-                  currentPosition: 2,
-                  isJobDone: false,
-                  isCustomerContactedForDoneStatus: false,
-                })}>
+                onPress={() =>
+                  this.setState({
+                    visibleConfirmModal: null,
+                    currentPosition: 2,
+                    isJobDone: false,
+                    isCustomerContactedForDoneStatus: false,
+                  })
+                }
+              >
                 <Text>Cancel</Text>
-              </Button>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -310,31 +332,35 @@ class TimelineSection extends Component {
   };
 
   renderBookingStatusQuestion = () => {
-    const {
-      currentPosition,
-      isCustomerContacted,
-      isJobOngoing,
-      isJobDone,
-    } = this.state;
+    const { currentPosition, isCustomerContacted, isJobOngoing, isJobDone } =
+      this.state;
 
     const { user } = this.props;
 
     if (currentPosition === 0 && Number(user) < 3) {
       return (
-        <ListItem style={styles.noMarginLeft}>
-          <Body>
+        <View
+          style={{
+            padding: 10,
+            flexDirection: "row",
+            alignItems: "center",
+            borderTopWidth: 1,
+            borderTopColor: appColors.solidGrey,
+          }}
+        >
+          <View style={{ flex: 1 }}>
             <Text>Er kunden kontaktet?</Text>
-          </Body>
-          <Right>
+          </View>
+          <View>
             <Switch
               value={isCustomerContacted}
               onValueChange={(val) => {
                 if (val) {
-                  this.setState({isCustomerContacted: true});
-                  AsyncStorage.getItem('user_id').then((userId) => {
-                    AsyncStorage.getItem('token').then((token) => {
-                      AsyncStorage.getItem('baseUrl').then((baseUrl) => {
-                        AsyncStorage.getItem('selectedJobId').then((jobId) => {
+                  this.setState({ isCustomerContacted: true });
+                  AsyncStorage.getItem("user_id").then((userId) => {
+                    AsyncStorage.getItem("token").then((token) => {
+                      AsyncStorage.getItem("baseUrl").then((baseUrl) => {
+                        AsyncStorage.getItem("selectedJobId").then((jobId) => {
                           const postData = {
                             user_id: `${userId}`,
                             job_id: jobId,
@@ -349,16 +375,23 @@ class TimelineSection extends Component {
                             },
                           };
 
-                          axios.post(`${baseUrl}/lykkebo/v1/jobdetails/updateJobStatus`, postData, axiosConfig)
+                          axios
+                            .post(
+                              `${baseUrl}/lykkebo/v1/jobdetails/updateJobStatus`,
+                              postData,
+                              axiosConfig
+                            )
                             .then(() => {
-                              this.setState({currentPosition: currentPosition + 1});
+                              this.setState({
+                                currentPosition: currentPosition + 1,
+                              });
                             })
                             .catch((error) => {
-                              Toast.show({
-                                text: error.message,
-                                position: 'top',
-                                duration: 5000,
-                              });
+                              // Toast.show({
+                              //   text: error.message,
+                              //   position: 'top',
+                              //   duration: 5000,
+                              // });
                             });
                         });
                       });
@@ -366,29 +399,42 @@ class TimelineSection extends Component {
                   });
                   // this.setState({isCustomerContacted: val, currentPosition: 1});
                 }
-              }} />
-          </Right>
-        </ListItem>
+              }}
+            />
+          </View>
+        </View>
       );
     } else if (currentPosition === 1 && Number(user) < 3) {
       return (
-        <ListItem style={styles.noMarginLeft}>
-          <Body>
+        <View
+          style={{
+            padding: 10,
+            flexDirection: "row",
+            alignItems: "center",
+            borderTopWidth: 1,
+            borderTopColor: appColors.solidGrey,
+          }}
+        >
+          <View style={{ flex: 1 }}>
             <Text>Er jobbet igangsat?</Text>
-          </Body>
-          <Right>
+          </View>
+          <View>
             <Switch
               value={isJobOngoing}
               onValueChange={(val) => {
-                this.setState({isJobOngoing: true});
+                this.setState({ isJobOngoing: true });
                 if (val) {
                   Alert.alert(
-                    '',
-                    'Mindst 2 billeder. 1 fyldestgørende før billede + 1 billede af Lykkeboskilt synligt fra offentlig vej. Fortsæt?',
+                    "",
+                    "Mindst 2 billeder. 1 fyldestgørende før billede + 1 billede af Lykkeboskilt synligt fra offentlig vej. Fortsæt?",
                     [
-                      {text: 'Cancel', onPress: () => this.setState({isJobOngoing: false}), style: 'cancel'},
                       {
-                        text: 'OK',
+                        text: "Cancel",
+                        onPress: () => this.setState({ isJobOngoing: false }),
+                        style: "cancel",
+                      },
+                      {
+                        text: "OK",
                         onPress: () => {
                           // this.props.navigation.navigate('uploadProof')
                           this.setState({
@@ -436,31 +482,44 @@ class TimelineSection extends Component {
                   //   });
                   // });
                   // // this.setState({isCustomerContacted: val, currentPosition: 1});
-              }
-            }} />
-          </Right>
-        </ListItem>
+                }
+              }}
+            />
+          </View>
+        </View>
       );
     } else if (currentPosition === 2 && Number(user) < 3) {
       return (
-        <ListItem style={styles.noMarginLeft}>
-          <Body>
+        <View
+          style={{
+            padding: 10,
+            flexDirection: "row",
+            alignItems: "center",
+            borderTopWidth: 1,
+            borderTopColor: appColors.solidGrey,
+          }}
+        >
+          <View style={{ flex: 1 }}>
             <Text>Er jobbet færdigt?</Text>
-          </Body>
-          <Right>
+          </View>
+          <View>
             <Switch
               value={isJobDone}
               onValueChange={(val) => {
                 if (val) {
                   Alert.alert(
-                    '',
-                    'Mindst 2 efter billeder af det færdige resultat. Fortsæt?',
+                    "",
+                    "Mindst 2 efter billeder af det færdige resultat. Fortsæt?",
                     [
-                      {text: 'Cancel', onPress: () => this.setState({isJobOngoing: false}), style: 'cancel'},
                       {
-                        text: 'OK',
+                        text: "Cancel",
+                        onPress: () => this.setState({ isJobOngoing: false }),
+                        style: "cancel",
+                      },
+                      {
+                        text: "OK",
                         onPress: () => {
-                        // this.props.navigation.navigate('uploadProof')
+                          // this.props.navigation.navigate('uploadProof')
                           this.setState({
                             showUploadAfterPhoto: true,
                             isJobDone: true,
@@ -471,9 +530,10 @@ class TimelineSection extends Component {
                     { cancelable: false }
                   );
                 }
-              }} />
-          </Right>
-        </ListItem>
+              }}
+            />
+          </View>
+        </View>
       );
     } else {
       return <View />;
@@ -484,13 +544,13 @@ class TimelineSection extends Component {
     const { currentPosition } = this.state;
     const { getJobDetailsNoLoading } = this.props;
 
-    this.setState({showUploadBeforePhoto: false});
+    this.setState({ showUploadBeforePhoto: false });
 
     setTimeout(() => {
-      AsyncStorage.getItem('user_id').then((userId) => {
-        AsyncStorage.getItem('token').then((token) => {
-          AsyncStorage.getItem('baseUrl').then((baseUrl) => {
-            AsyncStorage.getItem('selectedJobId').then((jobId) => {
+      AsyncStorage.getItem("user_id").then((userId) => {
+        AsyncStorage.getItem("token").then((token) => {
+          AsyncStorage.getItem("baseUrl").then((baseUrl) => {
+            AsyncStorage.getItem("selectedJobId").then((jobId) => {
               const postData = {
                 user_id: `${userId}`,
                 job_id: jobId,
@@ -505,44 +565,49 @@ class TimelineSection extends Component {
                 },
               };
 
-              axios.post(`${baseUrl}/lykkebo/v1/jobdetails/updateJobStatus`, postData, axiosConfig)
+              axios
+                .post(
+                  `${baseUrl}/lykkebo/v1/jobdetails/updateJobStatus`,
+                  postData,
+                  axiosConfig
+                )
                 .then(() => {
-                  this.setState({currentPosition: currentPosition + 1});
+                  this.setState({ currentPosition: currentPosition + 1 });
                   getJobDetailsNoLoading(userId, jobId);
                 })
                 .catch((error) => {
-                  Toast.show({
-                    text: error.message,
-                    position: 'top',
-                    duration: 5000,
-                  });
+                  // Toast.show({
+                  //   text: error.message,
+                  //   position: 'top',
+                  //   duration: 5000,
+                  // });
                 });
             });
           });
         });
       });
     }, 100);
-  }
+  };
 
   uploadAfterPhoto = () => {
     this.setState({
       showUploadAfterPhoto: false,
     });
     setTimeout(() => {
-      this.setState({visibleConfirmModal: 1});
+      this.setState({ visibleConfirmModal: 1 });
     }, 500);
-  }
+  };
 
   getJobDetailsHandler = () => {
     // console.log('tes1111111111t')
     const { getJobDetailsNoLoading } = this.props;
 
-    AsyncStorage.getItem('user_id').then((userId) => {
-      AsyncStorage.getItem('selectedJobId').then((jobId) => {
+    AsyncStorage.getItem("user_id").then((userId) => {
+      AsyncStorage.getItem("selectedJobId").then((jobId) => {
         getJobDetailsNoLoading(userId, jobId);
       });
     });
-  }
+  };
 
   render() {
     const {
@@ -558,35 +623,26 @@ class TimelineSection extends Component {
     const { info } = this.props;
 
     return (
-      <Content>
-        <ListItem itemDivider style={{marginBottom: 10}}>
-          <Text style={{flex: 1, color: '#787878', fontWeight: 'bold'}}>Tidslinje</Text>
-          {/* <Button
-            style={{alignSelf: 'flex-end'}}
-            transparent
-            onPress={this.updateJobStatusBackward}>
-            <Icon style={{fontSize: 40, color: '#fe7013'}} name="arrow-dropleft" />
-            </Button>
-            <Button
-            style={{alignSelf: 'flex-end'}}
-            transparent
-            onPress={this.updateJobStatusForward}>
-            <Icon style={{fontSize: 40, color: '#fe7013'}} name="arrow-dropright" />
-          </Button> */}
-        </ListItem>
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.itemContainer,
+            { backgroundColor: appColors.solidGrey },
+          ]}
+        >
+          <Text style={styles.itemHeaderText}>Tidslinje</Text>
+        </View>
 
-        <StepIndicator
-          stepCount={4}
-          customStyles={customStyles}
-          currentPosition={currentPosition + 1}
-          labels={labels} />
+        <View style={{ padding: 10 }}>
+          <StepIndicator
+            stepCount={4}
+            customStyles={customStyles}
+            currentPosition={currentPosition + 1}
+            labels={labels}
+          />
 
-        <ListItem
-          style={{
-            height: 0, marginLeft: 0, paddingRight: 0, paddingTop: 0, paddingBottom: 0,
-          }} />
-
-        {this.renderBookingStatusQuestion()}
+          {this.renderBookingStatusQuestion()}
+        </View>
 
         <Modal
           isVisible={visibleConfirmModal === 1}
@@ -597,39 +653,46 @@ class TimelineSection extends Component {
           animationInTiming={1000}
           animationOutTiming={1000}
           backdropTransitionInTiming={1000}
-          backdropTransitionOutTiming={1000}>
+          backdropTransitionOutTiming={1000}
+        >
           {this.renderConfirmModalContent()}
         </Modal>
 
-
         <Modal isVisible={showUploadBeforePhoto}>
-          <Header style={{ backgroundColor: '#2E3D43' }}>
-            <Left style={{ flex: 1 }}>
-              <Button transparent>
-                <Icon
-                  style={{color: '#ffffff'}}
+          <View style={{ backgroundColor: "#2E3D43" }}>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity transparent>
+                <Ionicons
+                  style={{ color: "#ffffff" }}
                   size={40}
-                  name="arrow-back"
+                  name={appStrings.icon.chevronBack}
                   onPress={() => {
                     this.setState({
                       showUploadBeforePhoto: false,
                       isJobOngoing: false,
                     });
-                  }} />
-              </Button>
-            </Left>
-            <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Title style={{color: '#ffffff'}}>Upload billede</Title>
-            </Body>
-            <Right style={{flex: 1}}>
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ color: "#ffffff" }}>Upload billede</View>
+            </View>
+            <View style={{ flex: 1 }}>
               {info.booking_info.before_photos.length > 1 ? (
-                <Button transparent onPress={this.uploadBeforePhoto}>
-                  <Text style={{color: 'white'}}>Done</Text>
-                </Button>
+                <TouchableOpacity transparent onPress={this.uploadBeforePhoto}>
+                  <Text style={{ color: "white" }}>Done</Text>
+                </TouchableOpacity>
               ) : null}
-            </Right>
-          </Header>
-          <Tabs
+            </View>
+          </View>
+          {/* <Tabs
             style={{ elevation: 3 }}
             locked
             ref={component => this.imageProofTabsBefore = component}>
@@ -662,37 +725,44 @@ class TimelineSection extends Component {
                   this.setState({photo2UploadedBefore: true});
                 }} />
             </Tab>
-          </Tabs>
+          </Tabs> */}
         </Modal>
 
         <Modal isVisible={showUploadAfterPhoto}>
-          <Header style={{ backgroundColor: '#2E3D43' }}>
-            <Left style={{ flex: 1 }}>
-              <Button transparent>
-                <Icon
-                  style={{color: '#ffffff'}}
+          <View style={{ backgroundColor: "#2E3D43" }}>
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity transparent>
+                <Ionicons
+                  style={{ color: "#ffffff" }}
                   size={40}
-                  name="arrow-back"
+                  name={appStrings.icon.chevronBack}
                   onPress={() => {
                     this.setState({
                       showUploadAfterPhoto: false,
                       isJobDone: false,
                     });
-                  }} />
-              </Button>
-            </Left>
-            <Body style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Title style={{color: '#ffffff'}}>Upload billede</Title>
-            </Body>
-            <Right style={{flex: 1}}>
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <View style={{ color: "#ffffff" }}>Upload billede</View>
+            </View>
+            <View style={{ flex: 1 }}>
               {info.booking_info.after_photos.length > 1 ? (
-                <Button transparent onPress={this.uploadAfterPhoto}>
-                  <Text style={{color: 'white'}}>Done</Text>
-                </Button>
+                <TouchableOpacity transparent onPress={this.uploadAfterPhoto}>
+                  <Text style={{ color: "white" }}>Done</Text>
+                </TouchableOpacity>
               ) : null}
-            </Right>
-          </Header>
-          <Tabs
+            </View>
+          </View>
+          {/* <Tabs
             style={{ elevation: 3 }}
             locked
             ref={component => this.imageProofTabsAfter = component}>
@@ -725,21 +795,21 @@ class TimelineSection extends Component {
                   this.setState({photo2UploadedAfter: true});
                 }} />
             </Tab>
-          </Tabs>
+          </Tabs> */}
         </Modal>
-
-      </Content>
+      </View>
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   jobDetails: state.jobDetails,
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getJobDetails: (userId, jobId) => dispatch(getJobDetails(userId, jobId)),
-  getJobDetailsNoLoading: (userId, jobId) => dispatch(getJobDetailsNoLoading(userId, jobId)),
+  getJobDetailsNoLoading: (userId, jobId) =>
+    dispatch(getJobDetailsNoLoading(userId, jobId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimelineSection);

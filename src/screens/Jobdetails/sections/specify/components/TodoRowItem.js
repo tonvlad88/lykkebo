@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import {
-  View, Text, Switch,
-} from 'react-native';
+import React, { Component } from "react";
+import { View, Text, Switch } from "react-native";
 
 // import config from '../config';
 
-import { Icon } from 'native-base';
-import styles from './styles/TodoRowItemStyles';
-import DateView from './DateView';
+import styles from "./styles/TodoRowItemStyles";
+import DateView from "./DateView";
+import { Ionicons } from "@expo/vector-icons";
+import { appStrings } from "../../../../../utils/constants";
 
 export default class TodoRowItem extends Component {
   render() {
@@ -21,9 +20,12 @@ export default class TodoRowItem extends Component {
         </View>
         <View style={styles.timeline}>
           <View style={styles.timelineVerticalLink} />
-          <Icon
+          <Ionicons
             style={styles.icon}
-            name="md-information-circle" />
+            name={appStrings.icon.informationCircle}
+            size={24}
+            color="black"
+          />
         </View>
         <View style={styles.content}>
           <Text style={styles.text}>Arbejdstid</Text>
@@ -34,7 +36,8 @@ export default class TodoRowItem extends Component {
             onValueChange={(val) => {
               this.props.workingDaysHandler(val, date);
             }}
-            value={Number(workload) > 0 ? true : false} />
+            value={Number(workload) > 0 ? true : false}
+          />
         </View>
       </View>
     );

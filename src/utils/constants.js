@@ -6,10 +6,12 @@ export const appColors = {
   lavaRed: "#DF1111",
   bluishCyan: "#64696C",
   romance: "#323248",
+  davyGrey: "#595959",
   doveGrey: "#6C6C6C",
   boulder: "#777777",
   tuna: "#333248",
   granite: "#808080",
+  solidGrey: "#cccccc",
 };
 
 export const appDateFormats = {
@@ -57,6 +59,15 @@ export const appStrings = {
     post: "post",
     delete: "delete",
     update: "update",
+  },
+  icon: {
+    add: "add",
+    camera: "camera",
+    chevronBack: "chevron-back",
+    chevronForward: "chevron-forward",
+    informationCircle: "information-circle",
+    toggleOn: "toggle-on",
+    toggleOff: "toggle-off",
   },
 };
 
