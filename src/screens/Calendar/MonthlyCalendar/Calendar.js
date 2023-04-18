@@ -15,7 +15,6 @@ import XDate from "xdate";
 import Modal from "react-native-modal";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import axios from "axios";
-import { Dropdown } from "react-native-material-dropdown-v2-fixed";
 import { connect } from "react-redux";
 import moment from "moment";
 import { showMessage } from "react-native-flash-message";
@@ -24,6 +23,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Tab, TabView } from "@rneui/themed";
 import DatePicker from "react-native-datepicker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import SelectDropdown from "react-native-select-dropdown";
 
 // Actions
 
@@ -218,6 +218,7 @@ class CalendarScreen extends Component {
       showEndDate: false,
       dateFrom: XDate(true).toString(appDateFormats.yyyyMMdd),
       dateEnd: XDate(true).toString(appDateFormats.yyyyMMdd),
+      selected1: "Ferie",
     };
   }
 
@@ -388,7 +389,7 @@ class CalendarScreen extends Component {
 
   renderSelectedDateDetails() {
     const { selectedDate, selectedMarkedDateData, isFutureDate } = this.state;
-    console.log("selectedMarkedDateData", selectedMarkedDateData);
+    console.log("selectedMarkedDateData", selectedMarkedDateData[0]?.details);
     if (
       selectedMarkedDateData === undefined ||
       selectedMarkedDateData.length === 0
@@ -690,20 +691,27 @@ class CalendarScreen extends Component {
                   <View
                     style={{
                       width: "100%",
+                      flexDirection: appDirection.row,
                       borderBottomWidth: 2,
                       borderColor: "#6C6C6C",
+                      padding: appNumbers.number_14,
+                      alignItems: appAlignment.center,
                     }}
                   >
-                    <View>
-                      <Text style={{ fontWeight: "bold" }}>
-                        {jsUcfirst(selectedMarkedDateData[0].type)}
-                      </Text>
-                    </View>
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: appNumbers.number_16,
+                        flex: appNumbers.number_1,
+                      }}
+                    >
+                      {jsUcfirst(selectedMarkedDateData[0].type)}
+                    </Text>
                     <View>
                       <TouchableOpacity style={{ marginTop: -4 }}>
                         <Ionicons
                           style={{ color: "#2e3d43" }}
-                          active
+                          size={appNumbers.number_24}
                           onPress={() =>
                             this.setState({ visibleModal: 1, isUpdate: true })
                           }
@@ -714,13 +722,23 @@ class CalendarScreen extends Component {
                   </View>
                   <ScrollView style={{ flex: 1 }}>
                     <TouchableOpacity
-                      style={[styles.mt15, { alignItems: "center" }]}
+                      style={[
+                        styles.mt15,
+                        {
+                          alignItems: "center",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          backgroundColor: "#FEFEFE",
+                          padding: appNumbers.number_10,
+                        },
+                      ]}
                       onPress={() => this.setState({ visibleModal: 1 })}
                     >
                       <Ionicons
                         active
-                        name="ios-add-circle"
+                        name="add-circle"
                         style={{ color: "#DD5044" }}
+                        size={20}
                       />
                       <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
                     </TouchableOpacity>
@@ -732,32 +750,44 @@ class CalendarScreen extends Component {
                       style={{ flex: 1 }}
                     >
                       <View
-                        style={{ width: "100%", justifyContent: "flex-start" }}
+                        style={{
+                          width: "100%",
+                          justifyContent: "flex-start",
+                          flexDirection: "row",
+                          alignItems: appAlignment.center,
+                          paddingHorizontal: appNumbers.number_10,
+                        }}
                       >
-                        <View>
-                          <Icon
-                            active
-                            name="calendar"
-                            style={{ color: "#DD5044" }}
-                          />
-                          <Text>
-                            {`Fra: ${selectedMarkedDateData[0].details[0].formatted_from}`}
-                          </Text>
-                        </View>
+                        <Ionicons
+                          name="calendar"
+                          size={appNumbers.number_20}
+                          style={{ color: "#DD5044" }}
+                        />
+                        <Text
+                          style={{ paddingHorizontal: appNumbers.number_5 }}
+                        >
+                          {`Fra: ${selectedMarkedDateData[0].details[2].formatted_from}`}
+                        </Text>
                       </View>
                       <View
-                        style={{ width: "100%", justifyContent: "flex-start" }}
+                        style={{
+                          width: "100%",
+                          justifyContent: "flex-start",
+                          flexDirection: "row",
+                          alignItems: appAlignment.center,
+                          paddingHorizontal: appNumbers.number_10,
+                        }}
                       >
-                        <View>
-                          <Ionicons
-                            active
-                            name="calendar"
-                            style={{ color: "#DD5044" }}
-                          />
-                          <Text>
-                            {`Til: ${selectedMarkedDateData[0].details[0].formatted_to}`}
-                          </Text>
-                        </View>
+                        <Ionicons
+                          size={appNumbers.number_20}
+                          name="calendar"
+                          style={{ color: "#DD5044" }}
+                        />
+                        <Text
+                          style={{ paddingHorizontal: appNumbers.number_5 }}
+                        >
+                          {`Til: ${selectedMarkedDateData[0].details[2].formatted_to}`}
+                        </Text>
                       </View>
                     </View>
                   </ScrollView>
@@ -1055,14 +1085,12 @@ class CalendarScreen extends Component {
             <View
               style={{
                 width: 90,
-                height: 50,
-                paddingTop: 10,
                 justifyContent: "center",
               }}
             >
               <Text style={[styles.mb10, { color: "#ccc" }]}>Grund</Text>
             </View>
-            <View style={{ flex: 1, height: 50 }}>
+            <View style={{}}>
               {/* <Dropdown
                 label=""
                 labelHeight={0}
@@ -1074,11 +1102,41 @@ class CalendarScreen extends Component {
                 onChangeText={this.onValueChange}
                 icon="chevron-down"
               /> */}
-              <Dropdown
-                icon="chevron-down"
-                iconColor="#E1E1E1"
-                label="Favorite Fruit"
+              <SelectDropdown
                 data={entryStatus}
+                onSelect={(selectedItem, index) => {
+                  this.setState({
+                    selected1: selectedItem.value,
+                  });
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem.value;
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item.value;
+                }}
+                defaultValueByIndex={0} // use default value by index or default value
+                defaultValue={"Ferie"}
+                buttonStyle={{
+                  backgroundColor: "#FFF",
+                  borderWidth: 1,
+                  borderColor: "#cccccc",
+                  marginBottom: 5,
+                }}
+                renderDropdownIcon={(isOpened) => {
+                  return (
+                    <Ionicons
+                      name={isOpened ? "chevron-up" : "chevron-down"}
+                      color={"#444"}
+                      size={18}
+                    />
+                  );
+                }}
+                dropdownIconPosition={"right"}
               />
             </View>
           </View>
@@ -1244,6 +1302,67 @@ class CalendarScreen extends Component {
       </View>
     );
   };
+
+  saveDayInfoHandler() {
+    const { dateFrom, dateEnd, selected1, selectedDate, isUpdate } = this.state;
+
+    AsyncStorage.getItem("user_id").then((userId) => {
+      AsyncStorage.getItem("token").then((token) => {
+        AsyncStorage.getItem("baseUrl").then((baseUrl) => {
+          const tempReason = setDayStatus(selected1);
+          const startDay =
+            dateFrom !== ""
+              ? toTimestamp(new Date(dateFrom))
+              : toTimestamp(new Date(selectedDate));
+          const endDay =
+            dateEnd !== ""
+              ? toTimestamp(new Date(dateEnd))
+              : toTimestamp(new Date(selectedDate));
+
+          const postData = {
+            user_id: `${userId}`,
+            reason: `${tempReason}`,
+            start_day: `${startDay}`,
+            end_day: `${endDay}`,
+          };
+
+          console.log("postData", postData);
+          const axiosConfig = {
+            headers: {
+              // 'Content-Type': 'application/json;charset=UTF-8',
+              // 'Access-Control-Allow-Origin': '*',
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          let url = `${baseUrl}/lykkebo/v1/calendar/create`;
+          if (isUpdate) {
+            url = `${baseUrl}/lykkebo/v1/calendar/update`;
+          }
+
+          axios
+            .post(url, postData, axiosConfig)
+            .then(async () => {
+              await this.getCalendarData(
+                toTimestampWithSeconds(today),
+                selectedDate
+              );
+              this.setState({
+                selected1: "Ferie",
+                visibleModal: null,
+              });
+            })
+            .catch((error) => {
+              // Toast.show({
+              //   text: error.message,
+              //   position: "top",
+              //   duration: 5000,
+              // });
+            });
+        });
+      });
+    });
+  }
 
   render() {
     const { navigation } = this.props;
