@@ -47,10 +47,13 @@ export const appStrings = {
     },
   },
   common: {
+    calendar: "calendar",
+    date: "date",
     danger: "danger",
     height: "height",
     logout: "logout",
     menu: "menu",
+    spinner: "spinner",
     width: "width",
     window: "window",
   },
@@ -62,6 +65,7 @@ export const appStrings = {
   },
   icon: {
     add: "add",
+    calendar: "calendar",
     camera: "camera",
     chevronBack: "chevron-back",
     chevronForward: "chevron-forward",

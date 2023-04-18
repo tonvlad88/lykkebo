@@ -8,6 +8,7 @@ import {
   ScrollView,
   Text,
   Dimensions,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import XDate from "xdate";
@@ -22,6 +23,7 @@ import { TabBar, SceneMap } from "react-native-tab-view";
 import { Ionicons } from "@expo/vector-icons";
 import { Tab, TabView } from "@rneui/themed";
 import DatePicker from "react-native-datepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 // Actions
 
@@ -45,6 +47,7 @@ import TabTwo from "../WeeklyCalendar/index";
 import CustomHeader from "../../../common/Header";
 import NewHeader from "../../../common/NewHeader";
 import {
+  appAlignment,
   appColors,
   appDateFormats,
   appDirection,
@@ -53,6 +56,7 @@ import {
   appStrings,
 } from "../../../utils/constants";
 import NewLoader from "../../../common/NewLoader";
+import { NormalButton } from "../../../common/NewButtons/NormalButton";
 
 i18n.fallbacks = true;
 i18n.translations = { da, en };
@@ -210,6 +214,10 @@ class CalendarScreen extends Component {
       selectedMarkedDateData: {},
       selectedDate: XDate(true).toString(appDateFormats.yyyyMMdd),
       refresh: 0,
+      showStartDate: false,
+      showEndDate: false,
+      dateFrom: XDate(true).toString(appDateFormats.yyyyMMdd),
+      dateEnd: XDate(true).toString(appDateFormats.yyyyMMdd),
     };
   }
 
@@ -971,8 +979,44 @@ class CalendarScreen extends Component {
     );
   };
 
+  toggleStartDateDatePicker = () => {
+    const { showStartDate } = this.state;
+    this.setState({ showStartDate: !showStartDate });
+  };
+
+  toggleEndDateDatePicker = () => {
+    const { showEndDate } = this.state;
+    this.setState({ showEndDate: !showEndDate });
+  };
+
+  setStartDate = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      this.setState({ showStartDate: false });
+    }
+    this.setState({
+      dateFrom: XDate(selectedDate).toString("yyyy-MM-dd"),
+      dateEnd: XDate(selectedDate).toString("yyyy-MM-dd"),
+    });
+  };
+
+  setEndDate = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      this.setState({ showEndDate: false });
+    }
+    this.setState({
+      dateEnd: XDate(selectedDate).toString("yyyy-MM-dd"),
+    });
+  };
+
   renderModalContent = () => {
-    const { selectedDate, isFutureDate } = this.state;
+    const {
+      selectedDate,
+      isFutureDate,
+      dateFrom,
+      dateEnd,
+      showStartDate,
+      showEndDate,
+    } = this.state;
 
     return (
       <View
@@ -1019,7 +1063,7 @@ class CalendarScreen extends Component {
               <Text style={[styles.mb10, { color: "#ccc" }]}>Grund</Text>
             </View>
             <View style={{ flex: 1, height: 50 }}>
-              <Dropdown
+              {/* <Dropdown
                 label=""
                 labelHeight={0}
                 fontSize={20}
@@ -1028,8 +1072,64 @@ class CalendarScreen extends Component {
                 value="Ferie"
                 data={entryStatus}
                 onChangeText={this.onValueChange}
+                icon="chevron-down"
+              /> */}
+              <Dropdown
+                icon="chevron-down"
+                iconColor="#E1E1E1"
+                label="Favorite Fruit"
+                data={entryStatus}
               />
             </View>
+          </View>
+        </View>
+        <View
+          style={{
+            height: 50,
+            width: "100%",
+            borderBottomWidth: 1,
+            borderColor: "#ccc",
+          }}
+        >
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <View
+              style={{
+                width: 90,
+                justifyContent: "center",
+              }}
+            >
+              <Text style={{ color: "#ccc" }}>Fra</Text>
+            </View>
+
+            <NormalButton
+              onPress={this.toggleStartDateDatePicker}
+              containerStyle={{
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
+              }}
+              iconRight={
+                <Ionicons
+                  name={appStrings.icon.calendar}
+                  size={appNumbers.number_24}
+                  color={appColors.lavaRed}
+                />
+              }
+            >
+              <Text style={{ marginRight: appNumbers.number_15 }}>
+                {dateFrom}
+              </Text>
+            </NormalButton>
+            {showStartDate && (
+              <DateTimePicker
+                value={new Date(dateFrom)}
+                mode={appStrings.common.date}
+                onChange={this.setStartDate}
+                display={appStrings.common.calendar}
+              />
+            )}
           </View>
         </View>
         <View
@@ -1044,66 +1144,42 @@ class CalendarScreen extends Component {
             <View
               style={{
                 width: 90,
-                height: 50,
-                paddingTop: 10,
                 justifyContent: "center",
               }}
             >
-              <Text style={[styles.mb10, { color: "#ccc" }]}>Fra</Text>
+              <Text style={{ color: "#ccc" }}>Fra</Text>
             </View>
-            <View style={{ flex: 1, height: 50 }}>
-              <DatePicker
-                defaultDate={new Date(selectedDate)}
-                // minimumDate={new Date(2018, 1, 1)}
-                // maximumDate={new Date(2018, 12, 31)}
-                locale="en"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                // placeHolderText="Select start date"
-                textStyle={{ color: "#000" }}
-                placeHolderTextStyle={{ color: "#ccc" }}
-                onDateChange={this.startDatePickedHandler}
-              />
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            height: 50,
-            width: "100%",
-            borderBottomWidth: 1,
-            borderColor: "#ccc",
-          }}
-        >
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <View
-              style={{
-                width: 90,
-                height: 50,
-                paddingTop: 10,
-                justifyContent: "center",
+
+            <NormalButton
+              onPress={this.toggleEndDateDatePicker}
+              containerStyle={{
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
               }}
+              iconRight={
+                <Ionicons
+                  name={appStrings.icon.calendar}
+                  size={appNumbers.number_24}
+                  color={appColors.lavaRed}
+                />
+              }
             >
-              <Text style={[styles.mb10, { color: "#ccc" }]}>Til</Text>
-            </View>
-            <View style={{ flex: 1, height: 50 }}>
-              <DatePicker
-                defaultDate={new Date(selectedDate)}
-                // minimumDate={new Date(2018, 1, 1)}
-                // maximumDate={new Date(2018, 12, 31)}
-                locale="en"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                // placeHolderText="Select end date"
-                textStyle={{ color: "#000" }}
-                placeHolderTextStyle={{ color: "#ccc" }}
-                onDateChange={this.endDatePickedHandler}
+              <Text style={{ marginRight: appNumbers.number_15 }}>
+                {dateEnd}
+              </Text>
+            </NormalButton>
+            {showEndDate && (
+              <DateTimePicker
+                value={new Date(dateEnd)}
+                mode={appStrings.common.date}
+                onChange={this.setEndDate}
+                display={appStrings.common.calendar}
+                minimumDate={new Date(dateFrom)}
               />
-            </View>
+            )}
           </View>
         </View>
         <View style={{ height: 50, width: "100%", marginTop: 10 }}>
@@ -1138,9 +1214,7 @@ class CalendarScreen extends Component {
 
             <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
               <TouchableOpacity
-                primary
-                full
-                style={styles.mt15}
+                style={[styles.mt15, styles.buttonModal]}
                 onPress={() => this.saveDayInfoHandler()}
               >
                 <Text>{i18n.t("save")}</Text>
@@ -1149,9 +1223,7 @@ class CalendarScreen extends Component {
 
             <View style={{ flex: 1, height: 50 }}>
               <TouchableOpacity
-                danger
-                full
-                style={styles.mt15}
+                style={[styles.mt15, styles.buttonModal]}
                 onPress={() => this.removeDayInfoHandler()}
               >
                 <Text>{i18n.t("delete")}</Text>
@@ -1160,7 +1232,7 @@ class CalendarScreen extends Component {
 
             <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
               <TouchableOpacity
-                style={styles.mt15}
+                style={[styles.mt15, styles.buttonModal]}
                 onPress={() => this.setState({ visibleModal: null })}
               >
                 <Text>{i18n.t("cancel")}</Text>
@@ -1175,7 +1247,7 @@ class CalendarScreen extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { loaded, index, visibleModal } = this.state;
+    const { loaded, index, visibleModal, showStartDate } = this.state;
 
     if (!loaded) {
       return (
