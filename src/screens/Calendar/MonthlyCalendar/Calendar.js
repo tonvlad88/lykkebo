@@ -1404,7 +1404,7 @@ class CalendarScreen extends Component {
           <TabView.Item
             style={{ backgroundColor: appColors.tuna, width: "100%" }}
           >
-            <Text h1>Favorite</Text>
+            {this.secondRoute()}
           </TabView.Item>
         </TabView>
 

@@ -5,6 +5,7 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,6 +16,8 @@ import XDate from "xdate";
 import Modal from "react-native-modal";
 import axios from "axios";
 import { Dropdown } from "react-native-material-dropdown-v2-fixed";
+import SelectDropdown from "react-native-select-dropdown";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import {
   toTimestampWithSeconds,
@@ -27,8 +30,23 @@ import NewHeader from "../../../common/NewHeader";
 
 import Calendar from "./calendar/Calendar";
 import Events from "./events/Events";
-import { appSideBar } from "../../../utils/constants";
+import {
+  appAlignment,
+  appColors,
+  appDateFormats,
+  appDirection,
+  appNumbers,
+  appSideBar,
+  appStrings,
+} from "../../../utils/constants";
 import NewLoader from "../../../common/NewLoader";
+import { NormalButton } from "../../../common/NewButtons/NormalButton";
+import { Ionicons } from "@expo/vector-icons";
+
+// Localization
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
+import { da, en } from "../../../services/translations";
 
 const entryStatus = [
   { value: "Ferie", label: "Ferie" },
@@ -59,6 +77,11 @@ export default class App extends React.Component {
       dateFrom: "",
       dateEnd: "",
       loaded: false,
+      showStartDate: false,
+      showEndDate: false,
+      dateFrom: XDate(true).toString(appDateFormats.yyyyMMdd),
+      dateEnd: XDate(true).toString(appDateFormats.yyyyMMdd),
+      selected1: "Ferie",
     };
     this.onSelectDate = this.onSelectDate.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
@@ -133,11 +156,11 @@ export default class App extends React.Component {
               });
             })
             .catch((error) => {
-              Toast.show({
-                text: error.message,
-                position: "top",
-                duration: 5000,
-              });
+              // Toast.show({
+              //   text: error.message,
+              //   position: "top",
+              //   duration: 5000,
+              // });
             });
         });
       });
@@ -198,6 +221,8 @@ export default class App extends React.Component {
             end_day: `${endDay}`,
           };
 
+          console.log("postData", postData);
+          // return;
           const axiosConfig = {
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
@@ -275,19 +300,201 @@ export default class App extends React.Component {
               });
             })
             .catch((error) => {
-              Toast.show({
-                text: error.message,
-                position: "top",
-                duration: 5000,
-              });
+              // Toast.show({
+              //   text: error.message,
+              //   position: "top",
+              //   duration: 5000,
+              // });
             });
         });
       });
     });
   };
 
+  toggleStartDateDatePicker = () => {
+    const { showStartDate } = this.state;
+    this.setState({ showStartDate: !showStartDate });
+  };
+
+  toggleEndDateDatePicker = () => {
+    const { showEndDate } = this.state;
+    this.setState({ showEndDate: !showEndDate });
+  };
+
+  setStartDate = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      this.setState({ showStartDate: false });
+    }
+    this.setState({
+      selectedDate: XDate(selectedDate).toString("yyyy-MM-dd"),
+    });
+  };
+
+  setEndDate = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      this.setState({ showEndDate: false });
+    }
+    this.setState({
+      selectedDate: XDate(selectedDate).toString("yyyy-MM-dd"),
+    });
+  };
+
   renderModalContent = () => {
-    const { selectedDate } = this.state;
+    const {
+      selectedDate,
+      isFutureDate,
+      dateFrom,
+      dateEnd,
+      showStartDate,
+      showEndDate,
+    } = this.state;
+
+    // return (
+    //   <View
+    //     style={{
+    //       flexDirection: "column",
+    //       backgroundColor: "white",
+    //       padding: 22,
+    //       justifyContent: "center",
+    //       alignItems: "center",
+    //       borderRadius: 4,
+    //       borderColor: "rgba(0, 0, 0, 0.1)",
+    //     }}
+    //   >
+    //     <View
+    //       style={{
+    //         height: 50,
+    //         width: "100%",
+    //         borderBottomWidth: 1,
+    //         borderColor: "#ccc",
+    //       }}
+    //     >
+    //       <View style={{ flex: 1, flexDirection: "row" }}>
+    //         <View
+    //           style={{
+    //             width: 90,
+    //             height: 50,
+    //             paddingTop: 10,
+    //             justifyContent: "center",
+    //           }}
+    //         >
+    //           <Text style={styles.mb10}>Grund</Text>
+    //         </View>
+    //         <View style={{ flex: 1, height: 50 }}>
+    //           <Dropdown
+    //             label=""
+    //             labelHeight={0}
+    //             fontSize={20}
+    //             containerStyle={{ paddingLeft: 10 }}
+    //             inputContainerStyle={{ borderBottomColor: "transparent" }}
+    //             value="Ferie"
+    //             data={entryStatus}
+    //             onChangeText={this.onValueChange}
+    //           />
+    //         </View>
+    //       </View>
+    //     </View>
+    //     <View
+    //       style={{
+    //         height: 50,
+    //         width: "100%",
+    //         borderBottomWidth: 1,
+    //         borderColor: "#ccc",
+    //       }}
+    //     >
+    //       <View style={{ flex: 1, flexDirection: "row" }}>
+    //         <View
+    //           style={{
+    //             width: 90,
+    //             height: 50,
+    //             paddingTop: 10,
+    //             justifyContent: "center",
+    //           }}
+    //         >
+    //           <Text style={styles.mb10}>Fra</Text>
+    //         </View>
+    //         <View style={{ flex: 1, height: 50 }}>
+    //           {/* <DatePicker
+    //             defaultDate={new Date(selectedDate)}
+    //             // minimumDate={new Date(2018, 1, 1)}
+    //             // maximumDate={new Date(2018, 12, 31)}
+    //             locale="en"
+    //             timeZoneOffsetInMinutes={undefined}
+    //             modalTransparent={false}
+    //             animationType="fade"
+    //             androidMode="default"
+    //             // placeHolderText="Select start date"
+    //             textStyle={{ color: "#000" }}
+    //             placeHolderTextStyle={{ color: "#ccc" }}
+    //             onDateChange={this.startDatePickedHandler}
+    //           /> */}
+    //         </View>
+    //       </View>
+    //     </View>
+    //     <View
+    //       style={{
+    //         height: 50,
+    //         width: "100%",
+    //         borderBottomWidth: 1,
+    //         borderColor: "#ccc",
+    //       }}
+    //     >
+    //       <View style={{ flex: 1, flexDirection: "row" }}>
+    //         <View
+    //           style={{
+    //             width: 90,
+    //             height: 50,
+    //             paddingTop: 10,
+    //             justifyContent: "center",
+    //           }}
+    //         >
+    //           <Text style={styles.mb10}>Til</Text>
+    //         </View>
+    //         <View style={{ flex: 1, height: 50 }}>
+    //           {/* <DatePicker
+    //             defaultDate={new Date(selectedDate)}
+    //             // minimumDate={new Date(2018, 1, 1)}
+    //             // maximumDate={new Date(2018, 12, 31)}
+    //             locale="en"
+    //             timeZoneOffsetInMinutes={undefined}
+    //             modalTransparent={false}
+    //             animationType="fade"
+    //             androidMode="default"
+    //             // placeHolderText="Select end date"
+    //             textStyle={{ color: "#000" }}
+    //             placeHolderTextStyle={{ color: "#ccc" }}
+    //             onDateChange={this.endDatePickedHandler}
+    //           /> */}
+    //         </View>
+    //       </View>
+    //     </View>
+    //     <View style={{ height: 50, width: "100%", marginTop: 10 }}>
+    //       <View style={{ flex: 1, flexDirection: "row" }}>
+    //         <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
+    //           <TouchableOpacity
+    //             full
+    //             light
+    //             style={styles.mt15}
+    //             onPress={this.saveDayInfoHandler}
+    //           >
+    //             <Text>Save</Text>
+    //           </TouchableOpacity>
+    //         </View>
+    //         <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
+    //           <TouchableOpacity
+    //             full
+    //             light
+    //             style={styles.mt15}
+    //             onPress={() => this.setState({ visibleModal: null })}
+    //           >
+    //             <Text>Luk</Text>
+    //           </TouchableOpacity>
+    //         </View>
+    //       </View>
+    //     </View>
+    //     {/* {this.renderButton('Close', () => this.setState({ visibleModal: null }))} */}
+    //   </View>
+    // );
 
     return (
       <View
@@ -301,6 +508,19 @@ export default class App extends React.Component {
           borderColor: "rgba(0, 0, 0, 0.1)",
         }}
       >
+        {/* {isFutureDate ? (
+          <View />
+        ) : (
+          <View style={{height: 50, width: '100%', marginTop: 10}}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <View style={{
+                flex: 1, height: 50, paddingRight: 5, borderWidth: 0.5, borderColor: '#E2B838', backgroundColor: '#FFFCBF', justifyContent: 'center',
+              }}>
+                <Text style={{textAlign: 'center'}}>Du kan ikke melde fravær tilbage i tiden.</Text>
+              </View>
+            </View>
+          </View>
+        )} */}
         <View
           style={{
             height: 50,
@@ -313,15 +533,13 @@ export default class App extends React.Component {
             <View
               style={{
                 width: 90,
-                height: 50,
-                paddingTop: 10,
                 justifyContent: "center",
               }}
             >
-              <Text style={styles.mb10}>Grund</Text>
+              <Text style={[styles.mb10, { color: "#ccc" }]}>Grund</Text>
             </View>
-            <View style={{ flex: 1, height: 50 }}>
-              <Dropdown
+            <View style={{}}>
+              {/* <Dropdown
                 label=""
                 labelHeight={0}
                 fontSize={20}
@@ -330,6 +548,43 @@ export default class App extends React.Component {
                 value="Ferie"
                 data={entryStatus}
                 onChangeText={this.onValueChange}
+                icon="chevron-down"
+              /> */}
+              <SelectDropdown
+                data={entryStatus}
+                onSelect={(selectedItem, index) => {
+                  this.setState({
+                    selected1: selectedItem.value,
+                  });
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem.value;
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item.value;
+                }}
+                defaultValueByIndex={0} // use default value by index or default value
+                defaultValue={"Ferie"}
+                buttonStyle={{
+                  backgroundColor: "#FFF",
+                  borderWidth: 1,
+                  borderColor: "#cccccc",
+                  marginBottom: 5,
+                }}
+                renderDropdownIcon={(isOpened) => {
+                  return (
+                    <Ionicons
+                      name={isOpened ? "chevron-up" : "chevron-down"}
+                      color={"#444"}
+                      size={18}
+                    />
+                  );
+                }}
+                dropdownIconPosition={"right"}
               />
             </View>
           </View>
@@ -342,33 +597,45 @@ export default class App extends React.Component {
             borderColor: "#ccc",
           }}
         >
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <View
               style={{
                 width: 90,
-                height: 50,
-                paddingTop: 10,
                 justifyContent: "center",
               }}
             >
-              <Text style={styles.mb10}>Fra</Text>
+              <Text style={{ color: "#ccc" }}>Fra</Text>
             </View>
-            <View style={{ flex: 1, height: 50 }}>
-              {/* <DatePicker
-                defaultDate={new Date(selectedDate)}
-                // minimumDate={new Date(2018, 1, 1)}
-                // maximumDate={new Date(2018, 12, 31)}
-                locale="en"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                // placeHolderText="Select start date"
-                textStyle={{ color: "#000" }}
-                placeHolderTextStyle={{ color: "#ccc" }}
-                onDateChange={this.startDatePickedHandler}
-              /> */}
-            </View>
+
+            <NormalButton
+              onPress={this.toggleStartDateDatePicker}
+              containerStyle={{
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
+              }}
+              iconRight={
+                <Ionicons
+                  name={appStrings.icon.calendar}
+                  size={appNumbers.number_24}
+                  color={appColors.lavaRed}
+                />
+              }
+            >
+              <Text style={{ marginRight: appNumbers.number_15 }}>
+                {selectedDate}
+              </Text>
+            </NormalButton>
+            {showStartDate && (
+              <DateTimePicker
+                value={new Date(selectedDate)}
+                mode={appStrings.common.date}
+                onChange={this.setStartDate}
+                display={appStrings.common.calendar}
+              />
+            )}
           </View>
         </View>
         <View
@@ -383,51 +650,60 @@ export default class App extends React.Component {
             <View
               style={{
                 width: 90,
-                height: 50,
-                paddingTop: 10,
                 justifyContent: "center",
               }}
             >
-              <Text style={styles.mb10}>Til</Text>
+              <Text style={{ color: "#ccc" }}>Fra</Text>
             </View>
-            <View style={{ flex: 1, height: 50 }}>
-              {/* <DatePicker
-                defaultDate={new Date(selectedDate)}
-                // minimumDate={new Date(2018, 1, 1)}
-                // maximumDate={new Date(2018, 12, 31)}
-                locale="en"
-                timeZoneOffsetInMinutes={undefined}
-                modalTransparent={false}
-                animationType="fade"
-                androidMode="default"
-                // placeHolderText="Select end date"
-                textStyle={{ color: "#000" }}
-                placeHolderTextStyle={{ color: "#ccc" }}
-                onDateChange={this.endDatePickedHandler}
-              /> */}
-            </View>
+
+            <NormalButton
+              onPress={this.toggleEndDateDatePicker}
+              containerStyle={{
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
+              }}
+              iconRight={
+                <Ionicons
+                  name={appStrings.icon.calendar}
+                  size={appNumbers.number_24}
+                  color={appColors.lavaRed}
+                />
+              }
+            >
+              <Text style={{ marginRight: appNumbers.number_15 }}>
+                {selectedDate}
+              </Text>
+            </NormalButton>
+            {showEndDate && (
+              <DateTimePicker
+                value={new Date(selectedDate)}
+                mode={appStrings.common.date}
+                onChange={this.setEndDate}
+                display={appStrings.common.calendar}
+              />
+            )}
           </View>
         </View>
         <View style={{ height: 50, width: "100%", marginTop: 10 }}>
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
               <TouchableOpacity
-                full
-                light
-                style={styles.mt15}
-                onPress={this.saveDayInfoHandler}
+                style={[styles.mt15, styles.buttonModal]}
+                onPress={() => this.saveDayInfoHandler()}
               >
-                <Text>Save</Text>
+                <Text>{i18n.t("save")}</Text>
               </TouchableOpacity>
             </View>
+
             <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
               <TouchableOpacity
-                full
-                light
-                style={styles.mt15}
+                style={[styles.mt15, styles.buttonModal]}
                 onPress={() => this.setState({ visibleModal: null })}
               >
-                <Text>Luk</Text>
+                <Text>{i18n.t("cancel")}</Text>
               </TouchableOpacity>
             </View>
           </View>

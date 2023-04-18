@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
-import {
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { Component } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Icon } from 'native-base';
+import { Icon } from "native-base";
 
-import type { EventType } from '../index';
+import type { EventType } from "../index";
+import { Ionicons } from "@expo/vector-icons";
+import { appNumbers } from "../../../../utils/constants";
 
 export default class EventBooking extends Component {
   props: {
@@ -21,22 +18,24 @@ export default class EventBooking extends Component {
     const { title } = event;
     return (
       <View style={styles.container}>
-        <Icon
-          active
+        <Ionicons
+          size={appNumbers.number_24}
           name="ios-construct"
-          style={{ color: '#DD5044' }} />
+          style={{ color: "#DD5044" }}
+        />
         <View style={styles.textContainer}>
           <Text style={[styles.text, styles.title]}>{title}</Text>
         </View>
-        <Icon
+        <Ionicons
           onPress={() => {
             const { navigation } = this.props;
-            AsyncStorage.setItem('selectedJobId', event.id).then(() => {
-              navigation.navigate('Jobdetails');
+            AsyncStorage.setItem("selectedJobId", event.id).then(() => {
+              navigation.navigate("Jobdetails");
             });
           }}
           name="arrow-forward"
-          style={{ color: '#DADADA' }} />
+          style={{ color: "#DADADA" }}
+        />
       </View>
     );
   }
@@ -45,16 +44,16 @@ export default class EventBooking extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    flexDirection: "row",
+    borderBottomColor: "rgba(255, 255, 255, 0.1)",
     borderBottomWidth: StyleSheet.hairlineWidth,
     padding: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     marginBottom: 0.5,
   },
   imageContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    borderColor: "rgba(255, 255, 255, 0.25)",
     borderWidth: StyleSheet.hairlineWidth,
     marginRight: 15,
     width: 90,
@@ -69,12 +68,12 @@ const styles = StyleSheet.create({
     height: 89,
   },
   text: {
-    color: 'rgba(255, 255, 255, 0.75)',
+    color: "rgba(255, 255, 255, 0.75)",
   },
   title: {
-    color: '#000000',
+    color: "#000000",
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
 });

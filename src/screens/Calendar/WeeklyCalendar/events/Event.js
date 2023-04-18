@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import { Icon} from 'native-base';
+import { Icon } from "native-base";
 
-import type { EventType } from '../index';
+import type { EventType } from "../index";
+import { Ionicons } from "@expo/vector-icons";
+import { appNumbers } from "../../../../utils/constants";
 
 export default class Event extends Component {
   props: {
@@ -17,47 +15,45 @@ export default class Event extends Component {
   render() {
     const { event } = this.props;
 
-    const {
-      type,
-      formatted_from,
-      formatted_to,
-    } = event[0];
+    const { type, formatted_from, formatted_to } = event[0];
     return (
       <View style={styles.container}>
-        <View style={{flex: 1, flexDirection: 'row'}}>
-          <View style={{width: '80%', height: 90}}>
-            <View style={{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-            }}>
-              <View style={{width: '100%', height: 30}}>
-                <Text style={{fontWeight: 'bold', fontSize: 20}}>
-                  {type}
-                </Text>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ width: "80%", height: 90 }}>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "flex-start",
+              }}
+            >
+              <View style={{ width: "100%", height: 30 }}>
+                <Text style={{ fontWeight: "bold", fontSize: 20 }}>{type}</Text>
               </View>
-              <View style={{width: '100%', height: 30}}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                  <View style={{width: '20%', height: 30, paddingLeft: 10}}>
-                    <Icon
-                      active
+              <View style={{ width: "100%", height: 30 }}>
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                  <View style={{ width: "20%", height: 30, paddingLeft: 10 }}>
+                    <Ionicons
+                      size={appNumbers.number_24}
                       name="calendar"
-                      style={{ color: '#DD5044' }} />
+                      style={{ color: "#DD5044" }}
+                    />
                   </View>
-                  <View style={{width: '80%', height: 30, paddingTop: 5}}>
+                  <View style={{ width: "80%", height: 30, paddingTop: 5 }}>
                     <Text>{`Fra: ${formatted_from}`}</Text>
                   </View>
                 </View>
               </View>
-              <View style={{width: '100%', height: 30}}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                  <View style={{width: '20%', height: 30, paddingLeft: 10}}>
-                    <Icon
-                      active
+              <View style={{ width: "100%", height: 30 }}>
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                  <View style={{ width: "20%", height: 30, paddingLeft: 10 }}>
+                    <Ionicons
+                      size={appNumbers.number_24}
                       name="calendar"
-                      style={{ color: '#DD5044' }} />
+                      style={{ color: "#DD5044" }}
+                    />
                   </View>
-                  <View style={{width: '80%', height: 30, paddingTop: 5}}>
+                  <View style={{ width: "80%", height: 30, paddingTop: 5 }}>
                     <Text>{`Til: ${formatted_to}`}</Text>
                   </View>
                 </View>
@@ -73,15 +69,15 @@ export default class Event extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
+    flexDirection: "row",
+    borderBottomColor: "rgba(255, 255, 255, 0.1)",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 15,
   },
   imageContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-    borderColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    borderColor: "rgba(255, 255, 255, 0.25)",
     borderWidth: StyleSheet.hairlineWidth,
     // marginRight: 15,
     paddingTop: 35,
@@ -98,12 +94,12 @@ const styles = StyleSheet.create({
   },
   text: {
     // color: 'rgba(255, 255, 255, 0.75)',
-    color: '#000000',
+    color: "#000000",
   },
   title: {
-    color: '#000000',
+    color: "#000000",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
 });
