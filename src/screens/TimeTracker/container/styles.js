@@ -1,3 +1,5 @@
+import { appColors, appNumbers } from "../../../utils/constants";
+
 export default {
   container: {
     backgroundColor: "#FFF",
@@ -189,21 +191,28 @@ export default {
     // borderColor: '#ccc',
     width: "95%",
     alignSelf: "center",
+    backgroundColor: appColors.solidWhite,
+    padding: appNumbers.number_10,
+    borderWidth: appNumbers.number_1,
+    borderColor: appColors.solidGrey,
   },
   addInternalTimeContainer: {
-    marginLeft: 5,
-    marginRight: 5,
+    marginHorizontal: appNumbers.number_5,
     marginTop: 20,
     // borderWidth: 0.5,
     // borderColor: '#ccc',
     width: "95%",
     alignSelf: "center",
+    borderWidth: 1,
+    padding: appNumbers.number_10,
+    backgroundColor: appColors.solidWhite,
+    borderColor: appColors.solidGrey,
   },
   addButtonInternalTimeContainer: {
-    // margin: 5,
-    // marginTop: 20,
     width: "95%",
     alignSelf: "center",
+    backgroundColor: appColors.primary,
+    padding: appNumbers.number_10,
   },
   contentHeader: {
     position: "absolute",

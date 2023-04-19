@@ -60,6 +60,7 @@ import "moment/locale/es";
 import "moment/locale/da";
 import NewHeader from "../../../common/NewHeader";
 import {
+  appAlignment,
   appColors,
   appNumbers,
   appSideBar,
@@ -1041,7 +1042,9 @@ class TimeTrackerScreen extends React.Component {
               trackerBookings.map(this._renderBookings)
             ) : (
               <TouchableOpacity>
-                <Text style={{ color: "red" }}>{i18n.t("nobookings")}</Text>
+                <Text style={{ color: "red", textAlign: appAlignment.center }}>
+                  {i18n.t("nobookings")}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -1050,7 +1053,7 @@ class TimeTrackerScreen extends React.Component {
               trackerDailyNotes.map(this._renderDailyNotes)
             ) : (
               <TouchableOpacity>
-                <Text style={{ color: "red" }}>
+                <Text style={{ color: "red", textAlign: appAlignment.center }}>
                   {i18n.t("noNotesForThisDate")}
                 </Text>
               </TouchableOpacity>
@@ -1066,7 +1069,13 @@ class TimeTrackerScreen extends React.Component {
                 });
               }}
             >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
+              <Text
+                style={{
+                  color: "white",
+                  fontWeight: "bold",
+                  textAlign: appAlignment.center,
+                }}
+              >
                 {i18n.t("addInternalTimeRecordingButtonLabel")}
               </Text>
             </TouchableOpacity>
