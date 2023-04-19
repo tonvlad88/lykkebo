@@ -766,7 +766,7 @@ class CalendarScreen extends Component {
                         <Text
                           style={{ paddingHorizontal: appNumbers.number_5 }}
                         >
-                          {`Fra: ${selectedMarkedDateData[0].details[2].formatted_from}`}
+                          {`Fra: ${selectedMarkedDateData[0].details[0].formatted_from}`}
                         </Text>
                       </View>
                       <View
@@ -786,7 +786,7 @@ class CalendarScreen extends Component {
                         <Text
                           style={{ paddingHorizontal: appNumbers.number_5 }}
                         >
-                          {`Til: ${selectedMarkedDateData[0].details[2].formatted_to}`}
+                          {`Til: ${selectedMarkedDateData[0].details[0].formatted_to}`}
                         </Text>
                       </View>
                     </View>

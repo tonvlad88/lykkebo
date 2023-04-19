@@ -23,7 +23,7 @@ export default class Events extends Component {
 
   render() {
     const { events, onModalPress, navigation } = this.props;
-
+    console.log("events", events);
     if (events === undefined || events.length === 0) {
       return (
         <View
@@ -81,33 +81,36 @@ export default class Events extends Component {
       );
     } else {
       let temp = [];
-      if (events[0].type === "Booking") {
+      if (events[0]?.type === "Booking") {
         temp = events;
       } else {
         temp = [
           {
-            id: events[0].id,
-            type: events[0].type,
-            date: events[0].date,
-            details: [events[0].details],
+            id: events[0]?.id,
+            type: events[0]?.type,
+            date: events[0]?.date,
+            details: [events[0]?.details],
           },
         ];
       }
       return (
-        <View style={styles.container}>
+        <View
+          style={styles.container}
+          key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
+        >
           <ScrollView>
             {events &&
-              temp[0].details.map((event) => {
-                if (event.type === "Booking") {
+              temp[0]?.details.map((event) => {
+                if (event?.type === "Booking") {
                   return (
                     <EventBooking
                       event={event}
-                      key={event.id}
+                      key={event?.id}
                       navigation={navigation}
                     />
                   );
                 } else {
-                  return <Event event={event} key={event.id} />;
+                  return <Event event={event} key={event?.id} />;
                 }
               })}
           </ScrollView>

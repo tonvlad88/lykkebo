@@ -217,8 +217,8 @@ export default class App extends React.Component {
           const postData = {
             user_id: `${userId}`,
             reason: `${tempReason}`,
-            start_day: `${startDay}`,
-            end_day: `${endDay}`,
+            start_day: `${toTimestamp(new Date(selectedDate))}`,
+            end_day: `${toTimestamp(new Date(selectedDate))}`,
           };
 
           console.log("postData", postData);
@@ -240,8 +240,8 @@ export default class App extends React.Component {
             .then((res) => {
               let i;
               const dates = this.getDates(
-                dateFrom !== "" ? new Date(dateFrom) : new Date(selectedDate),
-                dateEnd !== "" ? new Date(dateEnd) : new Date(selectedDate)
+                new Date(selectedDate),
+                new Date(selectedDate)
               );
 
               dates.forEach((date) => {
@@ -251,14 +251,8 @@ export default class App extends React.Component {
                   details: {
                     id: res.data.entry,
                     type: jsUcfirst(selected1),
-                    from:
-                      dateFrom !== ""
-                        ? XDate(dateFrom).toString("yyyy-MM-dd")
-                        : XDate(selectedDate).toString("yyyy-MM-dd"),
-                    to:
-                      dateEnd !== ""
-                        ? XDate(dateEnd).toString("yyyy-MM-dd")
-                        : XDate(selectedDate).toString("yyyy-MM-dd"),
+                    from: XDate(selectedDate).toString("yyyy-MM-dd"),
+                    to: XDate(selectedDate).toString("yyyy-MM-dd"),
                   },
                 };
 
@@ -280,14 +274,8 @@ export default class App extends React.Component {
                   details: {
                     id: res.data.entry,
                     type: jsUcfirst(selected1),
-                    from:
-                      dateFrom !== ""
-                        ? XDate(dateFrom).toString("yyyy-MM-dd")
-                        : XDate(selectedDate).toString("yyyy-MM-dd"),
-                    to:
-                      dateEnd !== ""
-                        ? XDate(dateEnd).toString("yyyy-MM-dd")
-                        : XDate(selectedDate).toString("yyyy-MM-dd"),
+                    from: XDate(selectedDate).toString("yyyy-MM-dd"),
+                    to: XDate(selectedDate).toString("yyyy-MM-dd"),
                   },
                 },
               ];
@@ -806,5 +794,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#323248",
     paddingTop: 20,
+  },
+  buttonModal: {
+    borderWidth: appNumbers.number_1,
+    borderColor: appColors.solidGrey,
+    padding: appNumbers.number_10,
+    borderRadius: appNumbers.number_5,
+    justifyContent: appAlignment.center,
+    alignItems: appAlignment.center,
   },
 });
