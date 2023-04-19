@@ -11,27 +11,6 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Footer,
-  FooterTab,
-  Button,
-  Left,
-  Right,
-  Body,
-  Icon,
-  Tab,
-  Tabs,
-  TabHeading,
-  Grid,
-  Col,
-  Row,
-  Card,
-  CardItem,
-} from "native-base";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Helpers
@@ -213,6 +192,9 @@ class JobdetailsScreen extends Component {
           leftIconPress={this.goBack}
           hasRightIcon={true}
           rightIconName={appStrings.icon.camera}
+          rightIconPress={() =>
+            navigation.navigate(appStrings.mainStack.uploadImageScreen)
+          }
         />
         <View style={styles.content}>
           <View style={styles.sectionSeparator} />

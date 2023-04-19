@@ -25,6 +25,7 @@ export const appStrings = {
     signUpScreen: "SignUpScreen",
     appStack: "AppStack",
     jobDetailsScreen: "JobDetailsScreen",
+    uploadImageScreen: "UploadImageScreen",
   },
   appStack: {
     en: {

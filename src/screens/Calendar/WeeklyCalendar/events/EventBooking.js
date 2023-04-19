@@ -17,7 +17,10 @@ export default class EventBooking extends Component {
     const { event } = this.props;
     const { title } = event;
     return (
-      <View style={styles.container}>
+      <View
+        style={styles.container}
+        key={Math.floor(Date.now()) + Math.floor(Math.random() * 10000 + 1)}
+      >
         <Ionicons
           size={appNumbers.number_24}
           name="ios-construct"

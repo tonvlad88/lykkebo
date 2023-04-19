@@ -28,7 +28,7 @@ i18n.locale = Localization.locale;
 
 // Local imports
 import styles from "../../styles";
-import { appColors, appNumbers } from "../../../../utils/constants";
+import { appColors, appNumbers, appStrings } from "../../../../utils/constants";
 
 // Local constants
 
@@ -119,7 +119,7 @@ class ImageSection extends Component {
             <TouchableOpacity
               style={{ alignSelf: "flex-end" }}
               onPress={() => {
-                navigation.navigate("UploadImage");
+                navigation.navigate(appStrings.mainStack.uploadImageScreen);
               }}
             >
               <Ionicons
