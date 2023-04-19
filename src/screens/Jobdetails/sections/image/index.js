@@ -29,6 +29,7 @@ i18n.locale = Localization.locale;
 // Local imports
 import styles from "../../styles";
 import { appColors, appNumbers, appStrings } from "../../../../utils/constants";
+import { Image } from "react-native";
 
 // Local constants
 
@@ -66,13 +67,16 @@ class ImageSection extends Component {
                   });
                 }}
               >
-                <View
-                  square
-                  large
+                <Image
                   source={{
                     uri: isAttachment ? image.attachment : image.image,
                   }}
-                  style={{ margin: 10 }}
+                  style={{
+                    margin: appNumbers.number_10,
+                    borderWidth: appNumbers.number_1,
+                    height: appNumbers.number_100,
+                    width: appNumbers.number_100,
+                  }}
                   key={isAttachment ? image.attachment : image.image}
                 />
               </TouchableHighlight>

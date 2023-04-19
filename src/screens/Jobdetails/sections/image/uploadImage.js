@@ -22,7 +22,13 @@ import * as ImagePicker from "expo-image-picker";
 
 // Local Imports
 import PhotoGrid from "./PhotoGrid";
-import { appStrings } from "../../../../utils/constants";
+import {
+  appAlignment,
+  appColors,
+  appDirection,
+  appNumbers,
+  appStrings,
+} from "../../../../utils/constants";
 const notAvailable = require("../../../../../assets/images/na.gif");
 
 export default class UploadImage extends Component {
@@ -95,16 +101,14 @@ export default class UploadImage extends Component {
 
   pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    if (!result.canceled) {
+      this.setState({ image: result.assets[0].uri });
     }
   };
 
@@ -123,11 +127,9 @@ export default class UploadImage extends Component {
       base64: true,
     });
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    if (!result.canceled) {
+      this.setState({ image: result.assets[0].uri });
     }
-
-    // CameraRoll.save(result.uri);
   };
 
   uploadPhoto = async () => {
@@ -234,39 +236,58 @@ export default class UploadImage extends Component {
 
     return (
       <View style={styles.container}>
-        <StatusBar hidden />
-        <View style={{ backgroundColor: "#2E3D43" }}>
-          <View style={{ flex: 1 }}>
-            {Number(isFromTimeRec) === 1 ? (
-              <TouchableOpacity>
-                <Ionic
-                  style={{ color: "#ffffff" }}
-                  size={40}
-                  name="arrow-back"
-                  onPress={() => {
-                    AsyncStorage.setItem("isFromTimeRec", "0").then(() => {
-                      navigation.navigate("TimeTrackerDetail");
-                    });
-                  }}
-                />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity>
-                <Ionicons
-                  style={{ color: "#ffffff" }}
-                  size={40}
-                  name="arrow-back"
-                  onPress={() => navigation.navigate("Jobdetails")}
-                />
-              </TouchableOpacity>
-            )}
-          </View>
+        <View
+          style={{
+            flexDirection: appDirection.row,
+            backgroundColor: appColors.primary,
+            paddingHorizontal: appNumbers.number_10,
+            paddingVertical: appNumbers.number_16,
+            alignItems: appAlignment.center,
+          }}
+        >
+          {Number(isFromTimeRec) === 1 ? (
+            <TouchableOpacity>
+              <Ionicons
+                style={{ color: "#ffffff" }}
+                size={40}
+                name="arrow-back"
+                onPress={() => {
+                  AsyncStorage.setItem("isFromTimeRec", "0").then(() => {
+                    navigation.navigate("TimeTrackerDetail");
+                  });
+                }}
+              />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity>
+              <Ionicons
+                style={{ color: "#ffffff" }}
+                size={40}
+                name={appStrings.icon.chevronBack}
+                onPress={() =>
+                  navigation.navigate(appStrings.mainStack.jobDetailsScreen)
+                }
+              />
+            </TouchableOpacity>
+          )}
+
           <View
-            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+            }}
           >
-            <Text style={{ color: "#ffffff" }}>Upload billede</Text>
+            <Text
+              style={{
+                color: "#ffffff",
+                fontWeight: "600",
+                fontSize: appNumbers.number_20,
+              }}
+            >
+              Upload billede
+            </Text>
           </View>
-          <View style={{ flex: 1 }} />
         </View>
 
         <TouchableOpacity
@@ -274,6 +295,7 @@ export default class UploadImage extends Component {
             backgroundColor: "#243135",
             borderBottomWidth: 0.5,
             borderColor: "#ccc",
+            padding: appNumbers.number_10,
           }}
           onPress={this.openBooking}
         >
@@ -288,68 +310,96 @@ export default class UploadImage extends Component {
           </Text>
         </TouchableOpacity>
 
-        <View padder>
-          <View style={styles.mb}>
-            <View>
-              <View style={{ flex: 1, flexDirection: "column" }}>
-                <Image
-                  source={image !== null ? { uri: image } : notAvailable}
-                  style={{
-                    marginBottom: 15,
-                    width: 200,
-                    height: 200,
-                    resizeMode: "cover",
-                    alignSelf: "center",
-                  }}
-                />
-                <TouchableOpacity
-                  style={{ marginBottom: 15 }}
-                  onPress={this.pickImage}
-                >
-                  <Text style={{ color: "white", fontWeight: "bold" }}>
-                    Vælg fra Galleri
-                  </Text>
-                </TouchableOpacity>
+        <View style={{ flex: appNumbers.number_1 }}>
+          <View style={{ flex: 2, flexDirection: "column" }}>
+            <Image
+              source={image !== null ? { uri: image } : notAvailable}
+              style={{
+                marginVertical: appNumbers.number_15,
+                width: 200,
+                height: 200,
+                resizeMode: "cover",
+                alignSelf: "center",
+              }}
+            />
+            <TouchableOpacity
+              style={{
+                marginVertical: appNumbers.number_5,
+                borderWidth: 1,
+                width: "80%",
+                alignSelf: appAlignment.center,
+                backgroundColor: appColors.primary,
+                padding: appNumbers.number_10,
+                borderRadius: appNumbers.number_10,
+                alignItems: appAlignment.center,
+              }}
+              onPress={this.pickImage}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Vælg fra Galleri
+              </Text>
+            </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={{ marginBottom: 15 }}
-                  onPress={this.takePhoto}
-                >
-                  <Text style={{ color: "white", fontWeight: "bold" }}>
-                    Tag et Billed
-                  </Text>
-                </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                marginVertical: appNumbers.number_5,
+                borderWidth: 1,
+                width: "80%",
+                alignSelf: appAlignment.center,
+                backgroundColor: appColors.primary,
+                padding: appNumbers.number_10,
+                borderRadius: appNumbers.number_10,
+                alignItems: appAlignment.center,
+              }}
+              onPress={this.takePhoto}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                Tag et Billed
+              </Text>
+            </TouchableOpacity>
 
-                {!uploading ? (
-                  <TouchableOpacity
-                    style={{ marginBottom: 15 }}
-                    onPress={this.uploadPhoto}
-                  >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>
-                      Upload Billed
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <ActivityIndicator
-                    size="large"
-                    color="#2E3D43"
-                    style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      justifyContent: "center",
-                      alignSelf: "center",
-                    }}
-                  />
-                )}
-              </View>
-            </View>
+            {!uploading ? (
+              <TouchableOpacity
+                style={{
+                  marginVertical: appNumbers.number_5,
+                  borderWidth: 1,
+                  width: "80%",
+                  alignSelf: appAlignment.center,
+                  backgroundColor: appColors.primary,
+                  padding: appNumbers.number_10,
+                  borderRadius: appNumbers.number_10,
+                  alignItems: appAlignment.center,
+                }}
+                onPress={this.uploadPhoto}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  Upload Billed
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <ActivityIndicator
+                size="large"
+                color="#2E3D43"
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignSelf: "center",
+                }}
+              />
+            )}
           </View>
-
-          <PhotoGrid source={images} />
+          <View style={{ flex: appNumbers.number_1 }}>
+            <PhotoGrid source={images} />
+          </View>
         </View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: appNumbers.number_1,
+  },
+});
