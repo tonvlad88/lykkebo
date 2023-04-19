@@ -2,7 +2,7 @@ import {
   SET_SHOW_LOADING,
   SET_TRACKER_BOOKING,
   SET_TRACKER_DAILYNOTE,
-} from './types';
+} from "./types";
 
 import {
   modelFetchTracker,
@@ -11,19 +11,19 @@ import {
   updateNoteTrackerDetailsData,
   modelDeleteTrackerData,
   modelUpdateTrackerByID,
-} from '../models/tracker';
+} from "../models/tracker";
 
-export const setShowLoading = isShow => ({
+export const setShowLoading = (isShow) => ({
   type: SET_SHOW_LOADING,
   payload: isShow,
 });
 
-export const setTracker = payload => ({
+export const setTracker = (payload) => ({
   type: SET_TRACKER_BOOKING,
   payload,
 });
 
-export const setDailyNote = payload => ({
+export const setDailyNote = (payload) => ({
   type: SET_TRACKER_DAILYNOTE,
   payload,
 });
@@ -44,22 +44,26 @@ export const saveDailyNote = (data, date) => async (dispatch) => {
   dispatch(setDailyNote(res.internal_recordings));
 };
 
-export const deleteNoteTrackerData = deleteTrackerData => async () => {
-  const trackerDataResult = await deleteNoteTrackerDetailsData(deleteTrackerData);
+export const deleteNoteTrackerData = (deleteTrackerData) => async () => {
+  const trackerDataResult = await deleteNoteTrackerDetailsData(
+    deleteTrackerData
+  );
   return trackerDataResult;
 };
 
-export const updateDailyNote = updateTrackerData => async () => {
-  const trackerDataResult = await updateNoteTrackerDetailsData(updateTrackerData);
+export const updateDailyNote = (updateTrackerData) => async () => {
+  const trackerDataResult = await updateNoteTrackerDetailsData(
+    updateTrackerData
+  );
   return trackerDataResult;
 };
 
-export const deleteTrackerData = data => async () => {
+export const deleteTrackerData = (data) => async () => {
   const res = await modelDeleteTrackerData(data);
   return res;
 };
 
-export const updateTrackerByID = params => async () => {
+export const updateTrackerByID = (params) => async () => {
   const res = await modelUpdateTrackerByID(params);
   return res;
 };

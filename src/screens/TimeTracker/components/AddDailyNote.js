@@ -9,13 +9,16 @@ import {
   Keyboard,
   ScrollView,
 } from "react-native";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import { Icon, Col, Row, Grid } from "native-base";
 import { Button } from "react-native-elements";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import SelectDropdown from "react-native-select-dropdown";
 
 // Packages
 import XDate from "xdate";
 import TimePicker from "react-native-24h-timepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import * as Localization from "expo-localization";
 import {
@@ -43,18 +46,29 @@ import {
 
 // Local imports
 import styles from "./styles/AddDailyNoteStyle";
+import { NormalButton } from "../../../common/NewButtons/NormalButton";
+import {
+  appAlignment,
+  appColors,
+  appDirection,
+  appNumbers,
+  appStrings,
+} from "../../../utils/constants";
 
 class AddDailyNote extends Component {
   state = {
-    startTime: "8:00",
-    endTime: "16:00",
-    breakTime: "1:00",
+    startTime: XDate().toString("yyyy-MM-dd 08:00:00"),
+    endTime: XDate().toString("yyyy-MM-dd 16:00:00"),
+    breakTime: XDate().toString("yyyy-MM-dd 01:00:00"),
     total: "0:00",
     comment: "",
     clientID: 0,
     selectedBooking: {},
     loaded: false,
     internalOnly: false,
+    showStartTime: false,
+    showEndTime: false,
+    showBreakTime: false,
   };
 
   async componentDidMount() {
@@ -146,6 +160,21 @@ class AddDailyNote extends Component {
     this.TimePickerBreak.close();
   }
 
+  toggleStartTimePicker = () => {
+    const { showStartTime } = this.state;
+    this.setState({ showStartTime: !showStartTime });
+  };
+
+  toggleEndTimePicker = () => {
+    const { showEndTime } = this.state;
+    this.setState({ showEndTime: !showEndTime });
+  };
+
+  toggleBreakTimePicker = () => {
+    const { showBreakTime } = this.state;
+    this.setState({ showBreakTime: !showBreakTime });
+  };
+
   render() {
     const {
       selectedDate,
@@ -154,6 +183,7 @@ class AddDailyNote extends Component {
       internalOnly,
       bookings,
     } = this.props;
+
     const {
       startTime,
       endTime,
@@ -162,6 +192,9 @@ class AddDailyNote extends Component {
       loaded,
       breakTime,
       selectedBooking,
+      showStartTime,
+      showEndTime,
+      showBreakTime,
     } = this.state;
 
     if (!loaded) return <View />;
@@ -184,12 +217,12 @@ class AddDailyNote extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          {/* <Icon
-            name="close-circle"
-            style={{position: 'absolute', right: 3, top: 0, zIndex: 1}}
+          <Ionicons
+            name="close"
+            style={{ position: "absolute", right: 3, top: 0, zIndex: 1 }}
             onPress={() => this.props.closeModal()}
-          /> */}
-          <Row
+          />
+          <View
             style={{
               height: 50,
               borderBottomWidth: 0.5,
@@ -198,7 +231,7 @@ class AddDailyNote extends Component {
               padding: 10,
             }}
           >
-            <Col>
+            <View>
               <Text
                 style={{
                   fontSize: 20,
@@ -208,15 +241,62 @@ class AddDailyNote extends Component {
               >
                 {new XDate(selectedDate).toString("dd MMMM, yyyy")}
               </Text>
-            </Col>
-          </Row>
+            </View>
+          </View>
 
           {!internalOnly ? (
-            <Row style={styles.dailyNoteItemContainer}>
-              <Col style={styles.dailyNoteLabel}>
+            <View
+              style={[
+                styles.dailyNoteItemContainer,
+                { flexDirection: appDirection.row },
+              ]}
+            >
+              <View style={styles.dailyNoteLabel}>
                 <Text>{i18n.t("client")}:</Text>
-              </Col>
-              <Col style={styles.dailyNoteClock}>
+              </View>
+              <SelectDropdown
+                defaultButtonText={i18n.t("pleaseSelectAClient")}
+                data={clientList}
+                onSelect={(selectedItem, index) => {
+                  this.setState({
+                    selected1: selectedItem.value,
+                  });
+                }}
+                buttonTextAfterSelection={(selectedItem, index) => {
+                  // text represented after item is selected
+                  // if data array is an array of objects then return selectedItem.property to render after item is selected
+                  return selectedItem.value;
+                }}
+                rowTextForSelection={(item, index) => {
+                  // text represented for each item in dropdown
+                  // if data array is an array of objects then return item.property to represent item in dropdown
+                  return item.value;
+                }}
+                defaultValueByIndex={0} // use default value by index or default value
+                defaultValue={
+                  Object.keys(selectedBooking).length === 0 &&
+                  selectedBooking.constructor === Object
+                    ? ""
+                    : selectedBooking[0].customer_id
+                }
+                buttonStyle={{
+                  backgroundColor: "#FFF",
+                  borderWidth: 1,
+                  borderColor: "#cccccc",
+                  marginBottom: 5,
+                }}
+                renderDropdownIcon={(isOpened) => {
+                  return (
+                    <Ionicons
+                      name={isOpened ? "chevron-up" : "chevron-down"}
+                      color={"#444"}
+                      size={18}
+                    />
+                  );
+                }}
+                dropdownIconPosition={"right"}
+              />
+              {/* <View style={styles.dailyNoteClock}>
                 <View style={{ flex: 1, flexDirection: "row" }}>
                   <Dropdown
                     // label={props.label}
@@ -246,29 +326,60 @@ class AddDailyNote extends Component {
                     placeholder={i18n.t("pleaseSelectAClient")}
                   />
                 </View>
-              </Col>
-            </Row>
+              </View> */}
+            </View>
           ) : null}
 
-          <Row style={styles.dailyNoteItemContainer}>
-            <Col style={styles.dailyNoteLabel}>
+          <View
+            style={[
+              styles.dailyNoteItemContainer,
+              { flexDirection: appDirection.row },
+            ]}
+          >
+            <View style={styles.dailyNoteLabel}>
               <Text>{i18n.t("from")}:</Text>
-            </Col>
-            <Col style={styles.dailyNoteClock}>
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                <View style={styles.dailyNoteTime}>
-                  <Text
-                    onPress={() => this.TimePickerStartTime.open()}
-                    style={{ fontWeight: "bold", fontSize: 18 }}
-                  >
-                    {startTime}
-                  </Text>
-                </View>
-                <View style={styles.dailyNoteClockIcon}>
+            </View>
+            <View style={styles.dailyNoteClock}>
+              <NormalButton
+                onPress={this.toggleStartTimePicker}
+                containerStyle={{
+                  flexDirection: appDirection.row,
+                  alignItems: appAlignment.center,
+                  borderWidth: appNumbers.number_1,
+                  borderColor: appColors.solidGrey,
+                  padding: appNumbers.number_10,
+                }}
+                iconRight={
+                  <Feather
+                    name={appStrings.icon.clock}
+                    size={appNumbers.number_24}
+                    color={appColors.lavaRed}
+                  />
+                }
+              >
+                <Text style={{ marginRight: appNumbers.number_15 }}>
+                  {XDate(startTime).toString("HH:mm")}
+                </Text>
+              </NormalButton>
+              {showStartTime && (
+                <DateTimePicker
+                  value={new Date(startTime)}
+                  mode={appStrings.common.time}
+                  onChange={(date) =>
+                    console.log(
+                      "date",
+                      XDate(date.nativeEvent.timestamp).toString("HH:mm:ss")
+                    )
+                  }
+                  display={appStrings.common.spinner}
+                />
+              )}
+
+              {/* <View style={styles.dailyNoteClockIcon}>
                   <TouchableOpacity
                     onPress={() => this.TimePickerStartTime.open()}
                   >
-                    <Icon name="clock" />
+                    <Ionicons name="clock" />
                   </TouchableOpacity>
                   <TimePicker
                     minuteInterval={15}
@@ -282,117 +393,144 @@ class AddDailyNote extends Component {
                       this.onConfirmStartTime(hour, minute)
                     }
                   />
-                </View>
-              </View>
-            </Col>
-          </Row>
+                </View> */}
+            </View>
+          </View>
 
-          <Row style={styles.dailyNoteItemContainer}>
-            <Col style={styles.dailyNoteLabel}>
-              <Text>{i18n.t("to")}:</Text>
-            </Col>
-            <Col style={styles.dailyNoteClock}>
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                <View style={styles.dailyNoteTime}>
-                  <Text
-                    onPress={() => this.TimePickerEndTime.open()}
-                    style={{ fontWeight: "bold", fontSize: 18 }}
-                  >
-                    {endTime}
-                  </Text>
-                </View>
-                <View style={styles.dailyNoteClockIcon}>
-                  <TouchableOpacity
-                    onPress={() => this.TimePickerEndTime.open()}
-                  >
-                    <Icon name="clock" />
-                  </TouchableOpacity>
-                  <TimePicker
-                    minuteInterval={15}
-                    selectedHour={Number(endTimeHourMin[0]).toString()}
-                    selectedMinute={`${endTimeHourMin[1]}`}
-                    ref={(ref) => {
-                      this.TimePickerEndTime = ref;
-                    }}
-                    onCancel={() => this.onCancelEndTime()}
-                    onConfirm={(hour, minute) =>
-                      this.onConfirmEndTime(hour, minute)
-                    }
-                  />
-                </View>
-              </View>
-            </Col>
-          </Row>
-
-          <Row style={styles.dailyNoteItemContainer}>
-            <Col style={styles.dailyNoteLabel}>
-              <Text>{i18n.t("break")}:</Text>
-            </Col>
-            <Col style={styles.dailyNoteClock}>
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                <View style={styles.dailyNoteTime}>
-                  <Text
-                    onPress={() => this.TimePickerBreak.open()}
-                    style={{ fontWeight: "bold", fontSize: 18 }}
-                  >
-                    {breakTime}
-                  </Text>
-                </View>
-                <View style={styles.dailyNoteClockIcon}>
-                  <TouchableOpacity onPress={() => this.TimePickerBreak.open()}>
-                    <Icon name="clock" />
-                  </TouchableOpacity>
-                  <TimePicker
-                    selectedHour={Number(breakTimeHourMin[0]).toString()}
-                    selectedMinute={`${breakTimeHourMin[1]}`}
-                    minuteInterval={15}
-                    ref={(ref) => {
-                      this.TimePickerBreak = ref;
-                    }}
-                    onCancel={() => this.onCancelBreak()}
-                    onConfirm={(hour, minute) =>
-                      this.onConfirmBreak(hour, minute)
-                    }
-                  />
-                </View>
-              </View>
-            </Col>
-          </Row>
-
-          <Row style={styles.dailyNoteItemContainer}>
-            <Col style={styles.dailyNoteLabel}>
-              <Text>{i18n.t("total")}:</Text>
-            </Col>
-            <Col style={styles.dailyNoteClock}>
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                <View style={styles.dailyNoteTime}>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    {total}
-                  </Text>
-                </View>
-                <View style={styles.dailyNoteClockIcon} />
-              </View>
-            </Col>
-          </Row>
-
-          <Row
-            style={{ height: 150, backgroundColor: "#FAF9FE", marginTop: 5 }}
+          <View
+            style={[
+              styles.dailyNoteItemContainer,
+              { flexDirection: appDirection.row },
+            ]}
           >
-            <Col style={styles.dailyNoteLabel}>
+            <View style={styles.dailyNoteLabel}>
+              <Text>{i18n.t("to")}:</Text>
+            </View>
+            <View style={styles.dailyNoteClock}>
+              <NormalButton
+                onPress={this.toggleEndTimePicker}
+                containerStyle={{
+                  flexDirection: appDirection.row,
+                  alignItems: appAlignment.center,
+                  borderWidth: appNumbers.number_1,
+                  borderColor: appColors.solidGrey,
+                  padding: appNumbers.number_10,
+                }}
+                iconRight={
+                  <Feather
+                    name={appStrings.icon.clock}
+                    size={appNumbers.number_24}
+                    color={appColors.lavaRed}
+                  />
+                }
+              >
+                <Text style={{ marginRight: appNumbers.number_15 }}>
+                  {XDate(endTime).toString("HH:mm")}
+                </Text>
+              </NormalButton>
+              {showEndTime && (
+                <DateTimePicker
+                  value={new Date(endTime)}
+                  mode={appStrings.common.time}
+                  onChange={(date) =>
+                    console.log(
+                      "date",
+                      XDate(date.nativeEvent.timestamp).toString("HH:mm:ss")
+                    )
+                  }
+                  display={appStrings.common.spinner}
+                />
+              )}
+            </View>
+          </View>
+
+          <View
+            style={[
+              styles.dailyNoteItemContainer,
+              { flexDirection: appDirection.row },
+            ]}
+          >
+            <View style={styles.dailyNoteLabel}>
+              <Text>{i18n.t("break")}:</Text>
+            </View>
+            <View style={styles.dailyNoteClock}>
+              <NormalButton
+                onPress={this.toggleBreakTimePicker}
+                containerStyle={{
+                  flexDirection: appDirection.row,
+                  alignItems: appAlignment.center,
+                  borderWidth: appNumbers.number_1,
+                  borderColor: appColors.solidGrey,
+                  padding: appNumbers.number_10,
+                }}
+                iconRight={
+                  <Feather
+                    name={appStrings.icon.clock}
+                    size={appNumbers.number_24}
+                    color={appColors.lavaRed}
+                  />
+                }
+              >
+                <Text style={{ marginRight: appNumbers.number_15 }}>
+                  {XDate(breakTime).toString("HH:mm")}
+                </Text>
+              </NormalButton>
+              {showBreakTime && (
+                <DateTimePicker
+                  value={new Date(breakTime)}
+                  mode={appStrings.common.time}
+                  onChange={(date) =>
+                    console.log(
+                      "date",
+                      XDate(date.nativeEvent.timestamp).toString("HH:mm:ss")
+                    )
+                  }
+                  display={appStrings.common.spinner}
+                />
+              )}
+            </View>
+          </View>
+
+          <View
+            style={[
+              styles.dailyNoteItemContainer,
+              { flexDirection: appDirection.row },
+            ]}
+          >
+            <View style={styles.dailyNoteLabel}>
+              <Text>{i18n.t("total")}:</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
+                backgroundColor: appColors.solidWhite,
+                minWidth: appNumbers.number_101,
+              }}
+            >
+              <Text style={{ marginRight: appNumbers.number_15 }}>{total}</Text>
+            </View>
+          </View>
+
+          <View style={{ backgroundColor: "#FAF9FE", marginTop: 5 }}>
+            <View style={styles.dailyNoteLabel}>
               <Text>{i18n.t("comment")}:</Text>
-            </Col>
-            <Col style={{ backgroundColor: "white" }}>
-              {/* <View style={styles.textAreaContainer} >
+            </View>
+            <View style={{ backgroundColor: "white" }}>
+              <View style={styles.textAreaContainer}>
                 <TextInput
                   style={styles.textArea}
                   underlineColorAndroid="transparent"
-                  placeholder={i18n.t('typeyourcomment')}
+                  placeholder={i18n.t("typeyourcomment")}
                   placeholderTextColor="grey"
                   numberOfLines={10}
                   multiline={true}
-                  onChangeText={(value) => this.setState({comment: value})}
+                  onChangeText={(value) => this.setState({ comment: value })}
                 />
-              </View> */}
+              </View>
 
               {/* <AutoGrowingTextInput
                 // minHeight={100}
@@ -407,17 +545,8 @@ class AddDailyNote extends Component {
                 }}
                 placeholder={i18n.t("typeyourcomment")}
               /> */}
-            </Col>
-          </Row>
-
-          <View
-            style={{
-              height: 5,
-              borderBottomWidth: 0.5,
-              borderBottomColor: "#ccc",
-              padding: 10,
-            }}
-          />
+            </View>
+          </View>
 
           <Button
             buttonStyle={{ margin: 10, height: 46, backgroundColor: "#1C323A" }}

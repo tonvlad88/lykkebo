@@ -8,20 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import {
-  Container,
-  Button,
-  Icon,
-  Left,
-  Right,
-  Body,
-  List,
-  ListItem,
-  Content,
-  Grid,
-  Col,
-  Toast,
-} from "native-base";
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Badge } from "react-native-elements";
 
@@ -72,7 +59,12 @@ const moment = extendMoment(Moment);
 import "moment/locale/es";
 import "moment/locale/da";
 import NewHeader from "../../../common/NewHeader";
-import { appSideBar } from "../../../utils/constants";
+import {
+  appColors,
+  appNumbers,
+  appSideBar,
+  appStrings,
+} from "../../../utils/constants";
 moment.locale("es");
 moment.locale("da");
 
@@ -791,7 +783,21 @@ class TimeTrackerScreen extends React.Component {
           }}
         />
 
-        <NewHeader title={appSideBar[3].name} navigation={navigation} />
+        <NewHeader
+          title={appSideBar[3].name}
+          navigation={navigation}
+          rightIcon={
+            <TouchableOpacity
+              onPress={() => this.setState({ showAddDailyNoteModal: true })}
+            >
+              <Ionicons
+                name="add"
+                size={appNumbers.number_26}
+                color={appColors.solidWhite}
+              />
+            </TouchableOpacity>
+          }
+        />
 
         <View
           style={{
@@ -814,7 +820,11 @@ class TimeTrackerScreen extends React.Component {
                 getTracker(userId, XDate(tempDate).toISOString().slice(0, 10));
               }}
             >
-              {/* <Icon name="arrow-back" style={{ color: "white" }} /> */}
+              <Ionicons
+                size={appNumbers.number_24}
+                name={appStrings.icon.chevronBack}
+                style={{ color: "white" }}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.calendarTitle}>
@@ -855,7 +865,11 @@ class TimeTrackerScreen extends React.Component {
                 getTracker(userId, XDate(tempDate).toISOString().slice(0, 10));
               }}
             >
-              {/* <Icon name="arrow-forward" style={{ color: "white" }} /> */}
+              <Ionicons
+                size={appNumbers.number_24}
+                name={appStrings.icon.chevronForward}
+                style={{ color: "white" }}
+              />
             </TouchableOpacity>
           </View>
         </View>

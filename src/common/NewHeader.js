@@ -15,7 +15,7 @@ import {
   appStrings,
 } from "../utils/constants";
 
-const NewHeader = ({ navigation, title = "" }) => (
+const NewHeader = ({ navigation, title = "", rightIcon }) => (
   <View>
     <View style={styles.container}>
       <StatusBar hidden />
@@ -32,6 +32,8 @@ const NewHeader = ({ navigation, title = "" }) => (
       <View style={styles.headerTitleContainer}>
         <Text style={styles.headerTitleText}>{title}</Text>
       </View>
+
+      {rightIcon}
     </View>
     <View style={styles.headerBottomBorder} />
   </View>
