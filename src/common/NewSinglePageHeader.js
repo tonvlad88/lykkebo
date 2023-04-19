@@ -21,7 +21,7 @@ import {
 const NewSinglePageHeader = (props) => {
   const {
     navigation,
-    title = "Title",
+    title = "",
     hasLeftIcon,
     leftIconName = appStrings.icon.chevronBack,
     leftIconPress,

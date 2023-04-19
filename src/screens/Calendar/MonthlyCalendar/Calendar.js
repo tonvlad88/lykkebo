@@ -387,9 +387,16 @@ class CalendarScreen extends Component {
     );
   };
 
+  openBooking(booking) {
+    const { navigation } = this.props;
+    AsyncStorage.setItem("selectedJobId", booking.id).then(() => {
+      navigation.navigate(appStrings.mainStack.jobDetailsScreen);
+    });
+  }
+
   renderSelectedDateDetails() {
     const { selectedDate, selectedMarkedDateData, isFutureDate } = this.state;
-    console.log("selectedMarkedDateData", selectedMarkedDateData[0]?.details);
+    // console.log("selectedMarkedDateData", selectedMarkedDateData[0]?.details);
     if (
       selectedMarkedDateData === undefined ||
       selectedMarkedDateData.length === 0
