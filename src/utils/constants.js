@@ -54,6 +54,7 @@ export const appStrings = {
     logout: "logout",
     menu: "menu",
     spinner: "spinner",
+    success: "success",
     width: "width",
     window: "window",
   },

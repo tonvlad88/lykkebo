@@ -1,23 +1,33 @@
 import React, { Component } from "react";
 import { Content, ListItem, Toast, Icon } from "native-base";
 
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import XDate from "xdate";
-import DatePicker from "react-native-datepicker";
+// import DatePicker from "react-native-datepicker";
 import { FontAwesome } from "@expo/vector-icons";
-
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Ionicons } from "@expo/vector-icons";
+import { showMessage } from "react-native-flash-message";
 // import styles from "../../styles";
 
 import { toTimestamp } from "../../../../services/common";
 import {
   appAlignment,
   appColors,
+  appDateFormats,
   appDirection,
   appNumbers,
   appStrings,
 } from "../../../../utils/constants";
+import { NormalButton } from "../../../../common/NewButtons/NormalButton";
 
 class BookingSection extends Component {
   constructor(props) {
@@ -25,6 +35,10 @@ class BookingSection extends Component {
     this.state = {
       bookingStartDate: null,
       bookingEndDate: null,
+      showStartDate: false,
+      showEndDate: false,
+      dateFrom: XDate(true).toString(appDateFormats.yyyyMMdd),
+      dateEnd: XDate(true).toString(appDateFormats.yyyyMMdd),
     };
     this.setStartDateHandler = this.setStartDateHandler.bind(this);
     this.setEndDateHandler = this.setEndDateHandler.bind(this);
@@ -39,11 +53,15 @@ class BookingSection extends Component {
     });
   }
 
-  setStartDateHandler(newDate) {
+  setStartDateHandler(event, newDate) {
+    if (Platform.OS === "android") {
+      this.setState({ showStartDate: false });
+    }
     const { info } = this.props;
 
     this.setState({
-      bookingStartDate: toTimestamp(newDate),
+      bookingStartDate: toTimestamp(XDate(newDate).toString("yyyy-MM-dd")),
+      bookingEndDate: toTimestamp(XDate(newDate).toString("yyyy-MM-dd")),
     });
 
     AsyncStorage.getItem("user_id").then((userId) => {
@@ -53,8 +71,8 @@ class BookingSection extends Component {
             const postData = {
               user_id: `${userId}`,
               job_id: jobId,
-              start: toTimestamp(newDate),
-              end: info.end_date,
+              start: toTimestamp(XDate(newDate).toString("yyyy-MM-dd")),
+              end: toTimestamp(XDate(newDate).toString("yyyy-MM-dd")),
             };
 
             const axiosConfig = {
@@ -72,21 +90,16 @@ class BookingSection extends Component {
                 axiosConfig
               )
               .then(() => {
-                // Toast.show({
-                //   text: 'Opdateret succesfuldt',
-                //   position: 'bottom',
-                //   duration: 5000,
-                //   buttonText: 'Okay',
-                //   type: 'success',
-                // });
+                showMessage({
+                  message: "Opdateret succesfuldt",
+                  type: appStrings.common.success,
+                });
               })
               .catch((error) => {
-                // Toast.show({
-                //   text: error.message,
-                //   position: 'top',
-                //   duration: 5000,
-                //   type: 'error',
-                // });
+                showMessage({
+                  message: error.message,
+                  type: appStrings.common.danger,
+                });
               });
           });
         });
@@ -95,6 +108,9 @@ class BookingSection extends Component {
   }
 
   setEndDateHandler(newDate) {
+    if (Platform.OS === "android") {
+      this.setState({ showEndDate: false });
+    }
     const { info } = this.props;
     this.setState({
       bookingEndDate: toTimestamp(newDate),
@@ -148,9 +164,45 @@ class BookingSection extends Component {
     });
   }
 
+  toggleStartDateDatePicker = () => {
+    const { showStartDate } = this.state;
+    this.setState({ showStartDate: !showStartDate });
+  };
+
+  toggleEndDateDatePicker = () => {
+    const { showEndDate } = this.state;
+    this.setState({ showEndDate: !showEndDate });
+  };
+
+  setStartDate = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      this.setState({ showStartDate: false });
+    }
+    this.setState({
+      dateFrom: XDate(selectedDate).toString("yyyy-MM-dd"),
+      dateEnd: XDate(selectedDate).toString("yyyy-MM-dd"),
+    });
+  };
+
+  setEndDate = (event, selectedDate) => {
+    if (Platform.OS === "android") {
+      this.setState({ showEndDate: false });
+    }
+    this.setState({
+      dateEnd: XDate(selectedDate).toString("yyyy-MM-dd"),
+    });
+  };
+
   render() {
     const { info, user, showSpecifyModal } = this.props;
-    const { bookingStartDate, bookingEndDate } = this.state;
+    const {
+      bookingStartDate,
+      bookingEndDate,
+      dateFrom,
+      dateEnd,
+      showStartDate,
+      showEndDate,
+    } = this.state;
     // console.log('user', user)
     return (
       <View style={styles.container}>
@@ -167,26 +219,57 @@ class BookingSection extends Component {
           <Text style={styles.itemLabel}>Startdato</Text>
           <View style={{ width: "70%", alignItems: "flex-start" }}>
             {Number(user) === 1 || Number(user) === 2 ? (
-              <DatePicker
-                date={new Date(bookingStartDate * 1000)}
-                mode="date"
-                placeholder="select date"
-                format="YYYY-MM-DD"
-                confirmBtnText="Update"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: "absolute",
-                    right: 0,
-                    top: 4,
-                    marginRight: 0,
-                  },
-                  dateInput: {
-                    marginRight: 36,
-                  },
-                }}
-                onDateChange={this.setStartDateHandler}
-              />
+              // <DatePicker
+              //   date={new Date(bookingStartDate * 1000)}
+              //   mode="date"
+              //   placeholder="select date"
+              //   format="YYYY-MM-DD"
+              //   confirmBtnText="Update"
+              //   cancelBtnText="Cancel"
+              //   customStyles={{
+              //     dateIcon: {
+              //       position: "absolute",
+              //       right: 0,
+              //       top: 4,
+              //       marginRight: 0,
+              //     },
+              //     dateInput: {
+              //       marginRight: 36,
+              //     },
+              //   }}
+              //   onDateChange={this.setStartDateHandler}
+              // />
+              <>
+                <NormalButton
+                  onPress={this.toggleStartDateDatePicker}
+                  containerStyle={{
+                    flexDirection: appDirection.row,
+                    alignItems: appAlignment.center,
+                    borderWidth: appNumbers.number_1,
+                    borderColor: appColors.solidGrey,
+                    padding: appNumbers.number_10,
+                  }}
+                  iconRight={
+                    <Ionicons
+                      name={appStrings.icon.calendar}
+                      size={appNumbers.number_24}
+                      color={appColors.lavaRed}
+                    />
+                  }
+                >
+                  <Text style={{ marginRight: appNumbers.number_15 }}>
+                    {XDate(bookingStartDate * 1000).toString("yyyy-MM-dd")}
+                  </Text>
+                </NormalButton>
+                {showStartDate && (
+                  <DateTimePicker
+                    value={new Date(bookingStartDate * 1000)}
+                    mode={appStrings.common.date}
+                    onChange={this.setStartDateHandler}
+                    display={appStrings.common.calendar}
+                  />
+                )}
+              </>
             ) : (
               <Text style={{ alignSelf: "flex-start" }}>
                 {XDate(new Date(info.start_date * 1000)).toString(
@@ -201,26 +284,57 @@ class BookingSection extends Component {
           <Text style={styles.itemLabel}>Slutdato</Text>
           <View style={{ width: "70%", alignItems: "flex-start" }}>
             {Number(user) === 1 || Number(user) === 2 ? (
-              <DatePicker
-                date={new Date(bookingEndDate * 1000)}
-                mode="date"
-                placeholder="select date"
-                format="YYYY-MM-DD"
-                confirmBtnText="Update"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: "absolute",
-                    right: 0,
-                    top: 4,
-                    marginRight: 0,
-                  },
-                  dateInput: {
-                    marginRight: 36,
-                  },
-                }}
-                onDateChange={this.setEndDateHandler}
-              />
+              // <DatePicker
+              //   date={new Date(bookingEndDate * 1000)}
+              //   mode="date"
+              //   placeholder="select date"
+              //   format="YYYY-MM-DD"
+              //   confirmBtnText="Update"
+              //   cancelBtnText="Cancel"
+              //   customStyles={{
+              //     dateIcon: {
+              //       position: "absolute",
+              //       right: 0,
+              //       top: 4,
+              //       marginRight: 0,
+              //     },
+              //     dateInput: {
+              //       marginRight: 36,
+              //     },
+              //   }}
+              //   onDateChange={this.setEndDateHandler}
+              // />
+              <>
+                <NormalButton
+                  onPress={this.toggleEndDateDatePicker}
+                  containerStyle={{
+                    flexDirection: appDirection.row,
+                    alignItems: appAlignment.center,
+                    borderWidth: appNumbers.number_1,
+                    borderColor: appColors.solidGrey,
+                    padding: appNumbers.number_10,
+                  }}
+                  iconRight={
+                    <Ionicons
+                      name={appStrings.icon.calendar}
+                      size={appNumbers.number_24}
+                      color={appColors.lavaRed}
+                    />
+                  }
+                >
+                  <Text style={{ marginRight: appNumbers.number_15 }}>
+                    {XDate(bookingEndDate * 1000).toString("yyyy-MM-dd")}
+                  </Text>
+                </NormalButton>
+                {showEndDate && (
+                  <DateTimePicker
+                    value={new Date(bookingEndDate * 1000)}
+                    mode={appStrings.common.date}
+                    onChange={this.setEndDateHandler}
+                    display={appStrings.common.calendar}
+                  />
+                )}
+              </>
             ) : (
               <Text style={{ alignSelf: "flex-start" }}>
                 {XDate(new Date(info.end_date * 1000)).toString("yyyy-MMMM-dd")}

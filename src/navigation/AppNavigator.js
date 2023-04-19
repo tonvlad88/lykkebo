@@ -185,7 +185,7 @@ const MainStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
-      gestureEnabled: true,
+      gestureEnabled: false,
       // gestureDirection: 'horizontal',
       cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
       headerMode: false,

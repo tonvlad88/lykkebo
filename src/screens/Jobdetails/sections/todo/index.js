@@ -1,15 +1,16 @@
+// PACKAGES
 import React, { Component } from "react";
-import { DeckSwiper, Card, CardItem, ListItem, Toast } from "native-base";
-
 import { View, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import axios from "axios";
-import { Dropdown } from "react-native-material-dropdown-v2-fixed";
 import Swiper from "react-native-swiper";
+import SelectDropdown from "react-native-select-dropdown";
+import { Ionicons } from "@expo/vector-icons";
+import { showMessage } from "react-native-flash-message";
 
+// IMPORTS
 import styles from "../../styles";
-import { appColors } from "../../../../utils/constants";
+import { appColors, appStrings } from "../../../../utils/constants";
 
 const entryStatus = [
   { value: "0", label: "Ikke startet" },
@@ -44,13 +45,17 @@ class TodoSection extends Component {
                 {},
                 axiosConfig
               )
-              .then()
+              .then(() => {
+                showMessage({
+                  message: "Opdateret succesfuldt",
+                  type: appStrings.common.success,
+                });
+              })
               .catch((error) => {
-                // Toast.show({
-                //   text: error.message,
-                //   position: 'top',
-                //   duration: 3000,
-                // });
+                showMessage({
+                  message: error.message,
+                  type: appStrings.common.danger,
+                });
               });
           });
         });
@@ -156,18 +161,44 @@ class TodoSection extends Component {
                         {Number(is_responsible) === 0 ? (
                           <Text style={{ padding: 10 }}>{tempStatus}</Text>
                         ) : (
-                          <Dropdown
-                            label=""
-                            labelHeight={0}
-                            value={tempStatus}
-                            containerStyle={{ paddingLeft: 10, marginTop: 10 }}
-                            inputContainerStyle={{
-                              borderBottomColor: "transparent",
-                            }}
+                          <SelectDropdown
                             data={entryStatus}
-                            onChangeText={(value) =>
-                              this.updateTodoJobStatusHandler(value, item)
-                            }
+                            onSelect={(selectedItem, index) => {
+                              this.updateTodoJobStatusHandler(
+                                selectedItem.value,
+                                selectedItem
+                              );
+                            }}
+                            buttonTextAfterSelection={(selectedItem, index) => {
+                              // text represented after item is selected
+                              // if data array is an array of objects then return selectedItem.property to render after item is selected
+                              return selectedItem.label;
+                            }}
+                            rowTextForSelection={(item, index) => {
+                              // text represented for each item in dropdown
+                              // if data array is an array of objects then return item.property to represent item in dropdown
+                              return item.label;
+                            }}
+                            defaultValueByIndex={0} // use default value by index or default value
+                            defaultValue={tempStatus}
+                            buttonStyle={{
+                              backgroundColor: "#FFF",
+                              borderWidth: 1,
+                              borderColor: "#cccccc",
+                              marginBottom: 5,
+                            }}
+                            renderDropdownIcon={(isOpened) => {
+                              return (
+                                <Ionicons
+                                  name={
+                                    isOpened ? "chevron-up" : "chevron-down"
+                                  }
+                                  color={"#444"}
+                                  size={18}
+                                />
+                              );
+                            }}
+                            dropdownIconPosition={"right"}
                           />
                         )}
                       </View>
@@ -176,15 +207,6 @@ class TodoSection extends Component {
                 </View>
               );
             })}
-            {/* <View style={styles.slide1}>
-              <Text style={styles.text}>Hello Swiper</Text>
-            </View>
-            <View style={styles.slide2}>
-              <Text style={styles.text}>Beautiful</Text>
-            </View>
-            <View style={styles.slide3}>
-              <Text style={styles.text}>And simple</Text>
-            </View> */}
           </Swiper>
         </View>
         {/* <DeckSwiper
