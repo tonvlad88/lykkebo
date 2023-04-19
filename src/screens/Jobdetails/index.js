@@ -232,6 +232,13 @@ class JobdetailsScreen extends Component {
           />
           <TodoSection info={data.booking} user={userRelation} />
           <NoteSection info={data.booking} />
+          <ImageSection
+            showCameraIcon
+            title={i18n.t("pictures")}
+            info={data.booking.booking_info.images}
+            isAttachment={false}
+            navigation={navigation}
+          />
         </View>
       </ScrollView>
     );

@@ -142,21 +142,16 @@ class BookingSection extends Component {
                 axiosConfig
               )
               .then(() => {
-                // Toast.show({
-                //   text: 'Opdateret succesfuldt',
-                //   position: 'bottom',
-                //   duration: 5000,
-                //   buttonText: 'Okay',
-                //   type: 'success',
-                // });
+                showMessage({
+                  message: "Opdateret succesfuldt",
+                  type: appStrings.common.success,
+                });
               })
               .catch((error) => {
-                // Toast.show({
-                //   text: error.message,
-                //   position: 'top',
-                //   duration: 5000,
-                //   type: 'error',
-                // });
+                showMessage({
+                  message: error.message,
+                  type: appStrings.common.danger,
+                });
               });
           });
         });
@@ -219,26 +214,6 @@ class BookingSection extends Component {
           <Text style={styles.itemLabel}>Startdato</Text>
           <View style={{ width: "70%", alignItems: "flex-start" }}>
             {Number(user) === 1 || Number(user) === 2 ? (
-              // <DatePicker
-              //   date={new Date(bookingStartDate * 1000)}
-              //   mode="date"
-              //   placeholder="select date"
-              //   format="YYYY-MM-DD"
-              //   confirmBtnText="Update"
-              //   cancelBtnText="Cancel"
-              //   customStyles={{
-              //     dateIcon: {
-              //       position: "absolute",
-              //       right: 0,
-              //       top: 4,
-              //       marginRight: 0,
-              //     },
-              //     dateInput: {
-              //       marginRight: 36,
-              //     },
-              //   }}
-              //   onDateChange={this.setStartDateHandler}
-              // />
               <>
                 <NormalButton
                   onPress={this.toggleStartDateDatePicker}
@@ -284,26 +259,6 @@ class BookingSection extends Component {
           <Text style={styles.itemLabel}>Slutdato</Text>
           <View style={{ width: "70%", alignItems: "flex-start" }}>
             {Number(user) === 1 || Number(user) === 2 ? (
-              // <DatePicker
-              //   date={new Date(bookingEndDate * 1000)}
-              //   mode="date"
-              //   placeholder="select date"
-              //   format="YYYY-MM-DD"
-              //   confirmBtnText="Update"
-              //   cancelBtnText="Cancel"
-              //   customStyles={{
-              //     dateIcon: {
-              //       position: "absolute",
-              //       right: 0,
-              //       top: 4,
-              //       marginRight: 0,
-              //     },
-              //     dateInput: {
-              //       marginRight: 36,
-              //     },
-              //   }}
-              //   onDateChange={this.setEndDateHandler}
-              // />
               <>
                 <NormalButton
                   onPress={this.toggleEndDateDatePicker}

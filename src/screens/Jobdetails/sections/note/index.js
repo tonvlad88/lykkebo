@@ -20,7 +20,14 @@ import { Dropdown } from "react-native-material-dropdown-v2-fixed";
 
 import styles from "../../styles";
 import { Ionicons } from "@expo/vector-icons";
-import { appColors, appNumbers, appStrings } from "../../../../utils/constants";
+import {
+  appAlignment,
+  appColors,
+  appDirection,
+  appNumbers,
+  appStrings,
+} from "../../../../utils/constants";
+import { NormalButton } from "../../../../common/NewButtons/NormalButton";
 
 const sendTo = [
   { value: "0", label: "All medarbejdere" },
@@ -110,8 +117,13 @@ class NoteSection extends Component {
     const { sendSMS } = this.state;
     return (
       <View style={{ height: 358, backgroundColor: "#fff" }}>
-        <View itemDivider>
-          <Text style={{ color: "#787878" }}>Skriv note</Text>
+        <View
+          style={[
+            styles.itemContainer,
+            { backgroundColor: appColors.solidGrey },
+          ]}
+        >
+          <Text style={[styles.itemHeaderText, { flex: 1 }]}>Skriv note</Text>
         </View>
 
         <TextInput
@@ -156,7 +168,45 @@ class NoteSection extends Component {
 
         <View style={{ height: 50, width: "100%", marginTop: 10 }}>
           <View style={{ flex: 1, flexDirection: "row" }}>
-            <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
+            <NormalButton
+              onPress={this.saveNoteInfoHandler}
+              containerStyle={{
+                flex: appNumbers.number_1,
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
+                marginHorizontal: appNumbers.number_10,
+                borderRadius: appNumbers.number_10,
+                justifyContent: appAlignment.center,
+              }}
+            >
+              <Text style={{ marginRight: appNumbers.number_15 }}>Gem</Text>
+            </NormalButton>
+            <NormalButton
+              onPress={() =>
+                this.setState({
+                  visibleModal: null,
+                  selectedRecepient: 0,
+                  sendSMS: false,
+                })
+              }
+              containerStyle={{
+                flex: appNumbers.number_1,
+                flexDirection: appDirection.row,
+                alignItems: appAlignment.center,
+                borderWidth: appNumbers.number_1,
+                borderColor: appColors.solidGrey,
+                padding: appNumbers.number_10,
+                marginHorizontal: appNumbers.number_10,
+                borderRadius: appNumbers.number_10,
+                justifyContent: appAlignment.center,
+              }}
+            >
+              <Text style={{ marginRight: appNumbers.number_15 }}>Luk</Text>
+            </NormalButton>
+            {/* <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
               <TouchableOpacity
                 full
                 primary
@@ -165,8 +215,8 @@ class NoteSection extends Component {
               >
                 <Text>Gem</Text>
               </TouchableOpacity>
-            </View>
-            <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
+            </View> */}
+            {/* <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
               <TouchableOpacity
                 full
                 light
@@ -181,7 +231,7 @@ class NoteSection extends Component {
               >
                 <Text>Luk</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>

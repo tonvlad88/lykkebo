@@ -1,21 +1,25 @@
 // Main Components
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import { Content, Button, Icon, ListItem, Thumbnail } from "native-base";
 import {
-  Content, Button, Icon, ListItem, Text, Thumbnail,
-} from 'native-base';
-import {
-  View, ScrollView, Modal, TouchableHighlight, TouchableOpacity,
-} from 'react-native';
+  View,
+  ScrollView,
+  Modal,
+  TouchableHighlight,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 // Packages
-import * as Localization from 'expo-localization';
-import ImageViewer from 'react-native-image-zoom-viewer';
+import * as Localization from "expo-localization";
+import ImageViewer from "react-native-image-zoom-viewer";
 
 // Actions
 
 // Localization
-import i18n from 'i18n-js';
-import { da, en } from '../../../../services/translations';
+import i18n from "i18n-js";
+import { da, en } from "../../../../services/translations";
 i18n.fallbacks = true;
 i18n.translations = { da, en };
 i18n.locale = Localization.locale;
@@ -23,7 +27,8 @@ i18n.locale = Localization.locale;
 // Global imports
 
 // Local imports
-import styles from '../../styles';
+import styles from "../../styles";
+import { appColors, appNumbers } from "../../../../utils/constants";
 
 // Local constants
 
@@ -41,14 +46,16 @@ class ImageSection extends Component {
 
     if (!Array.isArray(info) || !info.length) {
       return (
-        <ListItem style={styles.noMarginLeft}>
-          <Text style={{paddingLeft: 18}} note>Ingen billeder fundet</Text>
-        </ListItem>
+        <View style={[styles.noMarginLeft, { padding: appNumbers.number_10 }]}>
+          <Text style={{ paddingLeft: 18 }} note>
+            Ingen billeder fundet
+          </Text>
+        </View>
       );
     } else {
       return (
         <ScrollView horizontal>
-          <View style={{flex: 1, flexDirection: 'row'}}>
+          <View style={{ flex: 1, flexDirection: "row" }}>
             {info.map((image, i) => (
               <TouchableHighlight
                 key={i}
@@ -57,26 +64,28 @@ class ImageSection extends Component {
                     index: i,
                     modalVisible: true,
                   });
-                }}>
-                <Thumbnail
+                }}
+              >
+                <View
                   square
                   large
-                  source={{ uri: isAttachment ? image.attachment : image.image }}
-                  style={{margin: 10}}
-                  key={isAttachment ? image.attachment : image.image} />
+                  source={{
+                    uri: isAttachment ? image.attachment : image.image,
+                  }}
+                  style={{ margin: 10 }}
+                  key={isAttachment ? image.attachment : image.image}
+                />
               </TouchableHighlight>
-
             ))}
           </View>
         </ScrollView>
       );
     }
-  }
+  };
 
   render() {
-    const {
-      navigation, info, title, isAttachment, showCameraIcon,
-    } = this.props;
+    const { navigation, info, title, isAttachment, showCameraIcon } =
+      this.props;
     const { modalVisible, index } = this.state;
 
     const images = [];
@@ -98,46 +107,62 @@ class ImageSection extends Component {
     }
 
     return (
-      <Content>
-        <ListItem itemDivider style={{paddingTop: 0, paddingBottom: 0}}>
-          <Text style={{flex: 1, color: '#787878', fontWeight: 'bold'}}>{title}</Text>
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.itemContainer,
+            { backgroundColor: appColors.solidGrey },
+          ]}
+        >
+          <Text style={[styles.itemHeaderText, { flex: 1 }]}>{title}</Text>
           {showCameraIcon ? (
-            <Button style={{alignSelf: 'flex-end'}} transparent>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('UploadImage');
-                }}>
-                <Icon name="camera" style={{color: '#2E3D43'}} />
-              </TouchableOpacity>
-            </Button>
+            <TouchableOpacity
+              style={{ alignSelf: "flex-end" }}
+              onPress={() => {
+                navigation.navigate("UploadImage");
+              }}
+            >
+              <Ionicons
+                name="camera"
+                size={appNumbers.number_24}
+                style={{ color: "#2E3D43" }}
+              />
+            </TouchableOpacity>
           ) : null}
-        </ListItem>
+        </View>
 
-        <ListItem
-          style={{
-            height: 0, marginLeft: 0, paddingRight: 0, paddingTop: 0, paddingBottom: 0,
-          }} />
+        {this.renderAllImagesHandler()}
 
-        <Modal
-          visible={modalVisible}
-          transparent>
+        <Modal visible={modalVisible} transparent>
           <ImageViewer
             renderHeader={() => (
-              <View style={{
-                width: '100%', alignItems: 'flex-end', position: 'absolute', zIndex: 1, top: 10, right: 10,
-              }}>
-                <Icon size={30} name="close-circle" style={{color: '#2E3D43'}} onPress={() => this.setState({modalVisible: false})} />
+              <View
+                style={{
+                  width: "100%",
+                  alignItems: "flex-end",
+                  position: "absolute",
+                  zIndex: 1,
+                  top: 10,
+                  right: 10,
+                }}
+              >
+                <Ionicons
+                  size={30}
+                  name="close-circle"
+                  style={{ color: "#2E3D43" }}
+                  onPress={() => this.setState({ modalVisible: false })}
+                />
               </View>
             )}
             onSwipeDown={() => {
-              this.setState({modalVisible: false});
+              this.setState({ modalVisible: false });
             }}
             enableSwipeDown
             index={index}
-            imageUrls={images} />
+            imageUrls={images}
+          />
         </Modal>
-        {this.renderAllImagesHandler()}
-      </Content>
+      </View>
     );
   }
 }
