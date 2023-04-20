@@ -26,7 +26,7 @@ class StopWatch extends React.Component<Props, State> {
       },
       text: {
         fontSize: 30,
-        color: "#FFF",
+        color: "#ffffff",
         marginLeft: 7,
       },
     };
@@ -148,10 +148,18 @@ class StopWatch extends React.Component<Props, State> {
 
   render() {
     const styles = this.props.options ? this.props.options : this.defaultStyles;
+    const { started } = this.state;
 
     return (
       <View ref="stopwatch" style={{ backgroundColor: appColors.primary }}>
-        <Text style={styles.text}>{this.formatTime()}</Text>
+        <Text
+          style={[
+            styles.text,
+            { color: started ? appColors.lavaRed : appColors.solidWhite },
+          ]}
+        >
+          {this.formatTime()}
+        </Text>
       </View>
     );
   }
