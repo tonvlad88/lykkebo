@@ -43,7 +43,7 @@ import AccountScreen from "../screens/Account";
 import UploadImageScreen from "../screens/Jobdetails/sections/image/uploadImage";
 // import UploadProofScreen from '../screens/Jobdetails/sections/uploadProof';
 import TimeTrackerScreen from "../screens/TimeTracker/container/index";
-// import TimeTrackerDetailScreen from '../screens/TimeTracker/details';
+import TrackerDetailsScreen from "../screens/TimeTracker/details";
 // import TimeTrackerResponsibleDetailScreen from '../screens/TimeTracker/responsibleDetail';
 
 // import TrackerDetails from '../screens/TimeTracker/container/TrackerDetails';
@@ -211,6 +211,10 @@ const MainStack = () => (
     <Stack.Screen
       name={appStrings.mainStack.uploadImageScreen}
       component={UploadImageScreen}
+    />
+    <Stack.Screen
+      name={appStrings.mainStack.trackerDetailsScreen}
+      component={TrackerDetailsScreen}
     />
     <Stack.Screen name={appStrings.mainStack.appStack} component={AppStack} />
   </Stack.Navigator>

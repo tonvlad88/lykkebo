@@ -26,6 +26,7 @@ export const appStrings = {
     appStack: "AppStack",
     jobDetailsScreen: "JobDetailsScreen",
     uploadImageScreen: "UploadImageScreen",
+    trackerDetailsScreen: "TrackerDetailsScreen",
   },
   appStack: {
     en: {

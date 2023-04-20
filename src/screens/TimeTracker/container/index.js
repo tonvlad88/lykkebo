@@ -335,13 +335,16 @@ class TimeTrackerScreen extends React.Component {
               //   showEditBookingModal: true,
               //   selectedBooking: data,
               // });
-              this.props.navigation.navigate("TrackerDetails", {
-                selectedDate: this.state.selectedDate,
-                selectedTimeRec: data,
-                userId: this.state.userId,
-                job_id: data.job_id,
-                selectedDateForAPI: this.state.selectedDateForAPI,
-              });
+              this.props.navigation.navigate(
+                appStrings.mainStack.trackerDetailsScreen,
+                {
+                  selectedDate: this.state.selectedDate,
+                  selectedTimeRec: data,
+                  userId: this.state.userId,
+                  job_id: data.job_id,
+                  selectedDateForAPI: this.state.selectedDateForAPI,
+                }
+              );
             },
           },
         ]}
