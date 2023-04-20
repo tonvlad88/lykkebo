@@ -258,36 +258,34 @@ class TimeTrackerScreen extends React.Component {
           </Text>
         </View>
       );
-      // } else if (Number(status) === 5) {
-      //   return (
-      //     <Badge
-      //       warning
-      //       style={{
-      //         minWidth: 100,
-      //         // width: 20,
-      //         // height: 20,
-      //         // borderRadius: 20 / 2,
-      //         // marginTop: 10,
-      //         alignSelf: 'center',
-      //       }}>
-      //       <Text style={{textAlign: 'center', color: 'white'}}>kontaktet</Text>
-      //     </Badge>
-      //   );
-      // } else if (Number(status) === 4) {
-      //   return (
-      //     <Badge
-      //       primary
-      //       style={{
-      //         minWidth: 100,
-      //         // width: 20,
-      //         // height: 20,
-      //         // borderRadius: 20 / 2,
-      //         // marginTop: 10,
-      //         alignSelf: 'center',
-      //       }}>
-      //       <Text style={{textAlign: 'center', color: 'white'}}>igangværende</Text>
-      //     </Badge>
-      //   );
+    } else if (Number(status) === 5) {
+      return (
+        <View
+          style={{
+            padding: appNumbers.number_10,
+            backgroundColor: appColors.solidBlack,
+            borderTopLeftRadius: appNumbers.number_8,
+            borderBottomLeftRadius: appNumbers.number_8,
+          }}
+        >
+          <Text style={{ textAlign: "center", color: "white" }}>kontaktet</Text>
+        </View>
+      );
+    } else if (Number(status) === 4) {
+      return (
+        <View
+          style={{
+            padding: appNumbers.number_10,
+            backgroundColor: appColors.solidBlack,
+            borderTopLeftRadius: appNumbers.number_8,
+            borderBottomLeftRadius: appNumbers.number_8,
+          }}
+        >
+          <Text style={{ textAlign: "center", color: "white" }}>
+            igangværende
+          </Text>
+        </View>
+      );
     } else {
       return (
         <View
