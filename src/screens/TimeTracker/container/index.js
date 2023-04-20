@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Badge } from "react-native-elements";
 
@@ -20,10 +19,11 @@ import Swipeout from "react-native-swipeout";
 import * as Localization from "expo-localization";
 import Modal from "react-native-modal";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
+import commonStyles from "../../../utils/commonStyles";
 
 // Actions
 import {
@@ -245,24 +245,18 @@ class TimeTrackerScreen extends React.Component {
   renderTimeStatusHandler = (status) => {
     if (Number(status) === 0) {
       return (
-        <Badge
-          // info
+        <View
           style={{
-            minWidth: 100,
-            // width: 20,
-            // height: 20,
-            // borderRadius: 20 / 2,
-            // marginTop: 10,
-            alignSelf: "center",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "black",
+            padding: appNumbers.number_10,
+            backgroundColor: appColors.solidBlack,
+            borderTopLeftRadius: appNumbers.number_8,
+            borderBottomLeftRadius: appNumbers.number_8,
           }}
         >
           <Text style={{ textAlign: "center", color: "white" }}>
             ikke indsendt
           </Text>
-        </Badge>
+        </View>
       );
       // } else if (Number(status) === 5) {
       //   return (
@@ -296,21 +290,16 @@ class TimeTrackerScreen extends React.Component {
       //   );
     } else {
       return (
-        <Badge
-          success
+        <View
           style={{
-            minWidth: 100,
-            // width: 20,
-            // height: 20,
-            // borderRadius: 20 / 2,
-            // marginTop: 10,
-            alignSelf: "center",
-            justifyContent: "center",
-            alignItems: "center",
+            padding: appNumbers.number_10,
+            backgroundColor: appColors.solidBlack,
+            borderTopLeftRadius: appNumbers.number_8,
+            borderBottomLeftRadius: appNumbers.number_8,
           }}
         >
           <Text style={{ textAlign: "center", color: "white" }}>indsendt</Text>
-        </Badge>
+        </View>
       );
     }
   };
@@ -359,11 +348,10 @@ class TimeTrackerScreen extends React.Component {
           },
         ]}
         autoClose
-        backgroundColor={data.total_time > 0 ? "#72B565" : "red"}
+        backgroundColor={data.total_time > 0 ? "#72B565" : appColors.granite}
       >
         <View style={{ padding: 10 }}>
           <TouchableOpacity
-            button
             onPress={() => {
               this.setState({
                 showAddDailyNoteModal: true,
@@ -371,38 +359,23 @@ class TimeTrackerScreen extends React.Component {
                 selectedBooking: [data],
               });
             }}
-            itemDivider
           >
-            <View>
-              <View>
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <View style={{ flex: 1 }}>
                 <Text
                   style={{ flex: 1, fontWeight: "bold" }}
                 >{`BOOKING ${data.job_id}`}</Text>
               </View>
-              {/* <Col>
-                  <TouchableOpacity>
-                    <MaterialIcons
-                        onPress={() => {
-                          // this.openTimeDetails(data);
-                          this.setState({
-                            showAddDailyNoteModal: true,
-                            internalOnly: false,
-                            selectedBooking: [data],
-                          });
-                        }}
-                        name="alarm-add"
-                        size={30}
-                        color="#BFBEC4"
-                        style={{color: 'black', alignSelf: 'flex-end', padding: 0}} />
-                  </TouchableOpacity>
-                </Col> */}
+              <TouchableOpacity>
+                <Ionicons
+                  name={appStrings.icon.chevronForward}
+                  size={appNumbers.number_24}
+                  color={appColors.primary}
+                />
+              </TouchableOpacity>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.noMarginLeft} avatar>
-            {/* <Left style={[styles.paddingLeft5, {justifyContent: 'center'}]}>
-                {this.renderTimeStatusHandler(data.time_rec_submitted)}
-              </Left> */}
-            <View />
+          <View style={{}}>
             <View style={[{ justifyContent: "center", borderBottomWidth: 0 }]}>
               <Text style={{ fontSize: 10, color: "white" }}>Customer</Text>
               <Text note numberOfLines={1} style={{ color: "white" }}>
@@ -411,18 +384,33 @@ class TimeTrackerScreen extends React.Component {
             </View>
             <View
               style={{
-                borderBottomWidth: 0,
-                justifyContent: "center",
-                alignItems: "center",
+                flexDirection: "row",
+                width: "100%",
+                borderWidth: 1,
+                alignItems: appAlignment.center,
+                borderColor: appColors.primary,
+                borderRadius: appNumbers.number_10,
               }}
             >
-              <Text
-                style={{ fontSize: 17, fontWeight: "bold", color: "white" }}
-              >
-                {convertSecondsToTime(data.total_time)}
-              </Text>
+              <View style={{ flex: 1 }}>
+                {this.renderTimeStatusHandler(data.time_rec_submitted)}
+              </View>
+
+              <View style={commonStyles.deadCenter}>
+                <Text
+                  style={[
+                    {
+                      fontSize: 17,
+                      fontWeight: "bold",
+                      color: "white",
+                    },
+                  ]}
+                >
+                  {convertSecondsToTime(data.total_time)}
+                </Text>
+              </View>
             </View>
-          </TouchableOpacity>
+          </View>
           {/* <View style={{
               width: '100%', height: 7, backgroundColor: '#D8D8D8', marginBottom: 1,
             }} /> */}

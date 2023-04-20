@@ -893,6 +893,8 @@ class CalendarScreen extends Component {
     this.setState({
       markedDates: markedDatesTemp,
       selectedDate: day.dateString,
+      dateFrom: day.dateString,
+      dateEnd: day.dateString,
       selectedMarkedDateData: baseData.filter(
         (data2) => data2.date === day.dateString
       ),
