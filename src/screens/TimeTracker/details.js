@@ -15,14 +15,13 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { Badge } from "react-native-elements";
+import { Badge, Button } from "react-native-elements";
 
 import { Constants } from "expo";
 import DatePicker from "react-native-datepicker";
 import axios from "axios";
 import XDate from "xdate";
 import Swipeout from "react-native-swipeout";
-import { ListItem } from "react-native-elements";
 
 // or any pure javascript modules available in npm
 import { Appbar, Colors, FAB } from "react-native-paper";
@@ -31,7 +30,18 @@ import { Appbar, Colors, FAB } from "react-native-paper";
 import { convertSecondsToTime, toTimestamp } from "../../services/common";
 import Stopwatch from "./stopwatch";
 import styles from "./styles";
-import { appStrings } from "../../utils/constants";
+import {
+  appAlignment,
+  appColors,
+  appDirection,
+  appNumbers,
+  appSideBar,
+  appStrings,
+} from "../../utils/constants";
+import NewHeader from "../../common/NewHeader";
+import NewSinglePageHeader from "../../common/NewSinglePageHeader";
+import NewLoader from "../../common/NewLoader";
+import commonStyles from "../../utils/commonStyles";
 
 const cutout = require("../../../assets/cutout.png");
 
@@ -127,7 +137,7 @@ export default class TimeTrackerDetailScreen extends React.Component {
                   "selectedTimeTrackerDetailsDateFormatted"
                 ).then((selectedTimeTrackerDetailsDateFormatted) => {
                   const data = JSON.parse(selectedTimeTrackerDetails);
-                  // console.log('data', data)
+                  console.log("data", data);
                   if (
                     data.time_entry_details.length > 0 &&
                     data.time_entry_details[data.time_entry_details.length - 1]
@@ -735,52 +745,27 @@ export default class TimeTrackerDetailScreen extends React.Component {
       return (
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
           <View style={styles.container}>
-            <StatusBar hidden />
-            <View style={{ backgroundColor: "#2E3D43" }}>
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity transparent>
-                  <Ionicons
-                    style={{ color: "#ffffff" }}
-                    size={40}
-                    name={appStrings.icon.chevronBack}
-                    onPress={() => navigation.navigate("TimeTracker")}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text style={{ color: "#ffffff" }}>
-                  {new XDate(Number(selectedDate)).toString("dd MMMM, yyyy")}
-                </Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  style={{ alignSelf: "flex-end" }}
-                  transparent
-                  onPress={() => navigation.navigate("UploadImage")}
-                >
-                  <Ionicons style={{ color: "white" }} name="camera" />
-                </TouchableOpacity>
-              </View>
-            </View>
-            {/* <View style={{
-              width: '100%', backgroundColor: '#243135', marginBottom: 0.3, padding: 10, borderColor: '#ccc',
-            }}>
-              <Text style={{color: '#ffffff', textAlign: 'center', fontWeight: 'bold'}}>{`BOOKING ${data.job_id} - ${data.customer_name}`}</Text>
-            </View> */}
+            <NewSinglePageHeader
+              title={new XDate(Number(selectedDate)).toString("dd MMMM, yyyy")}
+              hasLeftIcon={true}
+              leftIconName={appStrings.icon.chevronBack}
+              leftIconPress={() => navigation.goBack()}
+              hasRightIcon={true}
+              rightIconName={appStrings.icon.camera}
+              rightIconPress={() =>
+                navigation.navigate(appStrings.mainStack.uploadImageScreen)
+              }
+            />
             <TouchableOpacity
-              full
               style={{
                 backgroundColor: "#243135",
                 borderBottomWidth: 0.5,
                 borderColor: "#ccc",
+                padding: appNumbers.number_10,
+                borderTopWidth: appNumbers.number_2,
+                borderBottomWidth: appNumbers.number_2,
               }}
-              onPress={this.openBooking}
+              onPress={() => {}}
             >
               <Text
                 style={{
@@ -791,14 +776,8 @@ export default class TimeTrackerDetailScreen extends React.Component {
               >{`BOOKING ${data.job_id} - ${data.customer_name}`}</Text>
             </TouchableOpacity>
 
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={{ width: "100%", height: 100 }}>
+            <View style={{ flex: 1 }}>
+              <View style={{ width: "100%" }}>
                 <Stopwatch
                   laps={false}
                   // msecs
@@ -811,7 +790,12 @@ export default class TimeTrackerDetailScreen extends React.Component {
                     this.workedHours = convertTimeToSeconds(time);
                   }}
                 />
-                <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
+                <View
+                  style={{
+                    backgroundColor: "#2E3D43",
+                    paddingBottom: appNumbers.number_10,
+                  }}
+                >
                   <Text
                     style={{
                       textAlign: "center",
@@ -820,7 +804,7 @@ export default class TimeTrackerDetailScreen extends React.Component {
                     }}
                   >
                     Hours
-                    {"                "}
+                    {"                  "}
                     Minutes
                     {"                "}
                     Seconds
@@ -828,16 +812,10 @@ export default class TimeTrackerDetailScreen extends React.Component {
                 </View>
                 <View
                   style={{
-                    width: "100%",
-                    height: 7,
                     backgroundColor: "#243135",
-                    marginBottom: 1,
-                    borderTopWidth: 1,
-                    borderColor: "#fff",
                   }}
                 />
               </View>
-
               {showEditForm ? (
                 <View />
               ) : (
@@ -854,256 +832,225 @@ export default class TimeTrackerDetailScreen extends React.Component {
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity
-                      full
-                      success
+                      style={{
+                        backgroundColor: appColors.darkPastelGreen,
+                        padding: appNumbers.number_14,
+                      }}
                       onPress={this.toggleStopwatch}
                     >
-                      <Text style={{ fontWeight: "bold", color: "white" }}>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          color: "white",
+                          textAlign: appAlignment.center,
+                        }}
+                      >
                         START
                       </Text>
                     </TouchableOpacity>
                   )}
                 </View>
               )}
-
               <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <View style={{ padding: 10, paddingBottom: 0, flex: 1 }}>
-                    {apiInProgress ? (
-                      <ActivityIndicator
-                        size="large"
-                        color="#2E3D43"
+                <ScrollView>
+                  {showEditForm ? (
+                    <Fragment>
+                      <Form>
+                        <Item stackedLabel last>
+                          <Label>Note</Label>
+                          <TextInput
+                            onChangeText={(text) => {
+                              this.setState({
+                                currentTimeEntryNote: text,
+                              });
+                            }}
+                            value={currentTimeEntryNote}
+                            placeholder={jobDescriptionPlaceholder}
+                          />
+                        </Item>
+                        <Item stackedLabel last>
+                          <Label>Time Start</Label>
+                          <DatePicker
+                            style={{
+                              width: "100%",
+                              marginTop: 10,
+                              marginBottom: 10,
+                            }}
+                            date={new Date(currentTimeEntryStartTime * 1000)}
+                            mode="time"
+                            placeholder="select start date time"
+                            format="YYYY-MM-DD HH:mm"
+                            confirmBtnText="Update"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                              dateIcon: {
+                                position: "absolute",
+                                right: 0,
+                                top: 4,
+                                marginRight: 0,
+                              },
+                              dateInput: {
+                                marginRight: 36,
+                              },
+                            }}
+                            onDateChange={this.setStartDateHandler}
+                          />
+                        </Item>
+                        <Item stackedLabel last>
+                          <Label>Time End</Label>
+                          <DatePicker
+                            style={{
+                              width: "100%",
+                              marginTop: 10,
+                              marginBottom: 10,
+                            }}
+                            date={new Date(currentTimeEntryEndTime * 1000)}
+                            mode="time"
+                            placeholder="select end date time"
+                            format="YYYY-MM-DD HH:mm"
+                            confirmBtnText="Update"
+                            cancelBtnText="Cancel"
+                            customStyles={{
+                              dateIcon: {
+                                position: "absolute",
+                                right: 0,
+                                top: 4,
+                                marginRight: 0,
+                              },
+                              dateInput: {
+                                marginRight: 36,
+                              },
+                            }}
+                            onDateChange={this.setEndDateHandler}
+                          />
+                        </Item>
+                      </Form>
+                      <Button
+                        block
+                        info
+                        onPress={this.updateTimeEntryHandler}
                         style={{
-                          flex: 1,
-                          flexDirection: "column",
-                          justifyContent: "center",
+                          marginBottom: 5,
+                          marginTop: 5,
                         }}
-                      />
-                    ) : (
-                      <ScrollView>
-                        {showEditForm ? (
-                          <Fragment>
-                            <View>
-                              <View stackedLabel last>
-                                <View>Note</View>
-                                <TextInput
+                      >
+                        <Text style={{ color: "white" }}>opdatering</Text>
+                      </Button>
+                      <Button
+                        block
+                        light
+                        onPress={() => this.setState({ showEditForm: false })}
+                      >
+                        <Text>afbestille</Text>
+                      </Button>
+                    </Fragment>
+                  ) : (
+                    data.time_entry_details.map((data2) => {
+                      console.log("data2", data2);
+                      if (data2.status === "0") {
+                        return (
+                          <Swipeout
+                            key={data2.id}
+                            autoClose
+                            backgroundColor="transparent"
+                          >
+                            <View style={{ flex: 1, flexDirection: "row" }}>
+                              <View style={{ flex: 1, height: 30 }}>
+                                <Input
                                   onChangeText={(text) => {
                                     this.setState({
-                                      currentTimeEntryNote: text,
+                                      jobDescription: text,
                                     });
                                   }}
-                                  value={currentTimeEntryNote}
+                                  value={jobDescription}
                                   placeholder={jobDescriptionPlaceholder}
                                 />
                               </View>
-                              <View stackedLabel last>
-                                <View>Time Start</View>
-                                <DatePicker
-                                  style={{
-                                    width: "100%",
-                                    marginTop: 10,
-                                    marginBottom: 10,
-                                  }}
-                                  date={
-                                    new Date(currentTimeEntryStartTime * 1000)
-                                  }
-                                  mode="time"
-                                  placeholder="select start date time"
-                                  format="YYYY-MM-DD HH:mm"
-                                  confirmBtnText="Update"
-                                  cancelBtnText="Cancel"
-                                  customStyles={{
-                                    dateIcon: {
-                                      position: "absolute",
-                                      right: 0,
-                                      top: 4,
-                                      marginRight: 0,
-                                    },
-                                    dateInput: {
-                                      marginRight: 36,
-                                    },
-                                  }}
-                                  onDateChange={this.setStartDateHandler}
-                                />
-                              </View>
-                              <View stackedLabel last>
-                                <View>Time End</View>
-                                <DatePicker
-                                  style={{
-                                    width: "100%",
-                                    marginTop: 10,
-                                    marginBottom: 10,
-                                  }}
-                                  date={
-                                    new Date(currentTimeEntryEndTime * 1000)
-                                  }
-                                  mode="time"
-                                  placeholder="select end date time"
-                                  format="YYYY-MM-DD HH:mm"
-                                  confirmBtnText="Update"
-                                  cancelBtnText="Cancel"
-                                  customStyles={{
-                                    dateIcon: {
-                                      position: "absolute",
-                                      right: 0,
-                                      top: 4,
-                                      marginRight: 0,
-                                    },
-                                    dateInput: {
-                                      marginRight: 36,
-                                    },
-                                  }}
-                                  onDateChange={this.setEndDateHandler}
-                                />
+                              <View style={{ width: 90, height: 30 }}>
+                                <Text style={{ color: "red" }}>
+                                  Igangværende
+                                </Text>
                               </View>
                             </View>
-                            <TouchableOpacity
-                              block
-                              info
-                              onPress={this.updateTimeEntryHandler}
-                              style={{
-                                marginBottom: 5,
-                                marginTop: 5,
-                              }}
-                            >
-                              <Text style={{ color: "white" }}>opdatering</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              block
-                              light
-                              onPress={() =>
-                                this.setState({ showEditForm: false })
-                              }
-                            >
-                              <Text>afbestille</Text>
-                            </TouchableOpacity>
-                          </Fragment>
-                        ) : (
-                          data.time_entry_details.map((data2) => {
-                            // console.log('data2', data2)
-                            if (data2.status === "0") {
-                              return (
-                                <Swipeout
-                                  key={data2.id}
-                                  autoClose
-                                  backgroundColor="transparent"
-                                >
-                                  <View
-                                    style={{ flex: 1, flexDirection: "row" }}
-                                  >
-                                    <View style={{ flex: 1, height: 30 }}>
-                                      <TextInput
-                                        onChangeText={(text) => {
-                                          this.setState({
-                                            jobDescription: text,
-                                          });
-                                        }}
-                                        value={jobDescription}
-                                        placeholder={jobDescriptionPlaceholder}
-                                      />
-                                    </View>
-                                    <View style={{ width: 90, height: 30 }}>
-                                      <Text style={{ color: "red" }}>
-                                        Igangværende
-                                      </Text>
-                                    </View>
-                                  </View>
-                                </Swipeout>
-                              );
-                            }
-                            return (
-                              <Swipeout
-                                key={data2.id}
-                                right={[
-                                  {
-                                    text: "Edit",
-                                    backgroundColor: "blue",
-                                    // underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                                    onPress: () => {
-                                      this.setState({
-                                        currentTimeEntryID: data2.id,
-                                        currentTimeEntryNote: data2.description,
-                                        currentTimeEntryStartTime: data2.start,
-                                        currentTimeEntryEndTime: data2.end,
-                                        showEditForm: true,
-                                      });
-                                    },
-                                  },
-                                  {
-                                    text: "Delete",
-                                    backgroundColor: "red",
-                                    onPress: () => {
-                                      AsyncStorage.getItem("user_id").then(
-                                        (userId) => {
-                                          AsyncStorage.getItem("token").then(
-                                            (token) => {
-                                              AsyncStorage.getItem(
-                                                "baseUrl"
-                                              ).then((baseUrl) => {
-                                                const postData = {
-                                                  user_id: userId,
-                                                  record_id: Number(data2.id),
-                                                };
+                          </Swipeout>
+                        );
+                      }
+                      return (
+                        <Swipeout
+                          key={data2.id}
+                          right={[
+                            {
+                              text: "Edit",
+                              backgroundColor: "blue",
+                              // underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+                              onPress: () => {
+                                this.setState({
+                                  currentTimeEntryID: data2.id,
+                                  currentTimeEntryNote: data2.description,
+                                  currentTimeEntryStartTime: data2.start,
+                                  currentTimeEntryEndTime: data2.end,
+                                  showEditForm: true,
+                                });
+                              },
+                            },
+                            {
+                              text: "Delete",
+                              backgroundColor: "red",
+                              onPress: () => {
+                                AsyncStorage.getItem("user_id").then(
+                                  (userId) => {
+                                    AsyncStorage.getItem("token").then(
+                                      (token) => {
+                                        AsyncStorage.getItem("baseUrl").then(
+                                          (baseUrl) => {
+                                            const postData = {
+                                              user_id: userId,
+                                              record_id: Number(data2.id),
+                                            };
 
-                                                const axiosConfig = {
-                                                  headers: {
-                                                    Authorization: `Bearer ${token}`,
-                                                  },
-                                                };
+                                            const axiosConfig = {
+                                              headers: {
+                                                Authorization: `Bearer ${token}`,
+                                              },
+                                            };
 
-                                                axios
-                                                  .post(
-                                                    `${baseUrl}/lykkebo/v1/timerec/delete`,
-                                                    postData,
-                                                    axiosConfig
+                                            axios
+                                              .post(
+                                                `${baseUrl}/lykkebo/v1/timerec/delete`,
+                                                postData,
+                                                axiosConfig
+                                              )
+                                              .then((res) => {
+                                                this.currentTrackerUid =
+                                                  res.data;
+                                                fetch(
+                                                  `${baseUrl}/lykkebo/v1/timerec/overview?user_id=${userId}&day=${selectedDateFormatted.replace(
+                                                    /"/gi,
+                                                    ""
+                                                  )}`,
+                                                  {
+                                                    method: "GET",
+                                                    headers: {
+                                                      Authorization: `Bearer ${token}`,
+                                                    },
+                                                  }
+                                                )
+                                                  .then((response) =>
+                                                    response.json()
                                                   )
-                                                  .then((res) => {
-                                                    this.currentTrackerUid =
-                                                      res.data;
-                                                    fetch(
-                                                      `${baseUrl}/lykkebo/v1/timerec/overview?user_id=${userId}&day=${selectedDateFormatted.replace(
-                                                        /"/gi,
-                                                        ""
-                                                      )}`,
-                                                      {
-                                                        method: "GET",
-                                                        headers: {
-                                                          Authorization: `Bearer ${token}`,
-                                                        },
-                                                      }
-                                                    )
-                                                      .then((response) =>
-                                                        response.json()
-                                                      )
-                                                      .then((responseJson) => {
-                                                        const tempData =
-                                                          responseJson.data.filter(
-                                                            (data3) =>
-                                                              data3.job_id ===
-                                                              data.job_id
-                                                          );
-                                                        this.setState({
-                                                          data: tempData[0],
-                                                          totalWorkedHours:
-                                                            Number(
-                                                              tempData[0]
-                                                                .total_time
-                                                            ),
-                                                        });
-                                                      })
-                                                      .catch((error) => {
-                                                        Toast.show({
-                                                          text: error.message,
-                                                          position: "top",
-                                                          duration: 5000,
-                                                        });
-                                                      });
+                                                  .then((responseJson) => {
+                                                    const tempData =
+                                                      responseJson.data.filter(
+                                                        (data3) =>
+                                                          data3.job_id ===
+                                                          data.job_id
+                                                      );
+                                                    this.setState({
+                                                      data: tempData[0],
+                                                      totalWorkedHours: Number(
+                                                        tempData[0].total_time
+                                                      ),
+                                                    });
                                                   })
                                                   .catch((error) => {
                                                     Toast.show({
@@ -1112,255 +1059,157 @@ export default class TimeTrackerDetailScreen extends React.Component {
                                                       duration: 5000,
                                                     });
                                                   });
+                                              })
+                                              .catch((error) => {
+                                                Toast.show({
+                                                  text: error.message,
+                                                  position: "top",
+                                                  duration: 5000,
+                                                });
                                               });
-                                            }
-                                          );
-                                        }
-                                      );
-                                    },
-                                  },
-                                ]}
-                                autoClose
-                                backgroundColor="transparent"
-                              >
-                                <ListItem
-                                  containerStyle={{
-                                    borderBottomWidth: 0.5,
-                                    borderColor: "#ccc",
-                                  }}
-                                  roundAvatar
-                                  badge={{
-                                    value: `${convertSecondsToTime(
-                                      Number(data2.total)
-                                    )}`,
-                                    textStyle: { color: "white" },
-                                  }}
-                                  title={
-                                    data2.description !== ""
-                                      ? data2.description
-                                      : "<Ingen beskrivelse>"
+                                          }
+                                        );
+                                      }
+                                    );
                                   }
-                                  titleStyle={{
-                                    marginLeft: 0,
-                                    fontWeight: "bold",
-                                  }}
-                                  hideChevron
-                                  subtitleStyle={{
-                                    marginLeft: 0,
-                                    fontSize: 12,
-                                    color: "#959595",
-                                  }}
-                                  subtitle={`${convertTimestamp(
-                                    Number(data2.start),
-                                    "militarytime"
-                                  )} to ${convertTimestamp(
-                                    Number(data2.end),
-                                    "militarytime"
-                                  )}`}
-                                />
-                              </Swipeout>
-                            );
-                          })
-                        )}
-                      </ScrollView>
-                    )}
-                  </View>
-                </View>
+                                );
+                              },
+                            },
+                          ]}
+                          autoClose
+                          backgroundColor="transparent"
+                        >
+                          {/* <View
+                            style={{
+                              borderBottomWidth: 0.5,
+                              borderColor: "#ccc",
+                            }}
+                            roundAvatar
+                            badge={{
+                              value: `${convertSecondsToTime(
+                                Number(data2.total)
+                              )}`,
+                              textStyle: { color: "white" },
+                            }}
+                            title={
+                              data2.description !== ""
+                                ? data2.description
+                                : "<Ingen beskrivelse>"
+                            }
+                            titleStyle={{ marginLeft: 0, fontWeight: "bold" }}
+                            hideChevron
+                            subtitleStyle={{
+                              marginLeft: 0,
+                              fontSize: 12,
+                              color: "#959595",
+                            }}
+                            subtitle={`${convertTimestamp(
+                              Number(data2.start),
+                              "militarytime"
+                            )} to ${convertTimestamp(
+                              Number(data2.end),
+                              "militarytime"
+                            )}`}
+                          /> */}
+                          <View style={{ flexDirection: appDirection.row }}>
+                            <View>
+                              <Text>
+                                {data2.description !== ""
+                                  ? data2.description
+                                  : "<Ingen beskrivelse>"}
+                              </Text>
+                              <Text>
+                                {`${convertTimestamp(
+                                  new Date(data2.start).getTime(),
+                                  "militarytime"
+                                )} to ${convertTimestamp(
+                                  new Date(data2.end).getTime(),
+                                  "militarytime"
+                                )}`}
+                              </Text>
+                            </View>
+                          </View>
+                        </Swipeout>
+                      );
+                    })
+                  )}
+                </ScrollView>
               </View>
-              <View style={{ width: "100%", height: 62 }} />
-            </View>
-
-            <View style={styles.appbar}>
-              <Appbar style={styles.piece}>
-                {/* <Appbar.Action
-                  icon="edit"
-                  onPress={() => console.log('Menu pressed')} />
-
-                <Appbar.Action
-                  icon="photo-camera"
-                  onPress={() => console.log('Favorite pressed')} /> */}
-                <View style={{ borderBottomWidth: 0, width: "95%" }}>
-                  {/* <TextInput
-                    onChangeText={(text) => {
-                      this.setState({
-                        jobDescription: text,
-                      });
-                    }}
-                    value={jobDescription}
-                    style={{color: 'white'}}
-                    placeholder={jobDescriptionPlaceholder} /> */}
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      paddingTop: 5,
-                      paddingBottom: 5,
-                    }}
-                  >
-                    <View
-                      style={{
-                        width: 80,
-                        backgroundColor: "#4B5C63",
-                        padding: 10,
-                        borderTopLeftRadius: 25,
-                        borderBottomLeftRadius: 25,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: "white",
-                          fontWeight: "bold",
-                          textAlign: "center",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        TOTAL
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        flex: 1,
-                        backgroundColor: "#DFE3E6",
-                        paddingTop: 5,
-                        borderTopRightRadius: 25,
-                        borderBottomRightRadius: 25,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 30,
-                          fontWeight: "bold",
-                          color: "#2E3D43",
-                          textAlign: "center",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        {convertSecondsToTime(totalWorkedHours)}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </Appbar>
-              <View style={styles.right}>
-                {/* <Image
-                  source={cutout}
-                  style={styles.cutout}
-                  pointerEvents="none" />
-                {stopwatchStart ? (<FAB icon="stop" onPress={this.toggleStopwatch} style={styles.fabStop} />) : (<FAB icon="check" onPress={this.toggleStopwatch} style={styles.fabStart} />)} */}
-                {data.time_entry_details.length > 0 ? (
-                  <TouchableOpacity
-                    full
-                    primary
-                    style={{ height: 56, width: 80 }}
-                    onPress={this.timeSubmitHandler}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                      }}
-                    >
-                      DONE
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    full
-                    disabled
-                    style={{ height: 56, width: 80 }}
-                  >
-                    <Text
-                      style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                      }}
-                    >
-                      DONE
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-              {/* <Appbar style={[styles.piece, styles.right]}>
-
-            </Appbar> */}
-            </View>
-
-            <Modal
-              presentationStyle="formSheet"
-              animationType="slide"
-              transparent={false}
-              visible={modalVisible}
-              onRequestClose={() => {
-                Alert.alert("Slutdatoen skal være større end startdatoen");
-              }}
-            >
-              <View style={{ marginTop: 22 }}>
+              <View
+                style={{
+                  flexDirection: appDirection.row,
+                  backgroundColor: appColors.primary,
+                  borderTopLeftRadius: appNumbers.number_10,
+                  borderTopRightRadius: appNumbers.number_10,
+                  padding: appNumbers.number_10,
+                }}
+              >
                 <View>
-                  <Text>Hello World!</Text>
-
-                  <TouchableHighlight
-                    onPress={() => {
-                      this.setModalVisible(!modalVisible);
+                  <Text
+                    style={{
+                      fontSize: 30,
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: appColors.solidWhite,
                     }}
                   >
-                    <Text>Hide Modal</Text>
-                  </TouchableHighlight>
+                    {convertSecondsToTime(totalWorkedHours)}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: appNumbers.number_14,
+                      color: "white",
+                    }}
+                  >
+                    Total Hours
+                  </Text>
+                </View>
+                <View>
+                  <Button
+                    title="Done"
+                    loading={false}
+                    loadingProps={{ size: "small", color: "white" }}
+                    buttonStyle={{
+                      // backgroundColor: "rgba(111, 202, 186, 1)",
+                      borderRadius: 5,
+                    }}
+                    titleStyle={{ fontWeight: "bold", fontSize: 23 }}
+                    containerStyle={{
+                      marginHorizontal: 50,
+                      height: 50,
+                      width: 200,
+                      marginVertical: 10,
+                    }}
+                    disabled={data.time_entry_details.length < 1}
+                    onPress={this.timeSubmitHandler}
+                  />
                 </View>
               </View>
-            </Modal>
+            </View>
           </View>
         </KeyboardAvoidingView>
       );
-    } else {
-      return (
-        <View style={styles.container}>
-          <StatusBar hidden />
-          <View style={{ backgroundColor: "#2E3D43" }}>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity transparent>
-                <Ionicons
-                  style={{ color: "#ffffff" }}
-                  size={40}
-                  name={appStrings.icon.chevronBack}
-                  onPress={() => navigation.navigate("TimeTracker")}
-                />
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "#ffffff" }}>Timer</Text>
-            </View>
-            <View style={{ flex: 1 }} />
-          </View>
-          <View
-            style={{
-              width: "100%",
-              height: 3,
-              backgroundColor: "#323248",
-              marginBottom: 1,
-            }}
-          />
-          <ActivityIndicator
-            size="large"
-            color="#2E3D43"
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          />
-        </View>
-      );
     }
+
+    return (
+      <View style={styles.container}>
+        <NewSinglePageHeader
+          title={""}
+          hasLeftIcon={true}
+          leftIconName={appStrings.icon.chevronBack}
+          leftIconPress={() => {}}
+          hasRightIcon={true}
+          rightIconName={appStrings.icon.camera}
+          rightIconPress={() =>
+            navigation.navigate(appStrings.mainStack.uploadImageScreen)
+          }
+        />
+        <View style={commonStyles.deadCenter}>
+          <NewLoader />
+        </View>
+      </View>
+    );
   }
 }

@@ -1,9 +1,12 @@
+import { appNumbers } from "../../utils/constants";
+
 export default {
   container: {
-    backgroundColor: '#FFF',
+    flex: appNumbers.number_1,
+    backgroundColor: "#FFF",
   },
   text: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginBottom: 7,
   },
   mb: {
@@ -16,10 +19,10 @@ export default {
     marginLeft: 0,
   },
   textToLeft: {
-    textAlign: 'left',
+    textAlign: "left",
   },
   alignItemsToLeft: {
-    alignItems: 'left',
+    alignItems: "left",
   },
   paddingLeft5: {
     paddingLeft: 5,
@@ -31,16 +34,16 @@ export default {
     paddingLeft: 15,
   },
   subtext: {
-    fontStyle: 'italic',
-    color: '#6e6e6e',
+    fontStyle: "italic",
+    color: "#6e6e6e",
   },
   time: {
     fontSize: 12,
-    color: '#595656',
+    color: "#595656",
   },
   cancellation: {
     fontSize: 12,
-    color: '#595656',
+    color: "#595656",
   },
   cancellationDate: {
     marginLeft: 20,
@@ -53,15 +56,15 @@ export default {
   },
   address: {
     fontSize: 14,
-    color: '#9a9a9a',
+    color: "#9a9a9a",
   },
   phone: {
     fontSize: 14,
-    color: '#9a9a9a',
+    color: "#9a9a9a",
   },
   icon: {
     fontSize: 14,
-    color: '#000',
+    color: "#000",
   },
   quoteItems: {
     fontSize: 12,
@@ -70,21 +73,21 @@ export default {
     padding: 5,
     borderBottomWidth: 1,
     borderLeftWidth: 1,
-    borderColor: '#b6b6b6',
+    borderColor: "#b6b6b6",
   },
   quoteItemLast: {
     padding: 5,
     borderBottomWidth: 1,
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: '#b6b6b6',
+    borderColor: "#b6b6b6",
   },
   quoteItemHeader: {
     padding: 5,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderLeftWidth: 1,
-    borderColor: '#b6b6b6',
+    borderColor: "#b6b6b6",
   },
   quoteItemHeaderLast: {
     padding: 5,
@@ -92,48 +95,48 @@ export default {
     borderBottomWidth: 1,
     borderLeftWidth: 1,
     borderRightWidth: 1,
-    borderColor: '#b6b6b6',
+    borderColor: "#b6b6b6",
   },
   fieldKey: {
-    color: '#6e6e6e',
+    color: "#6e6e6e",
     fontSize: 12,
   },
   fieldValue: {
-    color: '#111111',
+    color: "#111111",
     fontSize: 12,
   },
   ListItem: {
     borderBottomWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     paddingLeft: 0,
   },
   mainView: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "flex-start",
   },
   headerView: {
     paddingTop: 25,
     paddingBottom: 25,
     paddingLeft: 10,
     height: 55,
-    backgroundColor: '#3F51B5',
-    justifyContent: 'center',
+    backgroundColor: "#3F51B5",
+    justifyContent: "center",
   },
   headerViewText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 20,
   },
   jobsView: {
     borderWidth: 1,
-    borderColor: 'red',
+    borderColor: "red",
     flex: 2,
   },
   trackerItemsContainer: {
     borderWidth: 0.5,
     borderRadius: 2,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderBottomWidth: 0.5,
     // shadowColor: '#000',
     // shadowOffset: { width: 0, height: 2 },
@@ -143,43 +146,43 @@ export default {
     marginLeft: 2,
     marginRight: 2,
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "stretch",
     marginBottom: 5,
   },
   appbar: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
     height: 56,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   piece: {
     flex: 1,
-    backgroundColor: '#2E3D43',
+    backgroundColor: "#2E3D43",
   },
   right: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   cutout: {
     height: 56,
     width: 80,
-    tintColor: '#2E3D43',
+    tintColor: "#2E3D43",
     // backgroundColor: '#ffffff',
     // elevation: 4,
   },
   fabStart: {
-    position: 'absolute',
+    position: "absolute",
     margin: 12,
     bottom: 15,
-    backgroundColor: 'green',
+    backgroundColor: "green",
   },
   fabStop: {
-    position: 'absolute',
+    position: "absolute",
     margin: 12,
     bottom: 15,
-    backgroundColor: 'red',
+    backgroundColor: "red",
   },
 };

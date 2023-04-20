@@ -12,6 +12,9 @@ export const appColors = {
   tuna: "#333248",
   granite: "#808080",
   solidGrey: "#cccccc",
+  tealishGreen: "#0FD46B",
+  darkPastelGreen: "#55B056",
+  ebonyClay: "#292639",
 };
 
 export const appDateFormats = {

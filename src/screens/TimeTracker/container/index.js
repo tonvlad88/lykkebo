@@ -9,7 +9,6 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Badge } from "react-native-elements";
 
 // Packages
 import XDate from "xdate";
@@ -354,11 +353,12 @@ class TimeTrackerScreen extends React.Component {
         <View style={{ padding: 10 }}>
           <TouchableOpacity
             onPress={() => {
-              this.setState({
-                showAddDailyNoteModal: true,
-                internalOnly: false,
-                selectedBooking: [data],
-              });
+              // this.setState({
+              //   showAddDailyNoteModal: true,
+              //   internalOnly: false,
+              //   selectedBooking: [data],
+              // });
+              this.openTimeDetails(data);
             }}
           >
             <View style={{ flex: 1, flexDirection: "row" }}>
@@ -367,13 +367,11 @@ class TimeTrackerScreen extends React.Component {
                   style={{ flex: 1, fontWeight: "bold" }}
                 >{`BOOKING ${data.job_id}`}</Text>
               </View>
-              <TouchableOpacity>
-                <Ionicons
-                  name={appStrings.icon.chevronForward}
-                  size={appNumbers.number_24}
-                  color={appColors.primary}
-                />
-              </TouchableOpacity>
+              <Ionicons
+                name={appStrings.icon.chevronForward}
+                size={appNumbers.number_24}
+                color={appColors.primary}
+              />
             </View>
           </TouchableOpacity>
           <View style={{}}>
@@ -387,10 +385,10 @@ class TimeTrackerScreen extends React.Component {
               style={{
                 flexDirection: "row",
                 width: "100%",
-                borderWidth: 1,
                 alignItems: appAlignment.center,
                 borderColor: appColors.primary,
                 borderRadius: appNumbers.number_10,
+                backgroundColor: appColors.solidWhite,
               }}
             >
               <View style={{ flex: 1 }}>
@@ -403,7 +401,7 @@ class TimeTrackerScreen extends React.Component {
                     {
                       fontSize: 17,
                       fontWeight: "bold",
-                      color: "white",
+                      color: appColors.solidBlack,
                     },
                   ]}
                 >
@@ -554,7 +552,7 @@ class TimeTrackerScreen extends React.Component {
                 "selectedTimeTrackerDetailsDateFormatted",
                 JSON.stringify(selectedDateFormatted)
               ).then(() => {
-                navigation.navigate("TimeTrackerDetail");
+                navigation.navigate(appStrings.mainStack.trackerDetailsScreen);
               });
             });
           });
