@@ -396,7 +396,19 @@ class CalendarScreen extends Component {
 
   renderSelectedDateDetails() {
     const { selectedDate, selectedMarkedDateData, isFutureDate } = this.state;
-    // console.log("selectedMarkedDateData", selectedMarkedDateData[0]?.details);
+
+    const filteredDataBooking = selectedMarkedDateData[0]?.details.filter(
+      (data) => data.from === selectedDate || data.to === selectedDate
+    );
+
+    const filteredData = selectedMarkedDateData[0]?.details.filter(
+      (data) =>
+        data.formatted_from === XDate(selectedDate).toString("dd-MM-yyyy")
+    );
+
+    // console.log("selectedMarkedDateData", selectedMarkedDateData);
+    // console.log("details", selectedMarkedDateData[0]?.details);
+    // console.log("filteredDataBooking", filteredDataBooking);
     if (
       selectedMarkedDateData === undefined ||
       selectedMarkedDateData.length === 0
@@ -562,89 +574,43 @@ class CalendarScreen extends Component {
                       />
                       <Text style={{ flex: 1 }}> Tilføj Begivenhed </Text>
                     </TouchableOpacity>
-                    {selectedMarkedDateData.map((booking) => {
-                      if (booking.type !== "Booking") {
-                        return (
-                          <TouchableOpacity
-                            style={{ flex: 1 }}
-                            onPress={() => {
-                              this.openBooking(booking);
-                              // onPress={() => navigation.navigate('Jobdetails')}
-                            }}
-                            key={
-                              Math.floor(Date.now()) +
-                              Math.floor(Math.random() * 10000 + 1)
-                            }
-                          >
-                            <View>
-                              <View>
-                                <Ionicons
-                                  name="build-outline"
-                                  size={24}
-                                  color="#DD5044"
-                                />
-                                <Text numberOfLines={1}>
-                                  {booking.details[0].title}
-                                </Text>
-                              </View>
-                              <View>
-                                <Ionicons
-                                  name="arrow-forward"
-                                  size={24}
-                                  color="black"
-                                />
-                              </View>
+                    {filteredDataBooking &&
+                      filteredDataBooking?.map((data) => (
+                        <TouchableOpacity
+                          key={
+                            Math.floor(Date.now()) +
+                            Math.floor(Math.random() * 10000 + 1)
+                          }
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            padding: appNumbers.number_10,
+                          }}
+                          onPress={() => {
+                            this.openBooking(data);
+                            // onPress={() => navigation.navigate('Jobdetails')}
+                          }}
+                        >
+                          <View style={{ flexDirection: "row", flex: 1 }}>
+                            <Ionicons
+                              name="build"
+                              size={appNumbers.number_24}
+                              color="#DD5044"
+                            />
+                            <View style={{ flex: 1 }}>
+                              <Text numberOfLines={1}>{data.title}</Text>
                             </View>
-                          </TouchableOpacity>
-                        );
-                      } else {
-                        return (
-                          <View
-                            key={
-                              Math.floor(Date.now()) +
-                              Math.floor(Math.random() * 10000 + 1)
-                            }
-                          >
-                            {booking.details.map((data) => (
-                              <TouchableOpacity
-                                style={{
-                                  flex: 1,
-                                  flexDirection: "row",
-                                  padding: appNumbers.number_10,
-                                }}
-                                onPress={() => {
-                                  this.openBooking(data);
-                                  // onPress={() => navigation.navigate('Jobdetails')}
-                                }}
-                                key={
-                                  Math.floor(Date.now()) +
-                                  Math.floor(Math.random() * 10000 + 1)
-                                }
-                              >
-                                <View style={{ flexDirection: "row", flex: 1 }}>
-                                  <Ionicons
-                                    name="build"
-                                    size={appNumbers.number_24}
-                                    color="#DD5044"
-                                  />
-                                  <View style={{ flex: 1 }}>
-                                    <Text numberOfLines={1}>{data.title}</Text>
-                                  </View>
 
-                                  <View>
-                                    <Ionicons
-                                      name="chevron-forward"
-                                      size={24}
-                                      color="#ccc"
-                                    />
-                                  </View>
-                                </View>
-                              </TouchableOpacity>
-                            ))}
+                            <View>
+                              <Ionicons
+                                name="chevron-forward"
+                                size={24}
+                                color="#ccc"
+                              />
+                            </View>
                           </View>
-                        );
-                      }
-                    })}
+                        </TouchableOpacity>
+                      ))}
                   </ScrollView>
                 </View>
               </View>
@@ -773,7 +739,7 @@ class CalendarScreen extends Component {
                         <Text
                           style={{ paddingHorizontal: appNumbers.number_5 }}
                         >
-                          {`Fra: ${selectedMarkedDateData[0].details[0].formatted_from}`}
+                          {`Fra: ${filteredData[0].formatted_from}`}
                         </Text>
                       </View>
                       <View
@@ -793,7 +759,7 @@ class CalendarScreen extends Component {
                         <Text
                           style={{ paddingHorizontal: appNumbers.number_5 }}
                         >
-                          {`Til: ${selectedMarkedDateData[0].details[0].formatted_to}`}
+                          {`Til: ${filteredData[0].formatted_to}`}
                         </Text>
                       </View>
                     </View>
@@ -1365,6 +1331,51 @@ class CalendarScreen extends Component {
               //   position: "top",
               //   duration: 5000,
               // });
+            });
+        });
+      });
+    });
+  }
+
+  removeDayInfoHandler() {
+    const { selectedMarkedDateData, selectedDate } = this.state;
+    AsyncStorage.getItem("user_id").then((userId) => {
+      AsyncStorage.getItem("token").then((token) => {
+        AsyncStorage.getItem("baseUrl").then((baseUrl) => {
+          const postData = {
+            // user_id: `${userId}`,
+            // day_id: selectedMarkedDateData[0].id,
+          };
+
+          const axiosConfig = {
+            headers: {
+              // 'Content-Type': 'application/json;charset=UTF-8',
+              // 'Access-Control-Allow-Origin': '*',
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          axios
+            .get(
+              `${baseUrl}/lykkebo/v1/calendar/delete?user_id=${userId}&day_id=${selectedMarkedDateData[0].id}`,
+              postData,
+              axiosConfig
+            )
+            .then(async () => {
+              await this.getCalendarData(
+                toTimestampWithSeconds(today),
+                selectedDate
+              );
+              this.setState({
+                selected1: "Ferie",
+                visibleModal: null,
+              });
+            })
+            .catch((error) => {
+              showMessage({
+                message: error.message,
+                type: appStrings.common.danger,
+              });
             });
         });
       });

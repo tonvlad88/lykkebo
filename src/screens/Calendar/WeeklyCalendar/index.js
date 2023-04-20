@@ -702,8 +702,13 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { selectedMarkedDateData, baseData, loaded, visibleModal } =
-      this.state;
+    const {
+      selectedMarkedDateData,
+      baseData,
+      loaded,
+      visibleModal,
+      selectedDate,
+    } = this.state;
 
     const { navigation } = this.props;
 
@@ -724,6 +729,7 @@ export default class App extends React.Component {
         />
         <Events
           navigation={navigation}
+          selectedDate={selectedDate}
           events={selectedMarkedDateData}
           onModalPress={() => {
             this.setState({ visibleModal: 1 });

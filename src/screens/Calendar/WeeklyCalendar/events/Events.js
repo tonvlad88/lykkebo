@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView, StyleSheet, View, Text } from "react-native";
-
+import XDate from "xdate";
 import { Ionicons } from "@expo/vector-icons";
 import Event from "./Event";
 import EventBooking from "./EventBooking";
@@ -22,8 +22,8 @@ export default class Events extends Component {
   };
 
   render() {
-    const { events, onModalPress, navigation } = this.props;
-    console.log("events", events);
+    const { events, onModalPress, navigation, selectedDate } = this.props;
+
     if (events === undefined || events.length === 0) {
       return (
         <View
@@ -80,6 +80,11 @@ export default class Events extends Component {
         </View>
       );
     } else {
+      const filteredData = events[0]?.details.filter(
+        (data) =>
+          data.formatted_from === XDate(selectedDate).toString("dd-MM-yyyy")
+      );
+      // console.log("filteredData", filteredData);
       let temp = [];
       if (events[0]?.type === "Booking") {
         temp = events;
@@ -89,7 +94,7 @@ export default class Events extends Component {
             id: events[0]?.id,
             type: events[0]?.type,
             date: events[0]?.date,
-            details: [events[0]?.details],
+            details: filteredData,
           },
         ];
       }
@@ -101,7 +106,8 @@ export default class Events extends Component {
           <ScrollView>
             {events &&
               temp[0]?.details.map((event) => {
-                if (event?.type === "Booking") {
+                // console.log("event", event);
+                if (event?.type && event?.type === "Booking") {
                   return (
                     <EventBooking
                       event={event}
@@ -110,7 +116,13 @@ export default class Events extends Component {
                     />
                   );
                 } else {
-                  return <Event event={event} key={event?.id} />;
+                  return (
+                    <Event
+                      type={events[0]?.type}
+                      event={event}
+                      key={event?.id}
+                    />
+                  );
                 }
               })}
           </ScrollView>

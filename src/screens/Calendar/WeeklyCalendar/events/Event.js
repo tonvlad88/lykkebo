@@ -13,9 +13,9 @@ export default class Event extends Component {
   };
 
   render() {
-    const { event } = this.props;
-
-    const { type, formatted_from, formatted_to } = event[0];
+    const { event, type } = this.props;
+    // console.log("event", event);
+    const { formatted_from, formatted_to } = event;
     return (
       <View style={styles.container}>
         <View style={{ flex: 1, flexDirection: "row" }}>
