@@ -193,12 +193,31 @@ class TimeScreen extends Component {
         onPress={() => {
           this.openTimeDetails(data);
         }}
-        style={{ marginLeft: 0, borderBottomWidth: 0.5, borderColor: "#ccc" }}
+        style={{
+          marginLeft: 0,
+          borderBottomWidth: 0.5,
+          borderColor: "#ccc",
+        }}
       >
-        <View style={{ marginLeft: 10, flex: 1 }}>
+        <View
+          style={{
+            marginLeft: 10,
+            flex: 1,
+            flexDirection: "row",
+            paddingVertical: 10,
+          }}
+        >
           <Text>{`${data.day}, ${data.full_day}`}</Text>
+          <View
+            style={{
+              flex: 1,
+              alignItems: "flex-start",
+              marginHorizontal: 20,
+            }}
+          >
+            {this.renderBadge(data)}
+          </View>
         </View>
-        <View style={{ flex: 1 }}>{this.renderBadge(data)}</View>
       </TouchableOpacity>
     ));
   }

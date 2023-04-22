@@ -167,14 +167,14 @@ function AppStack() {
         name={appStrings.appStack.da.time}
         component={TimeScreen}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name={appStrings.appStack.da.timeTracker}
         component={TimeTrackerScreen}
-      />
-      <Drawer.Screen
+      /> */}
+      {/* <Drawer.Screen
         name={appStrings.appStack.da.account}
         component={AccountScreen}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }

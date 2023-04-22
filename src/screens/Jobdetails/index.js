@@ -126,36 +126,43 @@ class JobdetailsScreen extends Component {
           <View
             style={{ borderRadius: 5, flex: 1, backgroundColor: "#E8E8E8" }}
           >
-            <View style={{ backgroundColor: "#F0F0F0" }}>
-              <View style={{ flex: 1 }}>
-                <TouchableOpacity
-                  transparent
-                  onPress={() => {
-                    this.setState({ showSpecifyModal: false });
-                  }}
-                >
-                  <Ionicons
-                    name={appStrings.icon.chevronBack}
-                    size={appNumbers.number_24}
-                    color={appColors.solidb}
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 3 }}>
-                <Text
-                  style={{
-                    textAlign: "center",
-                    width: "100%",
-                    fontWeight: "bold",
-                    fontSize: 25,
-                  }}
-                >
-                  Arbejdsdage
-                </Text>
-              </View>
+            <View
+              style={{
+                backgroundColor: "#F0F0F0",
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: appColors.primary,
+                paddingVertical: appNumbers.number_10,
+                paddingHorizontal: appNumbers.number_5,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ showSpecifyModal: false });
+                }}
+              >
+                <Ionicons
+                  name={appStrings.icon.chevronBack}
+                  size={appNumbers.number_24}
+                  color={appColors.solidWhite}
+                />
+              </TouchableOpacity>
+
+              <Text
+                style={{
+                  textAlign: "center",
+                  width: "100%",
+                  fontWeight: "bold",
+                  fontSize: 25,
+                  color: appColors.solidWhite,
+                }}
+              >
+                Arbejdsdage
+              </Text>
+
               <View />
             </View>
-            <View style={styles.sectionSeparator} />
+
             {isLoadingToggle ? (
               <View
                 style={{
