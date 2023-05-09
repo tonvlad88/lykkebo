@@ -1,46 +1,47 @@
 // Main Components
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
+  View,
+  TouchableOpacity,
   ActivityIndicator,
   Text,
   Image,
-} from 'react-native';
-import {
-  Container,
-  Content,
-  Body,
-  Card,
-  CardItem,
-  Button,
-} from 'native-base';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "react-native";
+import // Container,
+// Content,
+// Body,
+// Card,
+// CardItem,
+// Button,
+"native-base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Packages
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import * as Localization from 'expo-localization';
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import * as Localization from "expo-localization";
 
 // Actions
 
-
 // Localization
-import i18n from 'i18n-js';
-import { da, en } from '../../../../services/translations';
+import i18n from "i18n-js";
+import { da, en } from "../../../../services/translations";
 i18n.fallbacks = true;
 i18n.translations = { da, en };
 i18n.locale = Localization.locale;
 
-
 // Global imports
 
-
 // Local imports
-import styles from '../../styles';
-
+import styles from "../../styles";
+import {
+  appAlignment,
+  appColors,
+  appNumbers,
+} from "../../../../utils/constants";
 
 // Local constants
-const notAvailable = require('../../../../../assets/images/na.gif');
-
+const notAvailable = require("../../../../../assets/images/na.gif");
 
 class UploadProofScreen extends Component {
   constructor(props) {
@@ -52,9 +53,9 @@ class UploadProofScreen extends Component {
       uploading: false,
       isFromTimeRec: 0,
       images: [],
-      theJobId: '',
-      theCustomerName: '',
-      uploadMessage: '',
+      theJobId: "",
+      theCustomerName: "",
+      uploadMessage: "",
       hasHerror: false,
     };
   }
@@ -83,40 +84,28 @@ class UploadProofScreen extends Component {
   // };
 
   pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    if (!result.canceled) {
+      this.setState({ image: result.assets[0].uri });
     }
   };
 
-
   takePhoto = async () => {
-  
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
-      return
-    }
-
     const result = await ImagePicker.launchCameraAsync({
       allowEditing: false,
       exif: true,
       base64: true,
     });
 
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
+    if (!result.canceled) {
+      this.setState({ image: result.assets[0].uri });
     }
-
-    // CameraRoll.save(result.uri);
   };
 
   uploadPhoto = async () => {
@@ -127,24 +116,24 @@ class UploadProofScreen extends Component {
       return;
     }
 
-    this.setState({uploading: true});
+    this.setState({ uploading: true });
 
-    AsyncStorage.getItem('user_id').then((userId) => {
-      AsyncStorage.getItem('token').then((token) => {
-        AsyncStorage.getItem('baseUrl').then((baseUrl) => {
-          AsyncStorage.getItem('selectedJobId').then((jobId) => {
+    AsyncStorage.getItem("user_id").then((userId) => {
+      AsyncStorage.getItem("token").then((token) => {
+        AsyncStorage.getItem("baseUrl").then((baseUrl) => {
+          AsyncStorage.getItem("selectedJobId").then((jobId) => {
             const formData = new FormData();
             // Add your input data
-            formData.append('user_id', userId);
-            formData.append('job_id', jobId);
-            formData.append('image_type', imageType);
+            formData.append("user_id", userId);
+            formData.append("job_id", jobId);
+            formData.append("image_type", imageType);
 
             // Add your photo
             // this, retrive the file extension of your photo
-            const uriPart = image.split('.');
+            const uriPart = image.split(".");
             const fileExtension = uriPart[uriPart.length - 1];
 
-            formData.append('photo', {
+            formData.append("photo", {
               uri: image,
               name: `photo.${fileExtension}`,
               type: `image/${fileExtension}`,
@@ -152,28 +141,33 @@ class UploadProofScreen extends Component {
               job_id: jobId,
             });
 
+            console.log("formData", formData);
+
             // axios.post('http://lykkeboadm.typo3cms.dk/wp-json/lykkebo/v1/jobdetails/uploadImage', postData, axiosConfig)
             // fetch('http://192.168.254.111/lykkebo/upload.php', {
             fetch(`${baseUrl}/lykkebo/v1/jobdetails/uploadImage`, {
-              method: 'POST',
+              method: "POST",
               headers: {
-                'Content-Type': 'multipart/form-data',
+                "Content-Type": "multipart/form-data",
               },
               body: formData,
             })
               .then((res) => {
-                console.log('res', res.data)
-                fetch(`${baseUrl}/lykkebo/v1/jobdetails/overview?user_id=${userId}&job_id=${jobId}`, {
-                  method: 'GET',
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                  params: {
-                    user_id: `${userId}`,
-                    job_id: `${jobId}`,
-                  },
-                })
-                  .then(response => response.json())
+                console.log("res", res.data);
+                fetch(
+                  `${baseUrl}/lykkebo/v1/jobdetails/overview?user_id=${userId}&job_id=${jobId}`,
+                  {
+                    method: "GET",
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                    params: {
+                      user_id: `${userId}`,
+                      job_id: `${jobId}`,
+                    },
+                  }
+                )
+                  .then((response) => response.json())
                   .then((responseJson) => {
                     const temp = [];
                     responseJson.booking.booking_info.images.forEach((item) => {
@@ -182,7 +176,7 @@ class UploadProofScreen extends Component {
                     this.setState({
                       images: temp,
                       uploading: false,
-                      uploadMessage: i18n.t('uploadedSuccessfully'),
+                      uploadMessage: i18n.t("uploadedSuccessfully"),
                       hasHerror: false,
                     });
                     this.props.getJobDetails();
@@ -236,61 +230,128 @@ class UploadProofScreen extends Component {
   openBooking = () => {
     const { theJobId } = this.state;
     const { navigation } = this.props;
-    AsyncStorage.setItem('selectedJobId', theJobId).then(() => {
-      navigation.navigate('Jobdetails');
+    AsyncStorage.setItem("selectedJobId", theJobId).then(() => {
+      navigation.navigate("Jobdetails");
     });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
     const {
-      image, uploading, isFromTimeRec, images, theJobId, theCustomerName, uploadMessage, hasHerror,
+      image,
+      uploading,
+      isFromTimeRec,
+      images,
+      theJobId,
+      theCustomerName,
+      uploadMessage,
+      hasHerror,
     } = this.state;
 
     return (
-      <Container style={styles.container}>
-        <Content padder>
-          <Card style={styles.mb}>
-            <CardItem>
-              <Body style={{flex: 1, flexDirection: 'column'}}>
-                <Image
-                  source={image !== null ? {uri: image} : notAvailable}
-                  style={{
-                    marginBottom: 15, width: 200, height: 200, resizeMode: 'cover', alignSelf: 'center',
-                  }} />
-                <Button full info style={{marginBottom: 15}} onPress={this.pickImage}>
-                  <Text style={{color: 'white', fontWeight: 'bold'}}>Vælg fra Galleri</Text>
-                </Button>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          margin: 5,
+          borderWidth: 1,
+        }}
+      >
+        <Image
+          source={image !== null ? { uri: image } : notAvailable}
+          style={{
+            marginBottom: 15,
+            width: 200,
+            height: 200,
+            resizeMode: "cover",
+            alignSelf: "center",
+          }}
+        />
+        <TouchableOpacity
+          style={{
+            marginVertical: appNumbers.number_5,
+            borderWidth: 1,
+            width: "80%",
+            alignSelf: appAlignment.center,
+            backgroundColor: appColors.primary,
+            padding: appNumbers.number_10,
+            borderRadius: appNumbers.number_10,
+            alignItems: appAlignment.center,
+          }}
+          onPress={this.pickImage}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Vælg fra Galleri
+          </Text>
+        </TouchableOpacity>
 
-                <Button full info style={{marginBottom: 15}} onPress={this.takePhoto}>
-                  <Text style={{color: 'white', fontWeight: 'bold'}}>Tag et Billed</Text>
-                </Button>
+        <TouchableOpacity
+          style={{
+            marginVertical: appNumbers.number_5,
+            borderWidth: 1,
+            width: "80%",
+            alignSelf: appAlignment.center,
+            backgroundColor: appColors.primary,
+            padding: appNumbers.number_10,
+            borderRadius: appNumbers.number_10,
+            alignItems: appAlignment.center,
+          }}
+          onPress={this.takePhoto}
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>
+            Tag et Billed
+          </Text>
+        </TouchableOpacity>
 
-                {!uploading
-                  ? (
-                    <Button full info style={{marginBottom: 15}} onPress={this.uploadPhoto}>
-                      <Text style={{color: 'white', fontWeight: 'bold'}}>Upload Billed</Text>
-                    </Button>
-                  ) : (
-                    <Button full info style={{marginBottom: 15}} onPress={this.uploadPhoto}>
-                      <ActivityIndicator
-                        size="small"
-                        color="#FFF"
-                        style={{
-                          flex: 1, flexDirection: 'column', justifyContent: 'center', alignSelf: 'center',
-                        }} />
-                    </Button>
-                  )
-                }
+        {!uploading ? (
+          <TouchableOpacity
+            style={{
+              marginVertical: appNumbers.number_5,
+              borderWidth: 1,
+              width: "80%",
+              alignSelf: appAlignment.center,
+              backgroundColor: appColors.primary,
+              padding: appNumbers.number_10,
+              borderRadius: appNumbers.number_10,
+              alignItems: appAlignment.center,
+            }}
+            onPress={this.uploadPhoto}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              Upload Billed
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={{
+              marginVertical: appNumbers.number_5,
+              borderWidth: 1,
+              width: "80%",
+              alignSelf: appAlignment.center,
+              backgroundColor: appColors.primary,
+              padding: appNumbers.number_10,
+              borderRadius: appNumbers.number_10,
+              alignItems: appAlignment.center,
+              padding: appNumbers.number_10,
+            }}
+            onPress={this.uploadPhoto}
+          >
+            <ActivityIndicator size="small" color="#FFF" />
+          </TouchableOpacity>
+        )}
 
-                {uploadMessage !== '' ? (
-                  <Text style={hasHerror ? {width: '100%', color: 'red', textAlign: 'center'} : {width: '100%', color: 'green', textAlign: 'center'}}>{uploadMessage}</Text>
-                ) : null}
-              </Body>
-            </CardItem>
-          </Card>
-        </Content>
-      </Container>
+        {uploadMessage !== "" ? (
+          <Text
+            style={
+              hasHerror
+                ? { width: "100%", color: "red", textAlign: "center" }
+                : { width: "100%", color: "green", textAlign: "center" }
+            }
+          >
+            {uploadMessage}
+          </Text>
+        ) : null}
+      </View>
     );
     // }
   }

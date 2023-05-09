@@ -1,22 +1,7 @@
 // Main Components
 import React, { Component } from "react";
-import { View, Switch, Alert, Platform, Text } from "react-native";
+import { View, Switch, Alert, TouchableOpacity, Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  Content,
-  Button,
-  ListItem,
-  Left,
-  Right,
-  Body,
-  Toast,
-  Header,
-  Tab,
-  Tabs,
-  TabHeading,
-  Icon,
-  Title,
-} from "native-base";
 
 // Packages
 import StepIndicator from "react-native-step-indicator";
@@ -24,6 +9,7 @@ import axios from "axios";
 import Modal from "react-native-modal";
 import { AirbnbRating } from "react-native-ratings";
 import { connect } from "react-redux";
+import { Tab, TabView } from "react-native-elements";
 
 // Actions
 import {
@@ -39,9 +25,14 @@ import { getBookingStatus } from "../../../../services/common";
 // Local imports
 import UploadProofScreen from "../uploadProof";
 import styles from "../../styles";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
-import { appColors, appStrings } from "../../../../utils/constants";
+import {
+  appAlignment,
+  appColors,
+  appDirection,
+  appNumbers,
+  appStrings,
+} from "../../../../utils/constants";
 
 // Local constants
 const labels = ["Ikke startet", "Kunde kontaktet", "Igangværende", "Færdig"];
@@ -89,6 +80,7 @@ class TimelineSection extends Component {
       photo2UploadedBefore: false,
       photo1UploadedAfter: false,
       photo2UploadedAfter: false,
+      tabIndex: 0,
     };
 
     // this.updateJobStatusForward = this.updateJobStatusForward.bind(this);
@@ -230,11 +222,26 @@ class TimelineSection extends Component {
 
     return (
       <View style={{ height: 270, backgroundColor: "#fff" }}>
-        <View itemDivider>
+        <View
+          style={{ padding: appNumbers.number_10, backgroundColor: "#eee" }}
+        >
           <Text style={{ color: "#787878" }}>Job er færdig</Text>
         </View>
-        <View style={styles.noMarginLeft}>
-          <View>
+        <View
+          style={{
+            flexDirection: appDirection.row,
+            padding: appNumbers.number_10,
+            borderBottomWidth: 1,
+            borderColor: "#ccc",
+            justifyContent: appAlignment.center,
+          }}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: appAlignment.center,
+            }}
+          >
             <Text>Er jobbet godkendt af kunden?</Text>
           </View>
           <View>
@@ -258,7 +265,10 @@ class TimelineSection extends Component {
             <View style={{ flex: 1, height: 50, paddingRight: 5 }}>
               <TouchableOpacity
                 disabled={!isCustomerContactedForDoneStatus}
-                style={styles.mt15}
+                style={{
+                  backgroundColor: "green",
+                  padding: appNumbers.number_10,
+                }}
                 onPress={() => {
                   if (!isCustomerContactedForDoneStatus) return;
 
@@ -305,14 +315,22 @@ class TimelineSection extends Component {
                   });
                 }}
               >
-                <Text>Proceed</Text>
+                <Text
+                  style={{
+                    color: appColors.solidWhite,
+                    textAlign: appAlignment.center,
+                  }}
+                >
+                  Proceed
+                </Text>
               </TouchableOpacity>
             </View>
             <View style={{ flex: 1, height: 50, paddingLeft: 5 }}>
               <TouchableOpacity
-                full
-                light
-                style={styles.mt15}
+                style={{
+                  backgroundColor: "#eee",
+                  padding: appNumbers.number_10,
+                }}
                 onPress={() =>
                   this.setState({
                     visibleConfirmModal: null,
@@ -322,7 +340,7 @@ class TimelineSection extends Component {
                   })
                 }
               >
-                <Text>Cancel</Text>
+                <Text style={{ textAlign: appAlignment.center }}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -521,7 +539,7 @@ class TimelineSection extends Component {
                         onPress: () => {
                           // this.props.navigation.navigate('uploadProof')
                           this.setState({
-                            // showUploadAfterPhoto: true,
+                            showUploadAfterPhoto: true,
                             isJobDone: true,
                           });
                         },
@@ -609,6 +627,11 @@ class TimelineSection extends Component {
     });
   };
 
+  setTabIndex = (idx) => {
+    this.setState({
+      tabIndex: idx,
+    });
+  };
   render() {
     const {
       currentPosition,
@@ -619,8 +642,12 @@ class TimelineSection extends Component {
       photo2UploadedBefore,
       photo1UploadedAfter,
       photo2UploadedAfter,
+      tabIndex,
     } = this.state;
     const { info } = this.props;
+
+    console.log("before_photos", info.booking_info.before_photos.length);
+    console.log("after_photos", info.booking_info.after_photos.length);
 
     return (
       <View style={styles.container}>
@@ -659,9 +686,15 @@ class TimelineSection extends Component {
         </Modal>
 
         <Modal isVisible={showUploadBeforePhoto}>
-          <View style={{ backgroundColor: "#2E3D43" }}>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity transparent>
+          <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
+            <View
+              style={{
+                height: 70,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <TouchableOpacity>
                 <Ionicons
                   style={{ color: "#ffffff" }}
                   size={40}
@@ -674,63 +707,100 @@ class TimelineSection extends Component {
                   }}
                 />
               </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "#ffffff" }}>Upload billede</Text>
-            </View>
-            <View style={{ flex: 1 }}>
+
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                }}
+              >
+                <Text style={{ color: "#ffffff" }}>Upload billede</Text>
+              </View>
+
               {info.booking_info.before_photos.length > 1 ? (
-                <TouchableOpacity transparent onPress={this.uploadBeforePhoto}>
-                  <Text style={{ color: "white" }}>Done</Text>
+                <TouchableOpacity onPress={this.uploadBeforePhoto}>
+                  <Text
+                    style={{
+                      marginRight: appNumbers.number_10,
+                      color: "white",
+                    }}
+                  >
+                    Done
+                  </Text>
                 </TouchableOpacity>
-              ) : null}
+              ) : (
+                <TouchableOpacity>
+                  <Text style={{ color: "#2E3D43" }}>Done</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Tab
+                value={tabIndex}
+                onChange={this.setTabIndex}
+                indicatorStyle={{ backgroundColor: "#ccc" }}
+              >
+                <Tab.Item
+                  title="Picture 1"
+                  containerStyle={{ backgroundColor: "#243135" }}
+                  titleStyle={{ color: "white" }}
+                  icon={
+                    photo1UploadedBefore
+                      ? { name: "checkmark", type: "ionicon", color: "green" }
+                      : {}
+                  }
+                  variant="primary"
+                />
+                <Tab.Item
+                  title="Picture 2"
+                  containerStyle={{ backgroundColor: "#243135" }}
+                  titleStyle={{ color: "white" }}
+                  icon={
+                    photo2UploadedBefore
+                      ? { name: "checkmark", type: "ionicon", color: "green" }
+                      : {}
+                  }
+                  variant="primary"
+                />
+              </Tab>
+
+              <TabView value={tabIndex} onChange={this.setTabIndex}>
+                <TabView.Item style={{ width: "90%" }}>
+                  <UploadProofScreen
+                    imageType="before"
+                    getJobDetails={this.getJobDetailsHandler}
+                    goToPage={(page) => {
+                      this.setState({ photo1UploadedBefore: true });
+                      this.setTabIndex(page);
+                    }}
+                  />
+                </TabView.Item>
+
+                <TabView.Item style={{ width: "90%" }}>
+                  <UploadProofScreen
+                    imageType="before"
+                    getJobDetails={this.getJobDetailsHandler}
+                    goToPage={() => {
+                      this.setState({ photo2UploadedBefore: true });
+                    }}
+                  />
+                </TabView.Item>
+              </TabView>
             </View>
           </View>
-          {/* <Tabs
-            style={{ elevation: 3 }}
-            locked
-            ref={component => this.imageProofTabsBefore = component}>
-            <Tab heading={(
-              <TabHeading style={{backgroundColor: '#243135'}}>
-                { photo1UploadedBefore ? (
-                  <Icon style={{color: 'green'}} name={Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark'} />
-                ) : null }
-                <Text style={{color: 'white'}}>PICTURE 1</Text>
-              </TabHeading>)}>
-              <UploadProofScreen
-                imageType="before"
-                getJobDetails={this.getJobDetailsHandler}
-                goToPage={(page) => {
-                  this.setState({photo1UploadedBefore: true});
-                  this.imageProofTabsBefore.goToPage(page);
-                }} />
-            </Tab>
-            <Tab heading={(
-              <TabHeading style={{backgroundColor: '#243135'}}>
-                { photo2UploadedBefore ? (
-                  <Icon style={{color: 'green'}} name={Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark'} />
-                ) : null }
-                <Text style={{color: 'white'}}>PICTURE 2</Text>
-              </TabHeading>)}>
-              <UploadProofScreen
-                imageType="before"
-                getJobDetails={this.getJobDetailsHandler}
-                goToPage={() => {
-                  this.setState({photo2UploadedBefore: true});
-                }} />
-            </Tab>
-          </Tabs> */}
         </Modal>
 
         <Modal isVisible={showUploadAfterPhoto}>
-          <View style={{ backgroundColor: "#2E3D43" }}>
-            <View style={{ flex: 1 }}>
+          <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
+            <View
+              style={{
+                height: 70,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
               <TouchableOpacity>
                 <Ionicons
                   style={{ color: "#ffffff" }}
@@ -744,58 +814,89 @@ class TimelineSection extends Component {
                   }}
                 />
               </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ color: "#ffffff" }}>Upload billede</Text>
-            </View>
-            <View style={{ flex: 1 }}>
+
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flex: 1,
+                }}
+              >
+                <Text style={{ color: "#ffffff" }}>Upload billede</Text>
+              </View>
+
               {info.booking_info.after_photos.length > 1 ? (
-                <TouchableOpacity transparent onPress={this.uploadAfterPhoto}>
-                  <Text style={{ color: "white" }}>Done</Text>
+                <TouchableOpacity onPress={this.uploadAfterPhoto}>
+                  <Text
+                    style={{
+                      marginRight: appNumbers.number_10,
+                      color: "white",
+                    }}
+                  >
+                    Done
+                  </Text>
                 </TouchableOpacity>
-              ) : null}
+              ) : (
+                <TouchableOpacity>
+                  <Text style={{ color: "#2E3D43" }}>Done</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Tab
+                value={tabIndex}
+                onChange={this.setTabIndex}
+                indicatorStyle={{ backgroundColor: "#ccc" }}
+              >
+                <Tab.Item
+                  title="Picture 1"
+                  containerStyle={{ backgroundColor: "#243135" }}
+                  titleStyle={{ color: "white" }}
+                  icon={
+                    photo1UploadedAfter
+                      ? { name: "checkmark", type: "ionicon", color: "green" }
+                      : {}
+                  }
+                  variant="primary"
+                />
+                <Tab.Item
+                  title="Picture 2"
+                  containerStyle={{ backgroundColor: "#243135" }}
+                  titleStyle={{ color: "white" }}
+                  icon={
+                    photo2UploadedAfter
+                      ? { name: "checkmark", type: "ionicon", color: "green" }
+                      : {}
+                  }
+                  variant="primary"
+                />
+              </Tab>
+
+              <TabView value={tabIndex} onChange={this.setTabIndex}>
+                <TabView.Item style={{ width: "90%" }}>
+                  <UploadProofScreen
+                    imageType="after"
+                    getJobDetails={this.getJobDetailsHandler}
+                    goToPage={(page) => {
+                      this.setState({ photo1UploadedAfter: true });
+                      this.setTabIndex(page);
+                    }}
+                  />
+                </TabView.Item>
+
+                <TabView.Item style={{ width: "90%" }}>
+                  <UploadProofScreen
+                    imageType="after"
+                    getJobDetails={this.getJobDetailsHandler}
+                    goToPage={() => {
+                      this.setState({ photo2UploadedAfter: true });
+                    }}
+                  />
+                </TabView.Item>
+              </TabView>
             </View>
           </View>
-          {/* <Tabs
-            style={{ elevation: 3 }}
-            locked
-            ref={component => this.imageProofTabsAfter = component}>
-            <Tab heading={(
-              <TabHeading style={{backgroundColor: '#243135'}}>
-                { photo1UploadedAfter ? (
-                  <Icon style={{color: 'green'}} name={Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark'} />
-                ) : null }
-                <Text style={{color: 'white'}}>PICTURE 1</Text>
-              </TabHeading>)}>
-              <UploadProofScreen
-                imageType="after"
-                getJobDetails={this.getJobDetailsHandler}
-                goToPage={(page) => {
-                  this.setState({photo1UploadedAfter: true});
-                  this.imageProofTabsAfter.goToPage(page);
-                }} />
-            </Tab>
-            <Tab heading={(
-              <TabHeading style={{backgroundColor: '#243135'}}>
-                { photo2UploadedAfter ? (
-                  <Icon style={{color: 'green'}} name={Platform.OS === 'ios' ? 'ios-checkmark' : 'md-checkmark'} />
-                ) : null }
-                <Text style={{color: 'white'}}>PICTURE 2</Text>
-              </TabHeading>)}>
-              <UploadProofScreen
-                imageType="after"
-                getJobDetails={this.getJobDetailsHandler}
-                goToPage={() => {
-                  this.setState({photo2UploadedAfter: true});
-                }} />
-            </Tab>
-          </Tabs> */}
         </Modal>
       </View>
     );
