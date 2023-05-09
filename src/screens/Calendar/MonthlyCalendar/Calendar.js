@@ -252,7 +252,7 @@ class CalendarScreen extends Component {
         }
         deviceStorage.saveKey("user_relation", data.user_relation);
         let i;
-        const markedDatesTemp = data.days.reduce((acc, crr, idx) => {
+        const markedDatesTemp = data?.days?.reduce((acc, crr, idx) => {
           switch (crr.type) {
             case "Booking":
               let temp1 = [];
@@ -780,7 +780,7 @@ class CalendarScreen extends Component {
   createMarkedDates = (day) => {
     const { baseData } = this.state;
     let i;
-    const markedDatesTemp = baseData.reduce((acc, crr, idx) => {
+    const markedDatesTemp = baseData?.reduce((acc, crr, idx) => {
       switch (crr.type) {
         case "Booking":
           let temp1 = [];

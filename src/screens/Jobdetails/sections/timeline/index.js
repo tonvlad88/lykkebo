@@ -521,7 +521,7 @@ class TimelineSection extends Component {
                         onPress: () => {
                           // this.props.navigation.navigate('uploadProof')
                           this.setState({
-                            showUploadAfterPhoto: true,
+                            // showUploadAfterPhoto: true,
                             isJobDone: true,
                           });
                         },
@@ -682,7 +682,7 @@ class TimelineSection extends Component {
                 alignItems: "center",
               }}
             >
-              <View style={{ color: "#ffffff" }}>Upload billede</View>
+              <Text style={{ color: "#ffffff" }}>Upload billede</Text>
             </View>
             <View style={{ flex: 1 }}>
               {info.booking_info.before_photos.length > 1 ? (
@@ -731,7 +731,7 @@ class TimelineSection extends Component {
         <Modal isVisible={showUploadAfterPhoto}>
           <View style={{ backgroundColor: "#2E3D43" }}>
             <View style={{ flex: 1 }}>
-              <TouchableOpacity transparent>
+              <TouchableOpacity>
                 <Ionicons
                   style={{ color: "#ffffff" }}
                   size={40}
@@ -752,7 +752,7 @@ class TimelineSection extends Component {
                 alignItems: "center",
               }}
             >
-              <View style={{ color: "#ffffff" }}>Upload billede</View>
+              <Text style={{ color: "#ffffff" }}>Upload billede</Text>
             </View>
             <View style={{ flex: 1 }}>
               {info.booking_info.after_photos.length > 1 ? (
