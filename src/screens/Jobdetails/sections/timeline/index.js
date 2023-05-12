@@ -592,6 +592,7 @@ class TimelineSection extends Component {
                 .then(() => {
                   this.setState({ currentPosition: currentPosition + 1 });
                   getJobDetailsNoLoading(userId, jobId);
+                  this.setTabIndex(0);
                 })
                 .catch((error) => {
                   // Toast.show({
@@ -645,9 +646,6 @@ class TimelineSection extends Component {
       tabIndex,
     } = this.state;
     const { info } = this.props;
-
-    console.log("before_photos", info.booking_info.before_photos.length);
-    console.log("after_photos", info.booking_info.after_photos.length);
 
     return (
       <View style={styles.container}>
@@ -774,6 +772,7 @@ class TimelineSection extends Component {
                     goToPage={(page) => {
                       this.setState({ photo1UploadedBefore: true });
                       this.setTabIndex(page);
+                      this.getJobDetailsHandler();
                     }}
                   />
                 </TabView.Item>

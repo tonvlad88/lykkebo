@@ -215,7 +215,7 @@ class JobdetailsScreen extends Component {
           />
           <ApprenticeSection info={data.booking} user={userRelation} />
           <TimelineSection
-            info={data.booking}
+            info={datas.booking}
             user={userRelation}
             navigation={navigation}
           />
