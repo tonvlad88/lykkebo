@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Linking, View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import * as Linking from "expo-linking";
 
 // import styles from "../../styles";
 import {
@@ -18,7 +19,7 @@ class CustomerSection extends Component {
     Linking.canOpenURL(url)
       .then((supported) => {
         if (!supported) {
-          // console.log('Can\'t handle url: ' + url);
+          console.log("Can't handle url: " + url);
           return;
         }
         Linking.openURL(url);
@@ -53,7 +54,13 @@ class CustomerSection extends Component {
 
         <View style={styles.itemContainer}>
           <Text style={styles.itemLabel}>Telefon</Text>
-          <Text>{info.customer_info.phone}</Text>
+          <TouchableOpacity
+            onPress={() => this.linkingUrl(`tel:${info.customer_info.phone}`)}
+          >
+            <Text style={{ textDecorationLine: "underline" }}>
+              {info.customer_info.phone}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.itemContainer}>
