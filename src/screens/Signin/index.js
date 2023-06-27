@@ -124,7 +124,7 @@ class SignInScreen extends React.Component {
     const { form, section, errorTextStyle } = styles;
 
     return (
-      <ScrollView contentContainerStyle={{ flexGrow: appNumbers.number_1 }}>
+      <KeyboardAvoidingView style={{ flex: appNumbers.number_1 }}>
         <StatusBar hidden />
         <View
           style={{
@@ -203,7 +203,7 @@ class SignInScreen extends React.Component {
             </Fragment>
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }

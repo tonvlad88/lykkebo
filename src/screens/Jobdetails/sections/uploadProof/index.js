@@ -97,6 +97,11 @@ class UploadProofScreen extends Component {
   };
 
   takePhoto = async () => {
+    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("You've refused to allow this appp to access your camera!");
+      return;
+    }
     const result = await ImagePicker.launchCameraAsync({
       allowEditing: false,
       exif: true,
