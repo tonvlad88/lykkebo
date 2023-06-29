@@ -107,13 +107,13 @@ class BookingSection extends Component {
     });
   }
 
-  setEndDateHandler(newDate) {
+  setEndDateHandler(event, newDate) {
     if (Platform.OS === "android") {
       this.setState({ showEndDate: false });
     }
     const { info } = this.props;
     this.setState({
-      bookingEndDate: toTimestamp(newDate),
+      bookingEndDate: toTimestamp(XDate(newDate).toString("yyyy-MM-dd")),
     });
 
     AsyncStorage.getItem("user_id").then((userId) => {
@@ -124,7 +124,7 @@ class BookingSection extends Component {
               user_id: `${userId}`,
               job_id: jobId,
               start: info.start_date,
-              end: toTimestamp(newDate),
+              end: toTimestamp(XDate(newDate).toString("yyyy-MM-dd")),
             };
 
             const axiosConfig = {
