@@ -8,7 +8,7 @@
       "ios",
       "android"
     ],
-    "version": "3.2.4",
+    "version": "3.2.5",
     "orientation": "portrait",
     "splash": {
       "image": "./assets/images/splash2.png",
@@ -30,7 +30,7 @@
       "permissions": [
         "CAMERA"
       ],
-      "versionCode": 324
+      "versionCode": 325
     },
     "extra": {
       "eas": {
