@@ -14,9 +14,16 @@ import {
   appNumbers,
   appStrings,
 } from "../utils/constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const NewHeader = ({ navigation, title = "", rightIcon }) => (
-  <View>
+  <SafeAreaView
+    edges={["top"]}
+    style={[
+      styles.mainContainer,
+      Platform.OS === "android" ? { paddingTop: appNumbers.number_15 } : {},
+    ]}
+  >
     <View style={styles.container}>
       <StatusBar hidden />
       <View style={styles.hamburgerContainer}>
@@ -36,15 +43,18 @@ const NewHeader = ({ navigation, title = "", rightIcon }) => (
       {rightIcon}
     </View>
     <View style={styles.headerBottomBorder} />
-  </View>
+  </SafeAreaView>
 );
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: appColors.primary,
+  },
   container: {
     backgroundColor: appColors.primary,
     flexDirection: appDirection.row,
     paddingHorizontal: appNumbers.number_10,
-    paddingVertical: appNumbers.number_16,
+    paddingBottom: appNumbers.number_16,
   },
   headerTitleContainer: {
     flex: appNumbers.number_1,

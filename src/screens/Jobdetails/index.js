@@ -103,7 +103,7 @@ class JobdetailsScreen extends Component {
           bounces={false}
         >
           <NewSinglePageHeader
-            title={datas?.booking?.title}
+            title={""}
             hasLeftIcon={true}
             leftIconName={appStrings.icon.chevronBack}
             leftIconPress={this.goBack}

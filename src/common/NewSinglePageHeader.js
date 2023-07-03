@@ -6,6 +6,7 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -17,6 +18,7 @@ import {
   appNumbers,
   appStrings,
 } from "../utils/constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const NewSinglePageHeader = (props) => {
   const {
@@ -30,45 +32,56 @@ const NewSinglePageHeader = (props) => {
     rightIconPress,
   } = props;
   return (
-    <View style={styles.container}>
-      <StatusBar hidden />
-      {hasLeftIcon ? (
-        <TouchableOpacity onPress={leftIconPress}>
-          <Ionicons
-            name={leftIconName}
-            size={appNumbers.number_24}
-            color={appColors.solidGrey}
-          />
-        </TouchableOpacity>
-      ) : (
-        <Ionicons name={leftIconName} size={24} color={appColors.primary} />
-      )}
+    <SafeAreaView
+      edges={["top"]}
+      style={[
+        styles.mainContainer,
+        Platform.OS === "android" ? { paddingTop: appNumbers.number_15 } : {},
+      ]}
+    >
+      <View style={styles.container}>
+        <StatusBar hidden />
+        {hasLeftIcon ? (
+          <TouchableOpacity onPress={leftIconPress}>
+            <Ionicons
+              name={leftIconName}
+              size={appNumbers.number_24}
+              color={appColors.solidGrey}
+            />
+          </TouchableOpacity>
+        ) : (
+          <Ionicons name={leftIconName} size={24} color={appColors.primary} />
+        )}
 
-      <View style={styles.titleContainer}>
-        <Text style={[styles.titleText]}>{title}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={[styles.titleText]}>{title}</Text>
+        </View>
+
+        {hasRightIcon ? (
+          <TouchableOpacity onPress={rightIconPress}>
+            <Ionicons
+              name={rightIconName}
+              size={24}
+              color={appColors.solidGrey}
+            />
+          </TouchableOpacity>
+        ) : (
+          <Ionicons name={rightIconName} size={24} color={appColors.primary} />
+        )}
       </View>
-
-      {hasRightIcon ? (
-        <TouchableOpacity onPress={rightIconPress}>
-          <Ionicons
-            name={rightIconName}
-            size={24}
-            color={appColors.solidGrey}
-          />
-        </TouchableOpacity>
-      ) : (
-        <Ionicons name={rightIconName} size={24} color={appColors.primary} />
-      )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    backgroundColor: appColors.primary,
+  },
   container: {
     flexDirection: appDirection.row,
     backgroundColor: appColors.primary,
     paddingHorizontal: appNumbers.number_10,
-    paddingVertical: appNumbers.number_16,
+    paddingBottom: appNumbers.number_16,
     alignItems: appAlignment.center,
   },
   titleContainer: {

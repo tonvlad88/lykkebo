@@ -48,7 +48,10 @@ class NewSideBar extends Component {
     const { userDisplayEmail, userDisplayName } = this.state;
 
     return (
-      <DrawerContentScrollView {...this.props}>
+      <DrawerContentScrollView
+        {...this.props}
+        contentContainerStyle={{ paddingTop: 0 }}
+      >
         <View style={styles.sidebarImageContainer}>
           <View style={commonStyles.deadCenter}>
             <Image square style={styles.drawerImage} source={drawerImage} />
