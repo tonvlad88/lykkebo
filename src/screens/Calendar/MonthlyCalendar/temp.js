@@ -59,6 +59,7 @@ import styles from "./styles";
 import TabTwo from "../WeeklyCalendar/index";
 import CustomHeader from "../../../common/Header";
 import NewHeader from "../../../common/NewHeader";
+import { appStrings } from "../../../utils/constants";
 
 i18n.fallbacks = true;
 i18n.translations = { da, en };
@@ -258,7 +259,7 @@ class CalendarScreen extends Component {
         if ("code" in data && data.code === "jwt_auth_invalid_token") {
           AsyncStorage.removeItem("token").then(
             AsyncStorage.clear().then(() => {
-              navigation.navigate("Auth");
+              navigation.navigate(appStrings.mainStack.authLoadingScreen);
             })
           );
         }

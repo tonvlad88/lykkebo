@@ -242,11 +242,11 @@ class CalendarScreen extends Component {
     )
       .then((response) => response.json())
       .then((data) => {
-        // console.log("data", data);
+        console.log("data", data);
         if ("code" in data && data.code === "jwt_auth_invalid_token") {
           AsyncStorage.removeItem("token").then(
             AsyncStorage.clear().then(() => {
-              navigation.navigate("Auth");
+              navigation.navigate(appStrings.mainStack.authLoadingScreen);
             })
           );
         }
