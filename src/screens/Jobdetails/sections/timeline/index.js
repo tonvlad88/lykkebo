@@ -9,7 +9,9 @@ import axios from "axios";
 import Modal from "react-native-modal";
 import { AirbnbRating } from "react-native-ratings";
 import { connect } from "react-redux";
-import { Tab, TabView } from "react-native-elements";
+// import { Tab, TabView } from "react-native-elements";
+import { TabView, TabBar, SceneMap } from "react-native-tab-view";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 // Actions
 import {
@@ -32,6 +34,8 @@ import {
   appDirection,
   appNumbers,
   appStrings,
+  windowHeight,
+  windowWidth,
 } from "../../../../utils/constants";
 
 // Local constants
@@ -81,6 +85,11 @@ class TimelineSection extends Component {
       photo1UploadedAfter: false,
       photo2UploadedAfter: false,
       tabIndex: 0,
+      index: 0,
+      routes: [
+        { key: "first", title: "Picture 1" },
+        { key: "second", title: "Picture 2" },
+      ],
     };
 
     // this.updateJobStatusForward = this.updateJobStatusForward.bind(this);
@@ -455,6 +464,7 @@ class TimelineSection extends Component {
                         text: "OK",
                         onPress: () => {
                           // this.props.navigation.navigate('uploadProof')
+                          this.RBSheet.open();
                           this.setState({
                             showUploadBeforePhoto: true,
                             isJobOngoing: true,
@@ -538,6 +548,7 @@ class TimelineSection extends Component {
                         text: "OK",
                         onPress: () => {
                           // this.props.navigation.navigate('uploadProof')
+                          this.RBSheet2.open();
                           this.setState({
                             showUploadAfterPhoto: true,
                             isJobDone: true,
@@ -563,6 +574,7 @@ class TimelineSection extends Component {
     const { getJobDetailsNoLoading } = this.props;
 
     this.setState({ showUploadBeforePhoto: false });
+    this.RBSheet.close();
 
     setTimeout(() => {
       AsyncStorage.getItem("user_id").then((userId) => {
@@ -609,6 +621,7 @@ class TimelineSection extends Component {
   };
 
   uploadAfterPhoto = () => {
+    this.RBSheet2.close();
     this.setState({
       showUploadAfterPhoto: false,
     });
@@ -631,8 +644,17 @@ class TimelineSection extends Component {
   setTabIndex = (idx) => {
     this.setState({
       tabIndex: idx,
+      index: idx,
     });
   };
+
+  renderTabBar = (props) => (
+    <TabBar
+      {...props}
+      indicatorStyle={{ backgroundColor: "white" }}
+      style={{ backgroundColor: appColors.primary }}
+    />
+  );
   render() {
     const {
       currentPosition,
@@ -646,7 +668,7 @@ class TimelineSection extends Component {
       tabIndex,
     } = this.state;
     const { info } = this.props;
-
+    // console.log("info", info);
     return (
       <View style={styles.container}>
         <View
@@ -683,7 +705,181 @@ class TimelineSection extends Component {
           {this.renderConfirmModalContent()}
         </Modal>
 
-        <Modal isVisible={showUploadBeforePhoto}>
+        <RBSheet
+          ref={(ref) => {
+            this.RBSheet = ref;
+          }}
+          height={windowHeight}
+          openDuration={250}
+        >
+          <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity>
+                <Ionicons
+                  style={{ color: "#ffffff" }}
+                  size={40}
+                  name={appStrings.icon.chevronBack}
+                  onPress={() => {
+                    this.RBSheet.close();
+                    this.setState({
+                      showUploadBeforePhoto: false,
+                      isJobOngoing: false,
+                    });
+                  }}
+                />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: "#ffffff",
+                  fontSize: 18,
+                  textAlign: "center",
+                  flex: 1,
+                }}
+              >
+                Upload billede
+              </Text>
+
+              {info.booking_info.before_photos.length > 1 ? (
+                <TouchableOpacity onPress={this.uploadBeforePhoto}>
+                  <Text
+                    style={{
+                      marginRight: appNumbers.number_10,
+                      color: "white",
+                    }}
+                  >
+                    Done
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity>
+                  <Text style={{ color: "#2E3D43" }}>Done</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <TabView
+                navigationState={this.state}
+                renderTabBar={this.renderTabBar}
+                renderScene={SceneMap({
+                  first: () => (
+                    <UploadProofScreen
+                      imageType="before"
+                      getJobDetails={this.getJobDetailsHandler}
+                      goToPage={(page) => {
+                        this.setState({ photo1UploadedBefore: true });
+                        this.setTabIndex(page);
+                        this.getJobDetailsHandler();
+                      }}
+                    />
+                  ),
+                  second: () => (
+                    <UploadProofScreen
+                      imageType="before"
+                      getJobDetails={this.getJobDetailsHandler}
+                      goToPage={() => {
+                        this.setState({ photo2UploadedBefore: true });
+                        this.uploadBeforePhoto();
+                      }}
+                    />
+                  ),
+                })}
+                onIndexChange={(index) => this.setState({ index })}
+                initialLayout={{ width: windowWidth }}
+                style={styles.container}
+              />
+            </View>
+          </View>
+        </RBSheet>
+
+        <RBSheet
+          ref={(ref) => {
+            this.RBSheet2 = ref;
+          }}
+          height={windowHeight}
+          openDuration={250}
+        >
+          <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <TouchableOpacity>
+                <Ionicons
+                  style={{ color: "#ffffff" }}
+                  size={40}
+                  name={appStrings.icon.chevronBack}
+                  onPress={() => {
+                    this.RBSheet2.close();
+                    this.setState({
+                      showUploadAfterPhoto: false,
+                      isJobDone: false,
+                    });
+                  }}
+                />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  color: "#ffffff",
+                  fontSize: 18,
+                  textAlign: "center",
+                  flex: 1,
+                }}
+              >
+                Upload billede
+              </Text>
+
+              {info.booking_info.after_photos.length > 1 ? (
+                <TouchableOpacity onPress={this.uploadAfterPhoto}>
+                  <Text
+                    style={{
+                      marginRight: appNumbers.number_10,
+                      color: "white",
+                    }}
+                  >
+                    Done
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity>
+                  <Text style={{ color: "#2E3D43" }}>Done</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <TabView
+                navigationState={this.state}
+                renderTabBar={this.renderTabBar}
+                renderScene={SceneMap({
+                  first: () => (
+                    <UploadProofScreen
+                      imageType="after"
+                      getJobDetails={this.getJobDetailsHandler}
+                      goToPage={(page) => {
+                        this.setState({ photo1UploadedBefore: true });
+                        this.setTabIndex(page);
+                        this.getJobDetailsHandler();
+                      }}
+                    />
+                  ),
+                  second: () => (
+                    <UploadProofScreen
+                      imageType="after"
+                      getJobDetails={this.getJobDetailsHandler}
+                      goToPage={() => {
+                        this.setState({ photo2UploadedBefore: true });
+                        this.uploadAfterPhoto();
+                      }}
+                    />
+                  ),
+                })}
+                onIndexChange={(index) => this.setState({ index })}
+                initialLayout={{ width: windowWidth }}
+                style={styles.container}
+              />
+            </View>
+          </View>
+        </RBSheet>
+
+        {/* <Modal isVisible={showUploadBeforePhoto}>
           <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
             <View
               style={{
@@ -789,9 +985,9 @@ class TimelineSection extends Component {
               </TabView>
             </View>
           </View>
-        </Modal>
+        </Modal> */}
 
-        <Modal isVisible={showUploadAfterPhoto}>
+        {/* <Modal isVisible={showUploadAfterPhoto}>
           <View style={{ backgroundColor: "#2E3D43", flex: 1 }}>
             <View
               style={{
@@ -896,7 +1092,7 @@ class TimelineSection extends Component {
               </TabView>
             </View>
           </View>
-        </Modal>
+        </Modal> */}
       </View>
     );
   }

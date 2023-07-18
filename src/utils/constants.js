@@ -1,3 +1,5 @@
+import { Dimensions } from "react-native";
+
 /* eslint-disable import/prefer-default-export */
 export const appColors = {
   primary: "#2E3D43",
@@ -308,3 +310,6 @@ export const appPercentage = {
   five: "5%",
   ten: "10%",
 };
+
+export const windowWidth = Dimensions.get("window").width;
+export const windowHeight = Dimensions.get("window").height;
