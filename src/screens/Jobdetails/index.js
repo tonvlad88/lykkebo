@@ -67,7 +67,11 @@ class JobdetailsScreen extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getJobDetailsHandler();
+  }
+
+  getJobDetailsHandler = async () => {
     const userId = await AsyncStorage.getItem("user_id");
     const selectedJobId = await AsyncStorage.getItem("selectedJobId");
     const userRelation = await AsyncStorage.getItem("user_relation");
@@ -78,7 +82,7 @@ class JobdetailsScreen extends Component {
       data,
       loaded: true,
     });
-  }
+  };
 
   goBack = () => {
     this.props.navigation.goBack();

@@ -40,7 +40,7 @@ import TimeScreen from "../screens/Time";
 // import OverviewDetailsScreen from '../screens/OverviewDetails';
 import AccountScreen from "../screens/Account";
 // import SideBarScreen from '../screens/sidebar';
-import UploadImageScreen from "../screens/Jobdetails/sections/image/uploadImage";
+import UploadImageScreen from "../screens/Jobdetails/sections/image/uploadMultipleImages";
 // import UploadProofScreen from '../screens/Jobdetails/sections/uploadProof';
 import TimeTrackerScreen from "../screens/TimeTracker/container/index";
 import TrackerDetailsScreen from "../screens/TimeTracker/details";
