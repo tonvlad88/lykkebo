@@ -53,6 +53,7 @@ import NewSinglePageHeader from "../../common/NewSinglePageHeader";
 import NewLoader from "../../common/NewLoader";
 import { appColors, appNumbers, appStrings } from "../../utils/constants";
 import { Ionicons } from "@expo/vector-icons";
+import ProofPicturesSection from "./sections/proofPictures";
 
 class JobdetailsScreen extends Component {
   constructor(props) {
@@ -231,6 +232,16 @@ class JobdetailsScreen extends Component {
             info={data.booking.booking_info.images}
             isAttachment={false}
             navigation={navigation}
+          />
+          <ProofPicturesSection
+            navigation={navigation}
+            pictures={data.booking.booking_info.before_photos}
+            title="Før billeder"
+          />
+          <ProofPicturesSection
+            navigation={navigation}
+            pictures={data.booking.booking_info.after_photos}
+            title="Efter billeder"
           />
         </View>
       </ScrollView>
