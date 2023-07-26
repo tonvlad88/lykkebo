@@ -119,6 +119,7 @@ const UploadMultipleImages = ({ navigation }) => {
                     .then((responseJson) => {
                       setUploadedCounter(uploadedCounter + 1);
                       if (selectedImages.length - 1 === index) {
+                        setUploading(false);
                         showMessage({
                           message: "Opdateret succesfuldt",
                           type: appStrings.common.success,
@@ -149,7 +150,6 @@ const UploadMultipleImages = ({ navigation }) => {
         });
       });
     });
-    setUploading(false);
   };
 
   // const uploadImages = async () => {
