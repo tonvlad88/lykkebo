@@ -123,7 +123,9 @@ class ImageSection extends Component {
             <TouchableOpacity
               style={{ alignSelf: "flex-end" }}
               onPress={() => {
-                navigation.navigate(appStrings.mainStack.uploadImageScreen);
+                navigation.push(appStrings.mainStack.uploadImageScreen, {
+                  onReloadScreen: this.props.reloadScreen,
+                });
               }}
             >
               <Ionicons

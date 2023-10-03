@@ -22,7 +22,7 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { showMessage } from "react-native-flash-message";
 
-const UploadMultipleImages = ({ navigation }) => {
+const UploadMultipleImages = ({ navigation, route }) => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [uploadedCounter, setUploadedCounter] = useState(0);
@@ -35,7 +35,6 @@ const UploadMultipleImages = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      console.log("result", result.assets);
       setSelectedImages(result.assets);
     }
   };
@@ -124,6 +123,7 @@ const UploadMultipleImages = ({ navigation }) => {
                           message: "Opdateret succesfuldt",
                           type: appStrings.common.success,
                         });
+                        route.params.onReloadScreen();
                         setTimeout(() => {
                           navigation.navigate(
                             appStrings.mainStack.jobDetailsScreen
@@ -259,8 +259,8 @@ const UploadMultipleImages = ({ navigation }) => {
       >
         {uploading ? (
           <ActivityIndicator
-            size="large"
-            color="#2E3D43"
+            size="small"
+            color="#fff"
             style={{
               flex: 1,
               flexDirection: "column",
