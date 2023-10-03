@@ -53,7 +53,7 @@ const UploadMultipleImages = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      this.setState({ image: result.assets[0].uri });
+      setSelectedImages(result.assets);
     }
   };
 
